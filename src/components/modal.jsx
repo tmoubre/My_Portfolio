@@ -2,9 +2,7 @@ import React, { useEffect } from 'react'
 
 export default function Modal({ isOpen, onClose, title, children }) {
   useEffect(() => {
-    function onKeyDown(e) {
-      if (e.key === 'Escape') onClose?.()
-    }
+    function onKeyDown(e) { if (e.key === 'Escape') onClose?.() }
     if (isOpen) {
       document.addEventListener('keydown', onKeyDown)
       document.body.style.overflow = 'hidden'
@@ -24,12 +22,9 @@ export default function Modal({ isOpen, onClose, title, children }) {
           {title && <h3 className="modal-title">{title}</h3>}
           <button className="modal-close" aria-label="Close dialog" onClick={onClose}>✕</button>
         </div>
-        <div className="modal-body">
-          {children}
-        </div>
+        <div className="modal-body">{children}</div>
       </div>
       <button className="modal-sr-exit" aria-hidden="true" onClick={onClose} />
     </div>
   )
 }
-
