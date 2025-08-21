@@ -1,31 +1,78 @@
+// src/data/projects.js
 const projects = [
   {
-    title: 'Meet App',
-    description: 'React app that lists upcoming events by city with filtering and testing (Cucumber, Jest, RTL). Implemented show/hide details and number‑of‑events features.',
-    stack: ['React', 'Recharts', 'Testing Library'],
+    title: "Responsive Portfolio Website",
+    description:
+      "A multi‑page, responsive website (Home, About, Work, Contact) that showcases my projects and makes it easy to get in touch. Built with semantic HTML and accessible CSS so it looks good and works well on any device.",
+    stack: ["HTML", "CSS"],
     links: {
-      live: '',
-      github: ''
-    }
+      live: "https://tmoubre.github.io/Porfolio-WebSite/",
+      github: "https://github.com/tmoubre/Porfolio-WebSite",
+    },
   },
   {
-    title: 'Movie DB',
-    description: 'Full‑stack React app with auth, profiles, favorites, and search. Backend in Node/Express (Heroku), frontend on Netlify.',
-    stack: ['React', 'Express', 'MongoDB'],
+    title: "myFlix — REST API (Backend)",
+    description:
+      "A secure movie API that lets people register, log in, explore movies, and manage a list of favorites. Includes endpoints for movies, directors, and genres, with data stored in MongoDB.",
+    stack: ["Node.js", "Express", "MongoDB", "Mongoose", "JWT"],
     links: {
-      live: '',
-      github: ''
-    }
+      live: "",
+      github: "https://github.com/tmoubre/Movie-api",
+    },
   },
   {
-    title: 'Chat App (RN)',
-    description: 'Expo React Native chat with start screen, color themes, navigation, and Firebase storage. Built for Expo Go compatibility.',
-    stack: ['React Native', 'Expo', 'Firebase'],
+    title: "myFlix — React Client (Frontend)",
+    description:
+      "A responsive single‑page app for browsing movies, reading details, and managing favorites. Includes search, routing, and a personal profile view that updates user info.",
+    stack: ["React", "Bootstrap", "Parcel"],
     links: {
-      demo: '',
-      github: ''
-    }
-  }
-]
+      live: "",
+      github: "",
+    },
+  },
+  {
+    title: "Meet App — Serverless PWA",
+    description:
+      "A progressive web app that shows upcoming events by city using the Google Calendar API. Works offline, can be installed to the home screen, and includes charts to visualize event locations and genres. Built with a TDD approach.",
+    stack: [
+      "React",
+      "Serverless (AWS Lambda)",
+      "Google Calendar API",
+      "Service Worker",
+      "Data Visualization",
+    ],
+    links: {
+      live: "",
+      github: "",
+    },
+  },
+  {
+    title: "React Native Chat App (Expo)",
+    description:
+      "A mobile chat app where users jump into a room, send messages, share photos, and optionally send their location. Messages work offline and sync when back online.",
+    stack: [
+      "React Native",
+      "Expo",
+      "Firebase Auth",
+      "Firestore",
+      "Firebase Storage",
+      "Gifted Chat",
+    ],
+    links: {
+      demo: "",
+      github: "",
+    },
+  },
+  {
+    title: "myFlix — Angular Client",
+    description:
+      "An Angular version of the myFlix frontend with login/registration, an all‑movies view, and dedicated views for director and genre details. Styled with Angular Material and documented for handoff.",
+    stack: ["Angular", "Angular Material", "TypeDoc/JSDoc"],
+    links: {
+      live: "",
+      github: "",
+    },
+  },
+];
 
-export default projects
+export default projects;

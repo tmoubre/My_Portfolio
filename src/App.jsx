@@ -17,10 +17,7 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   useEffect(() => {
-    // If someone hits /#contact, open the modal automatically
-    if (window.location.hash === '#contact') {
-      setIsFormOpen(true)
-    }
+    if (window.location.hash === '#contact') setIsFormOpen(true)
   }, [])
 
   const openFormModal = () => setIsFormOpen(true)
@@ -45,17 +42,14 @@ export default function App() {
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setFormStatus({ state: 'sending', msg: '' })
-
     try {
       const form = e.currentTarget
       const data = new FormData(form)
-      // OPTIONAL: anti-spam honeypot. Formspree ignores unknown fields.
-      // data.append('_gotcha', '')
 
       const res = await fetch(FORMSPREE_URL, {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: data
+        headers: { Accept: 'application/json' },
+        body: data,
       })
 
       if (res.ok) {
@@ -65,9 +59,7 @@ export default function App() {
         let msg = 'Something went wrong. Please try again or email me directly.'
         try {
           const result = await res.json()
-          if (result?.errors?.length) {
-            msg = result.errors.map(e => e.message).join(', ')
-          }
+          if (result?.errors?.length) msg = result.errors.map(e => e.message).join(', ')
         } catch {}
         setFormStatus({ state: 'error', msg })
       }
@@ -94,14 +86,17 @@ export default function App() {
             <div>
               <h1 className="title">Operations Controller ➜ Full-Stack Developer</h1>
               <p className="subtitle">
-                I build clean, reliable web apps with React, Node, and SQL. Here are a few projects and the problems they solve.
+                Graduate of a full-stack immersion building seven production-style apps: a responsive portfolio,
+                a JavaScript API app, a Node/Express REST API with MongoDB, a React SPA client, a serverless
+                PWA built with a test-driven approach, a React Native chat app, and an Angular client.
               </p>
               <div className="tags" aria-label="Skills">
                 <span className="tag">React</span>
                 <span className="tag">Node/Express</span>
-                <span className="tag">SQL / Snowflake</span>
-                <span className="tag">Jest & RTL</span>
-                <span className="tag">Expo / React Native</span>
+                <span className="tag">MongoDB</span>
+                <span className="tag">React Native</span>
+                <span className="tag">Angular (basics)</span>
+                <span className="tag">Testing (Jest/RTL/Cucumber)</span>
               </div>
               <a className="pill" href="#projects" aria-label="Skip to projects">View projects ↓</a>
             </div>
@@ -109,8 +104,10 @@ export default function App() {
             <div className="card" aria-label="About Troy">
               <h2>About</h2>
               <p>
-                I’m Troy, an Ops Controller transitioning into software engineering. I focus on practical solutions—clean UI,
-                solid tests, and maintainable backends. Currently exploring React Native and Firebase.
+                I’m Troy, an Ops Controller transitioning into software engineering. Through a hands-on full-stack
+                program, I practiced accessible UI, API design, authentication, routing & state management,
+                data visualization, offline-first PWAs, and mobile development. I like clear interfaces, reliable
+                tests, and maintainable backends.
               </p>
               <p className="muted">Open to junior full-stack / frontend roles (remote-friendly).</p>
             </div>
@@ -133,19 +130,21 @@ export default function App() {
             <div className="card">
               <h2>Skills</h2>
               <ul>
-                <li>Frontend: React, React Native, HTML, CSS</li>
-                <li>Backend: Node, Express, REST APIs</li>
-                <li>Database: SQL Server, Snowflake, MongoDB</li>
-                <li>Testing: Jest, React Testing Library, Cucumber</li>
-                <li>Tools: Git/GitHub, Netlify, Heroku</li>
+                <li>Frontend: React, HTML/CSS & accessibility, Angular (basics)</li>
+                <li>Mobile: React Native with Expo</li>
+                <li>Backend: Node, Express, REST APIs, JWT auth, MongoDB</li>
+                <li>Testing: Jest, React Testing Library, Cucumber/TDD</li>
+                <li>Patterns: routing, state management, data fetching</li>
+                <li>Delivery: serverless functions, PWAs, Netlify/Vercel deploys</li>
+                <li>Tools: Git/GitHub, Vite/Parcel, Bootstrap/Material</li>
               </ul>
             </div>
             <div className="card">
               <h2>Highlights</h2>
               <ul>
-                <li>Implemented event filtering and chart visualizations in a React app</li>
-                <li>Wrote unit & integration tests raising coverage and reliability</li>
-                <li>Migrated backend to hosted environment with CI-friendly setup</li>
+                <li>Built a serverless, offline-capable events app with charts using a test-driven approach</li>
+                <li>Designed and documented a REST API and shipped React & Angular clients for the same backend</li>
+                <li>Delivered a mobile chat app with image sharing and offline sync</li>
               </ul>
             </div>
           </div>
