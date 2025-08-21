@@ -1,0 +1,328 @@
+:root {
+  --bg: #0b1220;
+  --panel: #0f172a;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --accent: #0ea5e9;
+  --accent-2: #22d3ee;
+  --ring: rgba(14, 165, 233, .35);
+}
+
+* {
+  box-sizing: border-box
+}
+
+html {
+  scroll-behavior: smooth
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(1000px 600px at 80% -10%, rgba(34, 211, 238, .15), transparent),
+    radial-gradient(900px 500px at 10% -20%, rgba(14, 165, 233, .12), transparent),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  backdrop-filter: saturate(180%) blur(8px);
+  background: rgba(11, 18, 32, .6);
+  border-bottom: 1px solid rgba(148, 163, 184, .15);
+  z-index: 10
+}
+
+.nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: .3px
+}
+
+.pill {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #001018;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 600
+}
+
+.pill:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px
+}
+
+.hero {
+  padding: 80px 0 40px
+}
+
+.hero-wrap {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 32px
+}
+
+.title {
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.2;
+  margin: 0 0 14px
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 26px
+}
+
+.muted {
+  color: var(--muted)
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0
+}
+
+.tag {
+  border: 1px solid rgba(148, 163, 184, .25);
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .005));
+  border: 1px solid rgba(148, 163, 184, .15);
+  border-radius: 14px;
+  padding: 18px
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px
+}
+
+.project {
+  transition: transform .2s ease, border-color .2s ease
+}
+
+.project:hover {
+  transform: translateY(-2px);
+  border-color: rgba(14, 165, 233, .45)
+}
+
+.proj-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px
+}
+
+.proj-title h3 {
+  margin: .2rem 0;
+  font-size: 18px
+}
+
+.proj-links {
+  display: flex;
+  gap: 10px
+}
+
+.proj-links a {
+  border: 1px solid rgba(148, 163, 184, .25);
+  padding: 6px 10px;
+  border-radius: 8px
+}
+
+.proj-desc {
+  color: var(--muted);
+  font-size: 14px
+}
+
+section {
+  padding: 30px 0
+}
+
+h2 {
+  font-size: 22px;
+  margin: 0 0 12px
+}
+
+.twocol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px
+}
+
+.footer {
+  padding: 40px 0 70px;
+  color: var(--muted)
+}
+
+.contact {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap
+}
+
+.contact a {
+  border: 1px solid rgba(148, 163, 184, .25);
+  padding: 10px 12px;
+  border-radius: 10px
+}
+
+@media (max-width: 900px) {
+  .hero-wrap {
+    grid-template-columns: 1fr
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr
+  }
+
+  .twocol {
+    grid-template-columns: 1fr
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr
+  }
+}
+
+.contact button {
+  border: 1px solid rgba(148, 163, 184, .25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.contact button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .3);
+  /* lighter */
+  backdrop-filter: blur(4px);
+  /* adds frosted glass effect */
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modal {
+  width: min(640px, 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .01));
+  border: 1px solid rgba(148, 163, 184, .25);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+  padding: 14px 16px 18px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(148, 163, 184, .15);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 18px
+}
+
+.modal-close {
+  border: 1px solid rgba(148, 163, 184, .25);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent)
+}
+
+.modal-body {
+  display: block
+}
+
+.modal-secondary {
+  border: 1px solid rgba(148, 163, 184, .25);
+  background: transparent;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.modal-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent)
+}
+
+/* trap focus helper (clicking outside closes via X; this hidden button is for keyboard flow) */
+.modal-sr-exit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0, 0, 0, 0)
+}
+
+/* Form inputs inside modal */
+.modal input[type="text"],
+.modal input[type="email"],
+.modal textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, .25);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .02);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.modal label {
+  display: block;
+  margin-top: 6px
+}
