@@ -1,14 +1,18 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react'
 import ProjectCard from './components/ProjectCard.jsx'
 import Modal from './components/Modal.jsx'
 import projects from './data/projects.js'
 
-// 🔧 Replace with your actual details
+// ======== YOUR PERSONAL LINKS ========
 const EMAIL = 'oubre1@att.net'
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const GITHUB = 'https://github.com/tmoubre'
+// TODO: replace with your real LinkedIn URL
+const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
+// Path to the PDF sitting in your /public folder
+const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
 
-// Your Formspree form endpoint
+// Your Formspree form endpoint (stays the same)
 const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
 
 export default function App() {
@@ -70,16 +74,21 @@ export default function App() {
 
   return (
     <div>
+      {/* Header */}
       <header className="nav">
-  <div className="container">
-    <div className="brand">Troy</div>
-    <nav>
-      <a className="pill" href="/Troy-Oubre-Resume.pdf" download>Download CV</a>
-      <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
-    </nav>
-  </div>
-</header>
+        <div className="container">
+          <div className="brand">Troy</div>
+          <nav>
+            {/* Smaller resume download button */}
+            <a className="pill pill-sm" href={RESUME_PDF} download>
+              Download Resume
+            </a>
+            <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
+          </nav>
+        </div>
+      </header>
 
+      {/* Main */}
       <main className="container">
         {/* Hero */}
         <section className="hero" id="home">
@@ -88,8 +97,8 @@ export default function App() {
               <h1 className="title">Operations Controller ➜ Full-Stack Developer</h1>
               <p className="subtitle">
                 Graduate of a full-stack immersion building seven production-style apps: a responsive portfolio,
-                a JavaScript API app, a Node/Express REST API with MongoDB, a React SPA client, a serverless
-                PWA built with a test-driven approach, a React Native chat app, and an Angular client.
+                a JavaScript API app, a Node/Express REST API with MongoDB, a React SPA, a serverless PWA
+                built with a test-driven approach, a React Native chat app, and an Angular client.
               </p>
               <div className="tags" aria-label="Skills">
                 <span className="tag">React</span>
@@ -106,7 +115,7 @@ export default function App() {
               <h2>About</h2>
               <p>
                 I’m Troy, an Ops Controller transitioning into software engineering. Through a hands-on full-stack
-                program, I practiced accessible UI, API design, authentication, routing & state management,
+                program, I practiced accessible UI, API design, authentication, routing &amp; state management,
                 data visualization, offline-first PWAs, and mobile development. I like clear interfaces, reliable
                 tests, and maintainable backends.
               </p>
@@ -131,7 +140,7 @@ export default function App() {
             <div className="card">
               <h2>Skills</h2>
               <ul>
-                <li>Frontend: React, HTML/CSS & accessibility, Angular (basics)</li>
+                <li>Frontend: React, HTML/CSS &amp; accessibility, Angular (basics)</li>
                 <li>Mobile: React Native with Expo</li>
                 <li>Backend: Node, Express, REST APIs, JWT auth, MongoDB</li>
                 <li>Testing: Jest, React Testing Library, Cucumber/TDD</li>
@@ -144,7 +153,7 @@ export default function App() {
               <h2>Highlights</h2>
               <ul>
                 <li>Built a serverless, offline-capable events app with charts using a test-driven approach</li>
-                <li>Designed and documented a REST API and shipped React & Angular clients for the same backend</li>
+                <li>Designed and documented a REST API and shipped React &amp; Angular clients for the same backend</li>
                 <li>Delivered a mobile chat app with image sharing and offline sync</li>
               </ul>
             </div>
@@ -160,17 +169,21 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
+            {/* Optional: quick resume link in contact card */}
+            <a role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
           </div>
         </section>
       </main>
 
-    <footer className="footer container">
-  <div style={{display:'flex', gap:12, alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
-    <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
-    <a className="pill" href="/Troy-Oubre-Resume.pdf" download>Download CV</a>
-  
-  </div>
-</footer>
+      {/* Footer */}
+      <footer className="footer container">
+        <div style={{display:'flex', gap:12, alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
+          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+          <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
+            Download Resume
+          </a>
+        </div>
+      </footer>
 
       {/* Contact Form Modal (Formspree AJAX, no redirect) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
