@@ -12,7 +12,7 @@ const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
 
 // Formspree endpoint
-const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
+const FORMSPREE_URL = '/api/contact'
 
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
