@@ -4,9 +4,9 @@ import Modal from './components/Modal.jsx'
 import projects from './data/projects.js'
 
 // 🔧 Replace with your actual details
-const EMAIL = 'oubre1@att.net'
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
-const GITHUB = 'https://github.com/tmoubre'
+const EMAIL = 'you@email.com'
+const LINKEDIN = 'https://www.linkedin.com/in/your-link'
+const GITHUB = 'https://github.com/your-handle'
 
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -38,30 +38,32 @@ export default function App() {
     openFormModal()
   }
 
-  // AJAX submit to Formspree (no redirect)
+  // Encode FormData to x-www-form-urlencoded
+  const toURLEncoded = (formEl) => {
+    const data = new FormData(formEl)
+    // required by Netlify: include the form name key
+    data.append('form-name', 'contact')
+    return new URLSearchParams(data).toString()
+  }
+
+  // AJAX submit to Netlify Forms (no redirect)
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setFormStatus({ state: 'sending', msg: '' })
     try {
-      const form = e.currentTarget
-      const data = new FormData(form)
-
-      // optional honeypot to reduce spam
-      // data.append('_gotcha', '')
-
-      const res = await fetch('https://formspree.io/f/xblkvnzg', {
+      const body = toURLEncoded(e.currentTarget)
+      const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: data
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
       })
-
       if (res.ok) {
         setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-        form.reset()
+        e.currentTarget.reset()
       } else {
         setFormStatus({ state: 'error', msg: 'Something went wrong. Please try again or email me directly.' })
       }
-    } catch (err) {
+    } catch {
       setFormStatus({ state: 'error', msg: 'Network error. Please try again or email me directly.' })
     }
   }
@@ -158,9 +160,14 @@ export default function App() {
         <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
       </footer>
 
-      {/* Contact Form Modal (AJAX, no redirect) */}
+      {/* Contact Form Modal (AJAX to Netlify, no redirect) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
         <form onSubmit={handleFormSubmit}>
+          {/* Netlify honeypot */}
+          <input type="text" name="bot-field" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+          {/* Netlify requires this hidden key when submitting via fetch */}
+          <input type="hidden" name="form-name" value="contact" />
+
           <label htmlFor="name">Your Name:</label>
           <input id="name" type="text" name="name" required />
 
@@ -169,9 +176,6 @@ export default function App() {
 
           <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
           <textarea id="message" name="message" rows="5" required />
-
-          {/* optional honeypot to reduce spam */}
-          <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
             <button type="submit" className="pill" disabled={formStatus.state === 'sending'}>
@@ -197,6 +201,3 @@ export default function App() {
     </div>
   )
 }
-
-
-
