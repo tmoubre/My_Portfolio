@@ -1,0 +1,134 @@
+/* Print-friendly A4 page */
+.resume-page.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.resume-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+.resume-root {
+    --fg: #0e1420;
+    --muted: #5b6b7b;
+    background: #fff;
+    color: var(--fg);
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .08);
+    padding: 28px 36px;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.resume-header {
+    border-bottom: 2px solid #e9eef5;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+}
+
+.resume-header .name {
+    font-size: 28px;
+    margin: 0 0 6px 0;
+}
+
+.resume-header .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.resume-root h2 {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #2c3e50;
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+
+.resume-root p {
+    margin: 6px 0 10px;
+    font-size: 14px;
+}
+
+.resume-root .muted {
+    color: var(--muted);
+}
+
+.cols {
+    columns: 2;
+    padding-left: 18px;
+    margin: 0;
+}
+
+.cols li {
+    break-inside: avoid;
+    margin: 2px 0;
+    font-size: 14px;
+}
+
+.flat {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.flat li {
+    margin: 2px 0 6px;
+}
+
+.role {
+    margin-top: 16px;
+}
+
+.role-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.role-head h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.role-head .right {
+    text-align: right;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.role ul {
+    margin: 6px 0 8px 18px;
+}
+
+.role li {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 640px) {
+    .cols {
+        columns: 1;
+    }
+
+    .role-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .role-head .right {
+        text-align: left;
+    }
+}
