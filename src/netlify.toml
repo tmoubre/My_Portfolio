@@ -2,15 +2,15 @@
   command = "npm run build"
   publish = "dist"
 
-# (Optional for SPAs; safe to keep)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Proxy contact form to Formspree (prevents extension blocking)
+# API proxy FIRST
 [[redirects]]
   from = "/api/contact"
   to = "https://formspree.io/f/xblkvnzg"
   status = 200
   force = true
+
+# SPA rewrite SECOND
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
