@@ -26,8 +26,8 @@ const projects = [
       "A responsive single‑page app for browsing movies, reading details, and managing favorites. Includes search, routing, and a personal profile view that updates user info.",
     stack: ["React", "Bootstrap", "Parcel"],
     links: {
-      live: "",
-      github: "",
+      live: "https://sci-fi-movies.netlify.app/login",
+      github: "https://github.com/tmoubre/myFlix-client",
     },
   },
   {
@@ -42,8 +42,8 @@ const projects = [
       "Data Visualization",
     ],
     links: {
-      live: "",
-      github: "",
+      live: "https://meet-rouge.vercel.app/oauth2callback",
+      github: "https://github.com/tmoubre/Meet",
     },
   },
   {
@@ -60,7 +60,7 @@ const projects = [
     ],
     links: {
       demo: "",
-      github: "",
+      github: "https://github.com/tmoubre/Chat-Demo",
     },
   },
   {
