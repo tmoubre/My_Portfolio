@@ -4,9 +4,12 @@ import Modal from './components/Modal.jsx'
 import projects from './data/projects.js'
 
 // 🔧 Replace with your actual details
-const EMAIL = 'you@email.com'
-const LINKEDIN = 'https://www.linkedin.com/in/your-link'
-const GITHUB = 'https://github.com/your-handle'
+const EMAIL = 'oubre1@att.net'
+const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
+const GITHUB = 'https://github.com/tmoubre'
+
+// Your Formspree form endpoint
+const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
 
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -14,7 +17,7 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   useEffect(() => {
-    // Deep link: open form if URL contains #contact
+    // If someone hits /#contact, open the modal automatically
     if (window.location.hash === '#contact') {
       setIsFormOpen(true)
     }
@@ -38,30 +41,35 @@ export default function App() {
     openFormModal()
   }
 
-  // Encode FormData to x-www-form-urlencoded
-  const toURLEncoded = (formEl) => {
-    const data = new FormData(formEl)
-    // required by Netlify: include the form name key
-    data.append('form-name', 'contact')
-    return new URLSearchParams(data).toString()
-  }
-
-  // AJAX submit to Netlify Forms (no redirect)
+  // Submit to Formspree via AJAX (no redirect)
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setFormStatus({ state: 'sending', msg: '' })
+
     try {
-      const body = toURLEncoded(e.currentTarget)
-      const res = await fetch('/', {
+      const form = e.currentTarget
+      const data = new FormData(form)
+      // OPTIONAL: anti-spam honeypot. Formspree ignores unknown fields.
+      // data.append('_gotcha', '')
+
+      const res = await fetch(FORMSPREE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body
+        headers: { 'Accept': 'application/json' },
+        body: data
       })
+
       if (res.ok) {
         setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-        e.currentTarget.reset()
+        form.reset()
       } else {
-        setFormStatus({ state: 'error', msg: 'Something went wrong. Please try again or email me directly.' })
+        let msg = 'Something went wrong. Please try again or email me directly.'
+        try {
+          const result = await res.json()
+          if (result?.errors?.length) {
+            msg = result.errors.map(e => e.message).join(', ')
+          }
+        } catch {}
+        setFormStatus({ state: 'error', msg })
       }
     } catch {
       setFormStatus({ state: 'error', msg: 'Network error. Please try again or email me directly.' })
@@ -143,7 +151,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Contact (links retained; form in modal) */}
+        {/* Contact (links retained; form is in modal) */}
         <section id="contact" className="card">
           <h2>Contact</h2>
           <p className="muted">Prefer email or LinkedIn, or use the “Get in touch” button to open the form.</p>
@@ -160,14 +168,9 @@ export default function App() {
         <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
       </footer>
 
-      {/* Contact Form Modal (AJAX to Netlify, no redirect) */}
+      {/* Contact Form Modal (Formspree AJAX, no redirect) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
         <form onSubmit={handleFormSubmit}>
-          {/* Netlify honeypot */}
-          <input type="text" name="bot-field" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
-          {/* Netlify requires this hidden key when submitting via fetch */}
-          <input type="hidden" name="form-name" value="contact" />
-
           <label htmlFor="name">Your Name:</label>
           <input id="name" type="text" name="name" required />
 
@@ -176,6 +179,9 @@ export default function App() {
 
           <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
           <textarea id="message" name="message" rows="5" required />
+
+          {/* optional honeypot to reduce spam */}
+          <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
             <button type="submit" className="pill" disabled={formStatus.state === 'sending'}>
