@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react'
 import ProjectCard from './components/ProjectCard.jsx'
 import Modal from './components/Modal.jsx'
@@ -8,9 +7,9 @@ import projects from './data/projects.js'
 // ======== YOUR PERSONAL LINKS ========
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
-// TODO: replace with your real LinkedIn URL
-const LINKEDIN = 'https://www.linkedin.com/in/your-link'
-const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file in /public
+// TODO: replace with your real LinkedIn profile URL:
+const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
+const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
 
 // Formspree endpoint
 const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
@@ -81,15 +80,16 @@ export default function App() {
         <div className="container">
           <div className="brand">Troy</div>
           <nav>
-            {/* NEW: open resume in modal */}
+            {/* All nav buttons share the same look */}
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
-            {/* Small download button for direct PDF */}
-            <a className="pill pill-sm" href={RESUME_PDF} download>
+            <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
               Download Resume
             </a>
-            <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
+            <button className="modal-secondary btn-sm" type="button" onClick={openFormModal}>
+              Get in touch
+            </button>
           </nav>
         </div>
       </header>
@@ -200,14 +200,12 @@ export default function App() {
         </div>
       </Modal>
 
-      {/* NEW: Resume in a modal */}
+      {/* Resume in a modal (with inner scroll + side gutters) */}
       <Modal isOpen={isResumeOpen} onClose={closeResumeModal} title="Resume">
-        {/* Make the modal body scrollable if content is tall */}
-        <div style={{ maxHeight: '70vh', overflow: 'auto' }}>
+        <div style={{ maxHeight: '70vh', overflow: 'auto', padding: '0 16px' }}>
           <Resume inModal />
         </div>
       </Modal>
     </div>
   )
 }
-
