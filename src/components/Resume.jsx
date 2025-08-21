@@ -1,7 +1,8 @@
 import React, { useRef } from 'react'
-import jsPDF from 'jspdf'
+import { jsPDF } from 'jspdf'      // ← use named import
 import html2canvas from 'html2canvas'
 import './resume.css'
+
 
 export default function Resume() {
   const resumeRef = useRef(null)
