@@ -69,7 +69,7 @@ const projects = [
       "An Angular version of the myFlix frontend with login/registration, an all‑movies view, and dedicated views for director and genre details. Styled with Angular Material and documented for handoff.",
     stack: ["Angular", "Angular Material", "TypeDoc/JSDoc"],
     links: {
-      live: "angular-movieapp.netlify.app",
+      live: "https://angular-movieapp.netlify.app/",
       github: "https://github.com/tmoubre/myFlix-Angular-client",
     },
   },
