@@ -2,17 +2,18 @@
 import React, { useState, useEffect } from 'react'
 import ProjectCard from './components/ProjectCard.jsx'
 import Modal from './components/Modal.jsx'
+import Resume from './components/Resume.jsx'
 import projects from './data/projects.js'
 
 // ======== YOUR PERSONAL LINKS ========
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 // TODO: replace with your real LinkedIn URL
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
+const LINKEDIN = 'https://www.linkedin.com/in/your-link'
 // Path to the PDF sitting in your /public folder
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
 
-// Your Formspree form endpoint (stays the same)
+// Your Formspree form endpoint
 const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
 
 export default function App() {
@@ -21,7 +22,15 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   useEffect(() => {
-    if (window.location.hash === '#contact') setIsFormOpen(true)
+    // Support deep links like #contact and #resume
+    const hash = window.location.hash
+    if (hash === '#contact') setIsFormOpen(true)
+    if (hash === '#resume') {
+      // smooth scroll to resume section
+      setTimeout(() => {
+        document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth' })
+      }, 0)
+    }
   }, [])
 
   const openFormModal = () => setIsFormOpen(true)
@@ -79,7 +88,9 @@ export default function App() {
         <div className="container">
           <div className="brand">Troy</div>
           <nav>
-            {/* Smaller resume download button */}
+            {/* New: link to resume section */}
+            <a className="modal-secondary" href="#resume">Resume</a>
+            {/* Small download button for PDF */}
             <a className="pill pill-sm" href={RESUME_PDF} download>
               Download Resume
             </a>
@@ -160,6 +171,11 @@ export default function App() {
           </div>
         </section>
 
+        {/* NEW: Resume section (interactive component + PDF export) */}
+        <section id="resume" style={{ scrollMarginTop: '80px' }}>
+          <Resume />
+        </section>
+
         {/* Contact (links retained; form is in modal) */}
         <section id="contact" className="card">
           <h2>Contact</h2>
@@ -169,7 +185,7 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            {/* Optional: quick resume link in contact card */}
+            {/* Quick resume download link */}
             <a role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
           </div>
         </section>
