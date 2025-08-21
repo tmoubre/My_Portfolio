@@ -1,18 +1,18 @@
-import React from 'react'
-
-export default function ProjectCard({ title, description, stack, links }) {
+export default function ProjectCard({ title, description, stack = [], links = {} }) {
+  const { live, github, demo } = links
   return (
-    <article className="card project" role="listitem">
-      <div className="proj-title">
-        <h3>{title}</h3>
-        <div className="proj-links">
-          {links?.live && <a href={links.live} target="_blank" rel="noreferrer" aria-label="Live app">Live</a>}
-          {links?.demo && <a href={links.demo} target="_blank" rel="noreferrer" aria-label="Screenshots or demo">Screens</a>}
-          {links?.github && <a href={links.github} target="_blank" rel="noreferrer" aria-label="GitHub repo">GitHub</a>}
-        </div>
+    <article className="card" role="listitem">
+      <h3>{title}</h3>
+      <p>{description}</p>
+      {stack.length > 0 && (
+        <p className="muted"><strong>Stack:</strong> {stack.join(', ')}</p>
+      )}
+      <div className="actions">
+        {live && <a className="pill" href={live} target="_blank" rel="noopener noreferrer">Live</a>}
+        {demo && <a className="modal-secondary" href={demo} target="_blank" rel="noopener noreferrer">Demo</a>}
+        {github && <a className="modal-secondary" href={github} target="_blank" rel="noopener noreferrer">GitHub</a>}
       </div>
-      <p className="proj-desc">{description}</p>
-      <p className="proj-desc"><strong>Stack:</strong> {stack.join(', ')}</p>
     </article>
   )
 }
+

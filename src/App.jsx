@@ -71,13 +71,14 @@ export default function App() {
   return (
     <div>
       <header className="nav">
-        <div className="container">
-          <div className="brand">Troy</div>
-          <nav>
-            <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
-          </nav>
-        </div>
-      </header>
+  <div className="container">
+    <div className="brand">Troy</div>
+    <nav>
+      <a className="pill" href="/Troy-Oubre-Resume.pdf" download>Download CV</a>
+      <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
+    </nav>
+  </div>
+</header>
 
       <main className="container">
         {/* Hero */}
@@ -163,9 +164,13 @@ export default function App() {
         </section>
       </main>
 
-      <footer className="footer container">
-        <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
-      </footer>
+    <footer className="footer container">
+  <div style={{display:'flex', gap:12, alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
+    <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+    <a className="pill" href="/Troy-Oubre-Resume.pdf" download>Download CV</a>
+  
+  </div>
+</footer>
 
       {/* Contact Form Modal (Formspree AJAX, no redirect) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
