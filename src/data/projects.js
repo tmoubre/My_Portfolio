@@ -33,7 +33,7 @@ const projects = [
   {
     title: "Meet App — Serverless PWA",
     description:
-      "A progressive web app that shows upcoming events by city using the Google Calendar API. Works offline, can be installed to the home screen, and includes charts to visualize event locations and genres. Built with a TDD approach.",
+      "An events app that shows what’s happening by city using the Google Calendar API. Works offline, can be installed to the home screen, and includes charts to understand locations and event genres. Built with a test‑driven approach.",
     stack: [
       "React",
       "Serverless (AWS Lambda)",
@@ -49,7 +49,7 @@ const projects = [
   {
     title: "React Native Chat App (Expo)",
     description:
-      "A mobile chat app where users jump into a room, send messages, share photos, and optionally send their location. Messages work offline and sync when back online.",
+      "A mobile chat app where users jump into a room, send messages, share photos, and optionally share their location. Messages work offline and sync when back online.",
     stack: [
       "React Native",
       "Expo",
