@@ -6,7 +6,7 @@ export default function Resume({ inModal = false }) {
   const resumeRef = useRef(null)
 
   const downloadPdf = async () => {
-    // Lazy-load to keep your main bundle light
+    // Lazy-load libs to keep bundle small
     const { jsPDF } = await import('jspdf')
     const html2canvas = (await import('html2canvas')).default
 
@@ -40,13 +40,10 @@ export default function Resume({ inModal = false }) {
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
-      {/* Toolbar appears on the resume itself (inside the modal) */}
+      {/* Toolbar inside the resume (modal-friendly) */}
       <div className="resume-toolbar no-print">
         <button className="pill pill-sm" onClick={downloadPdf}>Download PDF</button>
-        {/* Direct file link from /public */}
-        <a className="modal-secondary btn-sm" href="/Troy-Oubre-Resume.pdf" download>
-          Direct download
-        </a>
+        {/* Direct download link removed as requested */}
       </div>
 
       {/* Content captured for PDF */}
@@ -94,7 +91,6 @@ export default function Resume({ inModal = false }) {
         <section>
           <h2>Experience</h2>
 
-        {/* ——— Role blocks abbreviated; keep your current list or edit here ——— */}
           <div className="role">
             <div className="role-head">
               <h3>Operations Controller</h3>
@@ -127,7 +123,7 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Add the rest of your roles here, same structure */}
+          {/* Add remaining roles as needed */}
         </section>
 
         <section>
@@ -142,4 +138,5 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+
       

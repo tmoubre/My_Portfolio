@@ -118,6 +118,16 @@
     font-size: 14px;
 }
 
+.modal {
+    box-sizing: border-box;
+    width: min(900px, calc(100vw - 64px));
+    /* 32px gutter on each side */
+    margin: 0 auto;
+    /* center horizontally */
+    border-radius: 16px;
+    /* nice rounded edges (optional) */
+}
+
 @media (max-width: 640px) {
     .cols {
         columns: 1;
@@ -134,5 +144,10 @@
 
     .resume-in-modal {
         max-width: 800px;
+    }
+
+    .modal {
+        width: min(900px, calc(100vw - 32px));
+        /* 16px each side */
     }
 }
