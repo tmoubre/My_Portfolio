@@ -131,4 +131,8 @@
     .role-head .right {
         text-align: left;
     }
+
+    .resume-in-modal {
+        max-width: 800px;
+    }
 }

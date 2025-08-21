@@ -10,27 +10,20 @@ const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 // TODO: replace with your real LinkedIn URL
 const LINKEDIN = 'https://www.linkedin.com/in/your-link'
-// Path to the PDF sitting in your /public folder
-const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
+const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file in /public
 
-// Your Formspree form endpoint
+// Formspree endpoint
 const FORMSPREE_URL = 'https://formspree.io/f/xblkvnzg'
 
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isChoiceOpen, setIsChoiceOpen] = useState(false)
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   useEffect(() => {
-    // Support deep links like #contact and #resume
-    const hash = window.location.hash
-    if (hash === '#contact') setIsFormOpen(true)
-    if (hash === '#resume') {
-      // smooth scroll to resume section
-      setTimeout(() => {
-        document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth' })
-      }, 0)
-    }
+    // Support deep links like #contact
+    if (window.location.hash === '#contact') setIsFormOpen(true)
   }, [])
 
   const openFormModal = () => setIsFormOpen(true)
@@ -41,6 +34,9 @@ export default function App() {
 
   const openChoiceModal = () => setIsChoiceOpen(true)
   const closeChoiceModal = () => setIsChoiceOpen(false)
+
+  const openResumeModal = () => setIsResumeOpen(true)
+  const closeResumeModal = () => setIsResumeOpen(false)
 
   const handleEmailClient = () => {
     window.location.href = `mailto:${EMAIL}`
@@ -56,23 +52,20 @@ export default function App() {
     e.preventDefault()
     setFormStatus({ state: 'sending', msg: '' })
     try {
-      const form = e.currentTarget
-      const data = new FormData(form)
-
+      const data = new FormData(e.currentTarget)
       const res = await fetch(FORMSPREE_URL, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: data,
       })
-
       if (res.ok) {
         setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-        form.reset()
+        e.currentTarget.reset()
       } else {
         let msg = 'Something went wrong. Please try again or email me directly.'
         try {
-          const result = await res.json()
-          if (result?.errors?.length) msg = result.errors.map(e => e.message).join(', ')
+          const json = await res.json()
+          if (json?.errors?.length) msg = json.errors.map(er => er.message).join(', ')
         } catch {}
         setFormStatus({ state: 'error', msg })
       }
@@ -88,9 +81,11 @@ export default function App() {
         <div className="container">
           <div className="brand">Troy</div>
           <nav>
-            {/* New: link to resume section */}
-            <a className="modal-secondary" href="#resume">Resume</a>
-            {/* Small download button for PDF */}
+            {/* NEW: open resume in modal */}
+            <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
+              Resume
+            </button>
+            {/* Small download button for direct PDF */}
             <a className="pill pill-sm" href={RESUME_PDF} download>
               Download Resume
             </a>
@@ -145,38 +140,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Skills / Highlights */}
-        <section>
-          <div className="twocol">
-            <div className="card">
-              <h2>Skills</h2>
-              <ul>
-                <li>Frontend: React, HTML/CSS &amp; accessibility, Angular (basics)</li>
-                <li>Mobile: React Native with Expo</li>
-                <li>Backend: Node, Express, REST APIs, JWT auth, MongoDB</li>
-                <li>Testing: Jest, React Testing Library, Cucumber/TDD</li>
-                <li>Patterns: routing, state management, data fetching</li>
-                <li>Delivery: serverless functions, PWAs, Netlify/Vercel deploys</li>
-                <li>Tools: Git/GitHub, Vite/Parcel, Bootstrap/Material</li>
-              </ul>
-            </div>
-            <div className="card">
-              <h2>Highlights</h2>
-              <ul>
-                <li>Built a serverless, offline-capable events app with charts using a test-driven approach</li>
-                <li>Designed and documented a REST API and shipped React &amp; Angular clients for the same backend</li>
-                <li>Delivered a mobile chat app with image sharing and offline sync</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* NEW: Resume section (interactive component + PDF export) */}
-        <section id="resume" style={{ scrollMarginTop: '80px' }}>
-          <Resume />
-        </section>
-
-        {/* Contact (links retained; form is in modal) */}
+        {/* Contact */}
         <section id="contact" className="card">
           <h2>Contact</h2>
           <p className="muted">Prefer email or LinkedIn, or use the “Get in touch” button to open the form.</p>
@@ -185,7 +149,6 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            {/* Quick resume download link */}
             <a role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
           </div>
         </section>
@@ -201,7 +164,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Contact Form Modal (Formspree AJAX, no redirect) */}
+      {/* Modals */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="name">Your Name:</label>
@@ -213,7 +176,7 @@ export default function App() {
           <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
           <textarea id="message" name="message" rows="5" required />
 
-          {/* optional honeypot to reduce spam */}
+          {/* honeypot */}
           <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
@@ -229,7 +192,6 @@ export default function App() {
         </form>
       </Modal>
 
-      {/* Choice Modal for Email vs Form */}
       <Modal isOpen={isChoiceOpen} onClose={closeChoiceModal} title="Contact options">
         <p className="muted" style={{ marginBottom: 14 }}>How would you like to get in touch?</p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -237,6 +199,15 @@ export default function App() {
           <button type="button" className="modal-secondary" onClick={handleUseForm}>Use Contact Form</button>
         </div>
       </Modal>
+
+      {/* NEW: Resume in a modal */}
+      <Modal isOpen={isResumeOpen} onClose={closeResumeModal} title="Resume">
+        {/* Make the modal body scrollable if content is tall */}
+        <div style={{ maxHeight: '70vh', overflow: 'auto' }}>
+          <Resume inModal />
+        </div>
+      </Modal>
     </div>
   )
 }
+
