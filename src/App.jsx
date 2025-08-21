@@ -4,7 +4,7 @@ import Modal from './components/Modal.jsx'
 import projects from './data/projects.js'
 
 /** 🔧 Use your real links (or keep what you already have) */
-const EMAIL = 'you@email.com'
+const EMAIL = 'oubre1@att.net'
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const GITHUB = 'https://github.com/tmoubre'
 
