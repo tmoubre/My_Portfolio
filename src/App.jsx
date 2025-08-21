@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProjectCard from './components/ProjectCard.jsx'
 import Modal from './components/Modal.jsx'
 import projects from './data/projects.js'
 
-/** 🔧 Use your real links (or keep what you already have) */
+// 🔧 Replace with your actual details
 const EMAIL = 'oubre1@att.net'
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const GITHUB = 'https://github.com/tmoubre'
@@ -11,9 +11,20 @@ const GITHUB = 'https://github.com/tmoubre'
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isChoiceOpen, setIsChoiceOpen] = useState(false)
+  const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
+
+  useEffect(() => {
+    // Deep link: open form if URL contains #contact
+    if (window.location.hash === '#contact') {
+      setIsFormOpen(true)
+    }
+  }, [])
 
   const openFormModal = () => setIsFormOpen(true)
-  const closeFormModal = () => setIsFormOpen(false)
+  const closeFormModal = () => {
+    setIsFormOpen(false)
+    setFormStatus({ state: 'idle', msg: '' })
+  }
 
   const openChoiceModal = () => setIsChoiceOpen(true)
   const closeChoiceModal = () => setIsChoiceOpen(false)
@@ -27,16 +38,41 @@ export default function App() {
     openFormModal()
   }
 
+  // AJAX submit to Formspree (no redirect)
+  const handleFormSubmit = async (e) => {
+    e.preventDefault()
+    setFormStatus({ state: 'sending', msg: '' })
+    try {
+      const form = e.currentTarget
+      const data = new FormData(form)
+
+      // optional honeypot to reduce spam
+      // data.append('_gotcha', '')
+
+      const res = await fetch('https://formspree.io/f/xblkvnzg', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+      })
+
+      if (res.ok) {
+        setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
+        form.reset()
+      } else {
+        setFormStatus({ state: 'error', msg: 'Something went wrong. Please try again or email me directly.' })
+      }
+    } catch (err) {
+      setFormStatus({ state: 'error', msg: 'Network error. Please try again or email me directly.' })
+    }
+  }
+
   return (
     <div>
       <header className="nav">
         <div className="container">
           <div className="brand">Troy</div>
           <nav>
-            {/* Button now opens modal instead of only scrolling */}
-            <button className="pill" type="button" onClick={openFormModal}>
-              Get in touch
-            </button>
+            <button className="pill" type="button" onClick={openFormModal}>Get in touch</button>
           </nav>
         </div>
       </header>
@@ -48,7 +84,7 @@ export default function App() {
             <div>
               <h1 className="title">Operations Controller ➜ Full-Stack Developer</h1>
               <p className="subtitle">
-                I build clean, reliable web apps with React, Node, and Angular. Here are a few projects and the problems they solve.
+                I build clean, reliable web apps with React, Node, and SQL. Here are a few projects and the problems they solve.
               </p>
               <div className="tags" aria-label="Skills">
                 <span className="tag">React</span>
@@ -105,15 +141,13 @@ export default function App() {
           </div>
         </section>
 
-        {/* Contact (links remain here; form lives in modal) */}
+        {/* Contact (links retained; form in modal) */}
         <section id="contact" className="card">
           <h2>Contact</h2>
-          <p className="muted">Prefer email or LinkedIn. Or use the “Get in touch” button to open the form.</p>
+          <p className="muted">Prefer email or LinkedIn, or use the “Get in touch” button to open the form.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
-            <button type="button" onClick={openChoiceModal}>
-              Email Me
-            </button>
+            <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
           </div>
@@ -124,12 +158,9 @@ export default function App() {
         <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
       </footer>
 
-      {/* Contact Form Modal */}
+      {/* Contact Form Modal (AJAX, no redirect) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
-        <form
-          action="https://formspree.io/f/xblkvnzg"  // ← your Formspree URL
-          method="POST"
-        >
+        <form onSubmit={handleFormSubmit}>
           <label htmlFor="name">Your Name:</label>
           <input id="name" type="text" name="name" required />
 
@@ -137,33 +168,35 @@ export default function App() {
           <input id="email" type="email" name="email" required />
 
           <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
+          <textarea id="message" name="message" rows="5" required />
 
-          <input type="hidden" name="_subject" value="New message from Troy's portfolio" />
+          {/* optional honeypot to reduce spam */}
+          <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
-            <button type="submit" className="pill">Send Message</button>
+            <button type="submit" className="pill" disabled={formStatus.state === 'sending'}>
+              {formStatus.state === 'sending' ? 'Sending…' : 'Send Message'}
+            </button>
             <button type="button" className="modal-secondary" onClick={closeFormModal}>Cancel</button>
           </div>
+
+          {formStatus.state !== 'idle' && (
+            <p className="muted" style={{ marginTop: 10 }}>{formStatus.msg}</p>
+          )}
         </form>
       </Modal>
 
       {/* Choice Modal for Email vs Form */}
       <Modal isOpen={isChoiceOpen} onClose={closeChoiceModal} title="Contact options">
-        <p className="muted" style={{ marginBottom: 14 }}>
-          How would you like to get in touch?
-        </p>
+        <p className="muted" style={{ marginBottom: 14 }}>How would you like to get in touch?</p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button type="button" className="pill" onClick={handleEmailClient}>
-            Open Email Client
-          </button>
-          <button type="button" className="modal-secondary" onClick={handleUseForm}>
-            Use Contact Form
-          </button>
+          <button type="button" className="pill" onClick={handleEmailClient}>Open Email Client</button>
+          <button type="button" className="modal-secondary" onClick={handleUseForm}>Use Contact Form</button>
         </div>
       </Modal>
     </div>
   )
 }
+
 
 
