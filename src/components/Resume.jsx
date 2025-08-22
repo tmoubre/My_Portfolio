@@ -7,26 +7,27 @@ export default function Resume({ inModal = false }) {
   const downloadPdf = async () => {
     const { jsPDF } = await import('jspdf')
     const h2c = (await import('html2canvas')).default
-    // @ts-ignore make available to jsPDF.html
+    // make html2canvas available to jsPDF.html
+    // @ts-ignore
     window.html2canvas = h2c
 
-    // Use US Letter (8.5 x 11 inches)
+    // US Letter (8.5" x 11")
     const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'letter' })
 
-    // ---- margins & sizing (LETTER) ----
+    // --- margins & sizing (LETTER) ---
     const PT_PER_IN = 72
     const PX_PER_PT = 96 / 72
     const MARGIN_IN = 0.5
     const MARGIN_PT = MARGIN_IN * PT_PER_IN // 36pt
 
-    const pageWpt = pdf.internal.pageSize.getWidth()   // 612pt for Letter
-    const innerWpt = pageWpt - MARGIN_PT * 2           // 612 - 72 = 540pt
-    const innerWpx = Math.floor(innerWpt * PX_PER_PT)  // ≈ 540 * 1.333 = 720px
+    const pageWpt = pdf.internal.pageSize.getWidth()   // 612pt
+    const innerWpt = pageWpt - MARGIN_PT * 2           // 540pt
+    const innerWpx = Math.floor(innerWpt * PX_PER_PT)  // ≈720px
 
     const src = sheetRef.current
     if (!src) return
 
-    // Snapshot inline styles to restore after export
+    // Snapshot inline styles to restore later
     const original = {
       boxSizing: src.style.boxSizing,
       width: src.style.width,
@@ -36,14 +37,16 @@ export default function Resume({ inModal = false }) {
       boxShadow: src.style.boxShadow,
     }
 
-    // Force exact export width (border-box so padding is included)
+    // Force exact export width (border-box so padding included)
     src.style.boxSizing = 'border-box'
     src.style.width = `${innerWpx}px`
     src.style.maxWidth = 'none'
     src.style.margin = '0 auto'
-    // remove border/shadow so they don't push width
     src.style.border = 'none'
     src.style.boxShadow = 'none'
+
+    // Reduce font sizes ONLY during export
+    src.classList.add('resume-exporting')
 
     await new Promise(requestAnimationFrame)
 
@@ -54,11 +57,12 @@ export default function Resume({ inModal = false }) {
         width: innerWpt,          // points (PDF units)
         windowWidth: innerWpx,    // pixels (DOM render width)
         autoPaging: 'text',
-        html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+        html2canvas: { scale: 1, backgroundColor: '#ffffff' },
         callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
       })
     } finally {
       // Restore on-screen styles
+      src.classList.remove('resume-exporting')
       src.style.boxSizing = original.boxSizing
       src.style.width = original.width
       src.style.maxWidth = original.maxWidth
@@ -208,3 +212,4 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+

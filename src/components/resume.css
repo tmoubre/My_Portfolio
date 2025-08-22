@@ -30,6 +30,37 @@
     word-break: normal;
 }
 
+/* When exporting: slightly smaller type for the PDF only */
+.resume-exporting {
+    font-size: 0.92rem;
+}
+
+/* base down ~8% */
+.resume-exporting .resume-header .name {
+    font-size: 28px;
+}
+
+/* was 32px */
+.resume-exporting .resume-header .meta {
+    font-size: 12px;
+}
+
+.resume-exporting h2 {
+    font-size: 14px;
+}
+
+.resume-exporting .role-head h3 {
+    font-size: 14px;
+}
+
+.resume-exporting .role-head .right {
+    font-size: 12px;
+}
+
+.resume-exporting .muted {
+    font-size: 12px;
+}
+
 /* Header */
 .resume-header .name {
     margin: 0 0 6px;
@@ -126,8 +157,6 @@
 
 /* Print rules (respected by jsPDF.html and browsers) */
 @media print {
-
-    /* Letter with 0.5" margins */
     @page {
         size: letter;
         margin: 0.5in;
