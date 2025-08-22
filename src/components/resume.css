@@ -141,4 +141,10 @@
         break-before: page;
         height: 0;
     }
+
+    .resume-export {
+        position: fixed;
+        left: -10000px;
+        top: 0;
+    }
 }

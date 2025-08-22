@@ -6,48 +6,61 @@ export default function Resume({ inModal = false }) {
 
   const downloadPdf = async () => {
     const { jsPDF } = await import('jspdf')
-    const html2canvas = (await import('html2canvas')).default
+    // Ensure html2canvas is available to jsPDF.html
+    const h2c = (await import('html2canvas')).default
+    window.html2canvas = h2c
 
     const pdf = new jsPDF('p', 'pt', 'a4')
     const MARGIN = 36 // 0.5"
     const pageW = pdf.internal.pageSize.getWidth()
-    const innerW = pageW - MARGIN * 2
+    const innerWpt = pageW - MARGIN * 2              // inner width in points
+    const pxPerPt = 96 / 72                           // CSS px per point
+    const innerWpx = Math.floor(innerWpt * pxPerPt)   // ~697px at A4 & 0.5" margins
 
-    // Auto-paginate the real HTML (respects CSS page-breaks)
-    await pdf.html(sheetRef.current, {
-      html2canvas: {
-        scale: 2,
-        backgroundColor: '#ffffff',
-        windowWidth: sheetRef.current.scrollWidth,
-      },
-      x: MARGIN,
-      y: MARGIN,
-      width: innerW,
-      callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
-      autoPaging: 'text', // split on text lines when possible
-    })
+    // Clone the node and force it to the exact export width (no clipping)
+    const src = sheetRef.current
+    const clone = src.cloneNode(true)
+    clone.classList.add('resume-export')              // hidden off-screen
+    clone.style.width = `${innerWpx}px`
+    clone.style.maxWidth = 'none'
+    clone.style.margin = '0'
+    clone.style.border = 'none'
+    clone.style.boxShadow = 'none'
+    document.body.appendChild(clone)
+
+    try {
+      await pdf.html(clone, {
+        x: MARGIN,
+        y: MARGIN,
+        width: innerWpt,           // tell jsPDF the target width (points)
+        windowWidth: innerWpx,     // tell html2canvas the DOM width (px)
+        autoPaging: 'text',
+        html2canvas: {
+          scale: 2,
+          backgroundColor: '#ffffff'
+        },
+        callback: (doc) => doc.save('Troy-Oubre-Resume.pdf')
+      })
+    } finally {
+      document.body.removeChild(clone)
+    }
   }
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
-      {/* Toolbar */}
       <div className="resume-toolbar no-print">
         <button className="pill" onClick={downloadPdf}>Download PDF</button>
       </div>
 
-      {/* The sheet we capture for the PDF */}
+      {/* On-screen sheet (nice and wide for reading) */}
       <article ref={sheetRef} className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
           <div className="meta">
-            <span>Baton Rouge, LA</span>
-            <span>•</span>
-            <a href="tel:+15047150645">(504) 715-0645</a>
-            <span>•</span>
-            <a href="mailto:oubre1@att.net">oubre1@att.net</a>
-            <span>•</span>
-            <a href="https://troys-portfolio.netlify.app" target="_blank" rel="noreferrer">Portfolio</a>
-            <span>•</span>
+            <span>Baton Rouge, LA</span><span>•</span>
+            <a href="tel:+15047150645">(504) 715-0645</a><span>•</span>
+            <a href="mailto:oubre1@att.net">oubre1@att.net</a><span>•</span>
+            <a href="https://troys-portfolio.netlify.app" target="_blank" rel="noreferrer">Portfolio</a><span>•</span>
             <a href="https://github.com/tmoubre" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </header>
@@ -65,35 +78,24 @@ export default function Resume({ inModal = false }) {
         <section>
           <h2>Core Strengths</h2>
           <ul className="cols avoid-break">
-            <li>Operations & Financial Control</li>
-            <li>Budgeting & Forecasting</li>
-            <li>Cost Analysis & Reporting</li>
-            <li>KPI Development & Dashboards</li>
-            <li>Project Accounting & Job Costing</li>
-            <li>Strategic Planning & Execution</li>
-            <li>Inventory & Asset Management</li>
-            <li>Intercompany Accounting</li>
-            <li>Internal Controls & Compliance</li>
-            <li>Systems Implementation</li>
-            <li>Vendor & Contract Management</li>
-            <li>Cross-Functional Team Leadership</li>
+            <li>Operations & Financial Control</li><li>Budgeting & Forecasting</li>
+            <li>Cost Analysis & Reporting</li><li>KPI Development & Dashboards</li>
+            <li>Project Accounting & Job Costing</li><li>Strategic Planning & Execution</li>
+            <li>Inventory & Asset Management</li><li>Intercompany Accounting</li>
+            <li>Internal Controls & Compliance</li><li>Systems Implementation</li>
+            <li>Vendor & Contract Management</li><li>Cross-Functional Team Leadership</li>
           </ul>
         </section>
 
-        {/* Force Experience to start on a new page if needed */}
         <div className="page-break" aria-hidden="true"></div>
 
         <section>
           <h2>Experience</h2>
 
-          {/* BrandSafway — Operations Controller */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Operations Controller</h3>
-              <div className="right">
-                <div>BrandSafway, LLC — Boutte, LA</div>
-                <div>Mar 2021 – Present</div>
-              </div>
+              <div className="right"><div>BrandSafway, LLC — Boutte, LA</div><div>Mar 2021 – Present</div></div>
             </div>
             <ul>
               <li>Oversee financial operations ($7M+), including budgeting, forecasting, and cost reporting.</li>
@@ -106,14 +108,10 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* BrandSafway — Division Resource Manager / Office Manager */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager / Office Manager</h3>
-              <div className="right">
-                <div>BrandSafway, LLC — Boutte, LA</div>
-                <div>Aug 2018 – Mar 2021</div>
-              </div>
+              <div className="right"><div>BrandSafway, LLC — Boutte, LA</div><div>Aug 2018 – Mar 2021</div></div>
             </div>
             <ul>
               <li>Directed divisional billing, procurement, and resource allocation.</li>
@@ -124,14 +122,10 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Brand Energy & Infrastructure Services — Division Resource Manager */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager</h3>
-              <div className="right">
-                <div>Brand Energy & Infrastructure Services — LaPlace, LA</div>
-                <div>2015 – 2018</div>
-              </div>
+              <div className="right"><div>Brand Energy & Infrastructure Services — LaPlace, LA</div><div>2015 – 2018</div></div>
             </div>
             <ul>
               <li>Directed inventory & logistics across multiple sites; managed $50M+ in assets.</li>
@@ -140,14 +134,10 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Environmental Health & Safety Specialist */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Environmental Health & Safety Specialist</h3>
-              <div className="right">
-                <div>Brand (various sites)</div>
-                <div>2011 – 2015</div>
-              </div>
+              <div className="right"><div>Brand (various sites)</div><div>2011 – 2015</div></div>
             </div>
             <ul>
               <li>Coordinated regulatory compliance and safety audits; contributed to zero reportable incidents.</li>
@@ -156,14 +146,10 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Sci-Net — Field Supervisor */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Field Supervisor</h3>
-              <div className="right">
-                <div>Sci-Net, LLC — Baton Rouge, LA</div>
-                <div>Jun 2007 – Jul 2010</div>
-              </div>
+              <div className="right"><div>Sci-Net, LLC — Baton Rouge, LA</div><div>Jun 2007 – Jul 2010</div></div>
             </div>
             <ul>
               <li>Managed field operations and accurate inventory allocation/reporting.</li>
@@ -172,14 +158,10 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Cox — Systems Support Specialist II */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Systems Support Specialist II</h3>
-              <div className="right">
-                <div>Cox Communications — Baton Rouge, LA</div>
-                <div>Jun 2001 – Jul 2007</div>
-              </div>
+              <div className="right"><div>Cox Communications — Baton Rouge, LA</div><div>Jun 2001 – Jul 2007</div></div>
             </div>
             <ul>
               <li>Built help-desk operations for VOIP/HSI; implemented escalation/resolution protocols.</li>
@@ -189,7 +171,6 @@ export default function Resume({ inModal = false }) {
           </div>
         </section>
 
-        {/* Optional forced break before Education if overflow occurs on page 2 */}
         <div className="page-break" aria-hidden="true"></div>
 
         <section>
@@ -206,4 +187,5 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+
 
