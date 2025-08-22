@@ -8,11 +8,13 @@ import projects from './data/projects.js'
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 // TODO: replace with your real LinkedIn profile URL:
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
+const LINKEDIN = 'https://www.linkedin.com/in/your-link'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
 
-// Formspree endpoint
-const FORMSPREE_URL = '/api/contact'
+// Contact endpoint: Netlify Function in prod, Formspree direct in dev
+const CONTACT_URL = import.meta.env.PROD
+  ? '/.netlify/functions/contact'
+  : 'https://formspree.io/f/xblkvnzg'
 
 export default function App() {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -21,7 +23,6 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   useEffect(() => {
-    // Support deep links like #contact
     if (window.location.hash === '#contact') setIsFormOpen(true)
   }, [])
 
@@ -46,30 +47,41 @@ export default function App() {
     openFormModal()
   }
 
-  // Submit to Formspree via AJAX (no redirect)
+  // Submit via Netlify Function (prod) or Formspree (dev)
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setFormStatus({ state: 'sending', msg: '' })
+
     try {
-      const data = new FormData(e.currentTarget)
-      const res = await fetch(FORMSPREE_URL, {
+      const form = e.currentTarget
+      const data = Object.fromEntries(new FormData(form).entries())
+
+      const res = await fetch(CONTACT_URL, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: data,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       })
-      if (res.ok) {
-        setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-        e.currentTarget.reset()
-      } else {
+
+      if (!res.ok) {
         let msg = 'Something went wrong. Please try again or email me directly.'
         try {
           const json = await res.json()
           if (json?.errors?.length) msg = json.errors.map(er => er.message).join(', ')
         } catch {}
         setFormStatus({ state: 'error', msg })
+        return
       }
+
+      setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
+      form.reset()
     } catch {
-      setFormStatus({ state: 'error', msg: 'Network error. Please try again or email me directly.' })
+      setFormStatus({
+        state: 'error',
+        msg: 'Network error. Please try again or email me directly.',
+      })
     }
   }
 
@@ -80,7 +92,7 @@ export default function App() {
         <div className="container">
           <div className="brand">Troy</div>
           <nav>
-            {/* All nav buttons share the same look */}
+            {/* All nav items share the same style */}
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
@@ -200,7 +212,7 @@ export default function App() {
         </div>
       </Modal>
 
-      {/* Resume in a modal (with inner scroll + side gutters) */}
+      {/* Resume in a modal with side gutters */}
       <Modal isOpen={isResumeOpen} onClose={closeResumeModal} title="Resume">
         <div style={{ maxHeight: '70vh', overflow: 'auto', padding: '0 16px' }}>
           <Resume inModal />
