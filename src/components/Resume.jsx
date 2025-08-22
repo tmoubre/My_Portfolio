@@ -7,45 +7,63 @@ export default function Resume({ inModal = false }) {
   const downloadPdf = async () => {
     const { jsPDF } = await import('jspdf')
     const h2c = (await import('html2canvas')).default
-    // make sure jsPDF.html can find html2canvas
+    // Ensure jsPDF.html can find html2canvas
     // @ts-ignore
     window.html2canvas = h2c
 
     const pdf = new jsPDF('p', 'pt', 'a4')
 
-    // === margins & widths ===
+    // --- margins & sizing ---
     const MARGIN_PT = 36 // 0.5"
     const pageWpt = pdf.internal.pageSize.getWidth()
-    const innerWpt = pageWpt - MARGIN_PT * 2 // PDF inner width in points
+    const innerWpt = pageWpt - MARGIN_PT * 2 // width for PDF content (points)
 
-    // convert inner width to CSS px for DOM rendering
+    // Convert to CSS pixels for DOM rendering
     const pxPerPt = 96 / 72
     const innerWpx = Math.floor(innerWpt * pxPerPt) // ~697px
 
-    // clone the resume and force export width (border-box includes padding)
     const src = sheetRef.current
     if (!src) return
-    const clone = src.cloneNode(true)
-    clone.classList.add('resume-export')
-    clone.style.width = `${innerWpx}px`
-    clone.style.maxWidth = 'none'
-    clone.style.margin = '0'
-    clone.style.border = 'none'
-    clone.style.boxShadow = 'none'
-    document.body.appendChild(clone)
+
+    // Snapshot original inline styles to restore later
+    const original = {
+      boxSizing: src.style.boxSizing,
+      width: src.style.width,
+      maxWidth: src.style.maxWidth,
+      margin: src.style.margin,
+      border: src.style.border,
+      boxShadow: src.style.boxShadow,
+    }
+
+    // Force exact width for export (includes padding via border-box)
+    src.style.boxSizing = 'border-box'
+    src.style.width = `${innerWpx}px`
+    src.style.maxWidth = 'none'
+    src.style.margin = '0 auto'
+    src.style.border = 'none'
+    src.style.boxShadow = 'none'
+
+    // Ensure layout is applied before capture
+    await new Promise(requestAnimationFrame)
 
     try {
-      await pdf.html(clone, {
+      await pdf.html(src, {
         x: MARGIN_PT,
         y: MARGIN_PT,
-        width: innerWpt,        // <-- PDF width MUST be in points
-        windowWidth: innerWpx,  // <-- DOM render width in pixels
+        width: innerWpt,        // jsPDF units (points)
+        windowWidth: innerWpx,  // DOM render width (pixels)
         autoPaging: 'text',
         html2canvas: { scale: 2, backgroundColor: '#ffffff' },
-        callback: (doc) => doc.save('Troy-Oubre-Resume.pdf')
+        callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
       })
     } finally {
-      document.body.removeChild(clone)
+      // Restore original styles so on-screen view is unchanged
+      src.style.boxSizing = original.boxSizing
+      src.style.width = original.width
+      src.style.maxWidth = original.maxWidth
+      src.style.margin = original.margin
+      src.style.border = original.border
+      src.style.boxShadow = original.boxShadow
     }
   }
 
@@ -56,7 +74,7 @@ export default function Resume({ inModal = false }) {
         <button className="pill" onClick={downloadPdf}>Download PDF</button>
       </div>
 
-      {/* On-screen sheet (readable in modal) */}
+      {/* On-screen sheet */}
       <article ref={sheetRef} className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
@@ -91,7 +109,6 @@ export default function Resume({ inModal = false }) {
           </ul>
         </section>
 
-        {/* Fresh page if needed */}
         <div className="page-break" aria-hidden="true"></div>
 
         <section>
@@ -192,6 +209,7 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+
 
 
 

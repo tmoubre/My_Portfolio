@@ -24,18 +24,9 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
-    /* keep long strings from overflowing */
+    /* prevent overflow on long strings */
     overflow-wrap: anywhere;
     word-break: normal;
-}
-
-/* Hidden off-screen clone used only for PDF export */
-.resume-export {
-    position: fixed;
-    left: -10000px;
-    top: 0;
-    box-sizing: border-box;
-    /* clone also border-box */
 }
 
 /* Header */
@@ -132,7 +123,7 @@
     page-break-inside: avoid;
 }
 
-/* Print rules (also respected by jsPDF.html) */
+/* Print rules (respected by jsPDF.html and browsers) */
 @media print {
     @page {
         size: A4;
