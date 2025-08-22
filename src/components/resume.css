@@ -13,14 +13,12 @@
 /* On-screen sheet (readable) */
 .resume-sheet {
     box-sizing: border-box;
-    /* include padding in width */
     background: #ffffff;
     color: #0f172a;
     border: 1px solid rgba(148, 163, 184, .25);
     border-radius: 10px;
     padding: 18px 24px;
     max-width: 780px;
-    /* visual width in modal */
     margin: 0 auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -28,37 +26,6 @@
     /* prevent overflow on long strings */
     overflow-wrap: anywhere;
     word-break: normal;
-}
-
-/* When exporting: slightly smaller type for the PDF only */
-.resume-exporting {
-    font-size: 0.92rem;
-}
-
-/* base down ~8% */
-.resume-exporting .resume-header .name {
-    font-size: 28px;
-}
-
-/* was 32px */
-.resume-exporting .resume-header .meta {
-    font-size: 12px;
-}
-
-.resume-exporting h2 {
-    font-size: 14px;
-}
-
-.resume-exporting .role-head h3 {
-    font-size: 14px;
-}
-
-.resume-exporting .role-head .right {
-    font-size: 12px;
-}
-
-.resume-exporting .muted {
-    font-size: 12px;
 }
 
 /* Header */
@@ -149,32 +116,72 @@
     display: none;
 }
 
-/* hidden on screen */
 .avoid-break {
     break-inside: avoid;
     page-break-inside: avoid;
 }
 
-/* Print rules (respected by jsPDF.html and browsers) */
+/* ---------- PRINT TO PDF (Letter 8.5x11, margins 0.5") ---------- */
 @media print {
+
+    /* Letter page with 0.5" margins */
     @page {
         size: letter;
         margin: 0.5in;
     }
 
-    .no-print {
-        display: none !important;
+    /* Hide everything except the resume itself */
+    body * {
+        visibility: hidden !important;
     }
 
+    .resume-sheet,
+    .resume-sheet * {
+        visibility: visible !important;
+    }
+
+    /* Make the resume fill the printable area safely */
     .resume-sheet {
-        box-shadow: none;
+        position: static;
+        margin: 0;
+        width: 100%;
+        /* equals 7.5in inside 0.5" margins on Letter */
+        max-width: none;
         border: none;
+        box-shadow: none;
+
+        /* print-optimized type sizes so nothing spills */
+        font-size: 11pt;
+        line-height: 1.4;
     }
 
-    .page-break {
-        display: block;
-        page-break-before: always;
-        break-before: page;
-        height: 0;
+    .resume-header .name {
+        font-size: 20pt;
+    }
+
+    .resume-header .meta {
+        font-size: 10pt;
+    }
+
+    .resume-sheet h2 {
+        font-size: 12pt;
+    }
+
+    .role-head h3 {
+        font-size: 12pt;
+    }
+
+    .role-head .right {
+        font-size: 10pt;
+    }
+
+    .muted {
+        font-size: 10pt;
+    }
+
+    /* Keep two columns but with tighter gap on paper */
+    .cols {
+        columns: 2;
+        column-gap: 18pt;
     }
 }

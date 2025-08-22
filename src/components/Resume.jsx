@@ -4,81 +4,20 @@ import './resume.css'
 export default function Resume({ inModal = false }) {
   const sheetRef = useRef(null)
 
-  const downloadPdf = async () => {
-    const { jsPDF } = await import('jspdf')
-    const h2c = (await import('html2canvas')).default
-    // make html2canvas available to jsPDF.html
-    // @ts-ignore
-    window.html2canvas = h2c
-
-    // US Letter (8.5" x 11")
-    const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'letter' })
-
-    // --- margins & sizing (LETTER) ---
-    const PT_PER_IN = 72
-    const PX_PER_PT = 96 / 72
-    const MARGIN_IN = 0.5
-    const MARGIN_PT = MARGIN_IN * PT_PER_IN // 36pt
-
-    const pageWpt = pdf.internal.pageSize.getWidth()   // 612pt
-    const innerWpt = pageWpt - MARGIN_PT * 2           // 540pt
-    const innerWpx = Math.floor(innerWpt * PX_PER_PT)  // ≈720px
-
-    const src = sheetRef.current
-    if (!src) return
-
-    // Snapshot inline styles to restore later
-    const original = {
-      boxSizing: src.style.boxSizing,
-      width: src.style.width,
-      maxWidth: src.style.maxWidth,
-      margin: src.style.margin,
-      border: src.style.border,
-      boxShadow: src.style.boxShadow,
-    }
-
-    // Force exact export width (border-box so padding included)
-    src.style.boxSizing = 'border-box'
-    src.style.width = `${innerWpx}px`
-    src.style.maxWidth = 'none'
-    src.style.margin = '0 auto'
-    src.style.border = 'none'
-    src.style.boxShadow = 'none'
-
-    // Reduce font sizes ONLY during export
-    src.classList.add('resume-exporting')
-
-    await new Promise(requestAnimationFrame)
-
-    try {
-      await pdf.html(src, {
-        x: MARGIN_PT,             // points
-        y: MARGIN_PT,
-        width: innerWpt,          // points (PDF units)
-        windowWidth: innerWpx,    // pixels (DOM render width)
-        autoPaging: 'text',
-        html2canvas: { scale: 1, backgroundColor: '#ffffff' },
-        callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
-      })
-    } finally {
-      // Restore on-screen styles
-      src.classList.remove('resume-exporting')
-      src.style.boxSizing = original.boxSizing
-      src.style.width = original.width
-      src.style.maxWidth = original.maxWidth
-      src.style.margin = original.margin
-      src.style.border = original.border
-      src.style.boxShadow = original.boxShadow
-    }
+  const printPdf = () => {
+    // Small rAF ensures CSS is applied before the print dialog opens
+    requestAnimationFrame(() => window.print())
   }
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
+      {/* Toolbar (hidden when printing) */}
       <div className="resume-toolbar no-print">
-        <button className="pill" onClick={downloadPdf}>Download PDF</button>
+        <button className="pill" onClick={printPdf}>Download PDF</button>
       </div>
 
-      <article ref={sheetRef} className="resume-sheet">
+      {/* Resume content */}
+      <article ref={sheetRef} className="resume-sheet" id="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
           <div className="meta">
@@ -212,4 +151,5 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+
 
