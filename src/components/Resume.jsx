@@ -6,22 +6,23 @@ export default function Resume({ inModal = false }) {
 
   const downloadPdf = async () => {
     const { jsPDF } = await import('jspdf')
-    // Make sure html2canvas is available to jsPDF.html
     const h2c = (await import('html2canvas')).default
+    // make sure jsPDF.html can find html2canvas
     // @ts-ignore
     window.html2canvas = h2c
 
     const pdf = new jsPDF('p', 'pt', 'a4')
 
-    // === Margins & width calculations ===
-    const MARGIN_PT = 36 // 0.5" at 72pt/in
+    // === margins & widths ===
+    const MARGIN_PT = 36 // 0.5"
     const pageWpt = pdf.internal.pageSize.getWidth()
+    const innerWpt = pageWpt - MARGIN_PT * 2 // PDF inner width in points
 
-    // Convert inner width to CSS pixels for the DOM clone
+    // convert inner width to CSS px for DOM rendering
     const pxPerPt = 96 / 72
-    const innerWpx = Math.floor((pageWpt - MARGIN_PT * 2) * pxPerPt) // ~697px
+    const innerWpx = Math.floor(innerWpt * pxPerPt) // ~697px
 
-    // Clone the resume and force exact export width (border-box includes padding)
+    // clone the resume and force export width (border-box includes padding)
     const src = sheetRef.current
     if (!src) return
     const clone = src.cloneNode(true)
@@ -35,15 +36,12 @@ export default function Resume({ inModal = false }) {
 
     try {
       await pdf.html(clone, {
-        x: MARGIN_PT,               // points
+        x: MARGIN_PT,
         y: MARGIN_PT,
-        width: innerWpx,           // MUST be CSS pixels
-        windowWidth: innerWpx,     // render DOM at the same px width
+        width: innerWpt,        // <-- PDF width MUST be in points
+        windowWidth: innerWpx,  // <-- DOM render width in pixels
         autoPaging: 'text',
-        html2canvas: {
-          scale: 2,
-          backgroundColor: '#ffffff'
-        },
+        html2canvas: { scale: 2, backgroundColor: '#ffffff' },
         callback: (doc) => doc.save('Troy-Oubre-Resume.pdf')
       })
     } finally {
@@ -58,7 +56,7 @@ export default function Resume({ inModal = false }) {
         <button className="pill" onClick={downloadPdf}>Download PDF</button>
       </div>
 
-      {/* On-screen sheet (wide & readable in modal) */}
+      {/* On-screen sheet (readable in modal) */}
       <article ref={sheetRef} className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
@@ -93,13 +91,12 @@ export default function Resume({ inModal = false }) {
           </ul>
         </section>
 
-        {/* Start Experience on a fresh page if needed */}
+        {/* Fresh page if needed */}
         <div className="page-break" aria-hidden="true"></div>
 
         <section>
           <h2>Experience</h2>
 
-          {/* BrandSafway — Operations Controller */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Operations Controller</h3>
@@ -116,7 +113,6 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* BrandSafway — Division Resource Manager / Office Manager */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager / Office Manager</h3>
@@ -131,7 +127,6 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Brand Energy & Infrastructure Services — Division Resource Manager */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager</h3>
@@ -144,7 +139,6 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Environmental Health & Safety Specialist */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Environmental Health & Safety Specialist</h3>
@@ -157,7 +151,6 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Sci-Net — Field Supervisor */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Field Supervisor</h3>
@@ -170,7 +163,6 @@ export default function Resume({ inModal = false }) {
             </ul>
           </div>
 
-          {/* Cox — Systems Support Specialist II */}
           <div className="role avoid-break">
             <div className="role-head">
               <h3>Systems Support Specialist II</h3>
@@ -192,8 +184,7 @@ export default function Resume({ inModal = false }) {
             <li><strong>Associate of Science, Computer Information Systems</strong> — ITI Technical College (Baton Rouge, LA)</li>
             <li><strong>Associate of Science, Computer Information Systems</strong> — Remington College (Baton Rouge, LA)</li>
           </ul>
-          <p className="m
-uted avoid-break">
+          <p className="muted avoid-break">
             CSST • CSS • NCCER Safety • OSHA-10 & OSHA-30 • First Aid/CPR (Alliance Safety Council)
           </p>
         </section>
@@ -201,6 +192,7 @@ uted avoid-break">
     </div>
   )
 }
+
 
 
 

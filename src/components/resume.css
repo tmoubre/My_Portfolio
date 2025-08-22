@@ -10,7 +10,7 @@
     margin-bottom: 10px;
 }
 
-/* On-screen sheet (nice to read) */
+/* On-screen sheet (readable) */
 .resume-sheet {
     box-sizing: border-box;
     /* include padding in width */
@@ -23,6 +23,10 @@
     margin: 0 auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+    /* keep long strings from overflowing */
+    overflow-wrap: anywhere;
+    word-break: normal;
 }
 
 /* Hidden off-screen clone used only for PDF export */
@@ -31,7 +35,7 @@
     left: -10000px;
     top: 0;
     box-sizing: border-box;
-    /* keep clone border-box too */
+    /* clone also border-box */
 }
 
 /* Header */
@@ -128,7 +132,7 @@
     page-break-inside: avoid;
 }
 
-/* Print rules for browser/renderer and jsPDF.html */
+/* Print rules (also respected by jsPDF.html) */
 @media print {
     @page {
         size: A4;
