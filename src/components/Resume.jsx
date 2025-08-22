@@ -7,25 +7,26 @@ export default function Resume({ inModal = false }) {
   const downloadPdf = async () => {
     const { jsPDF } = await import('jspdf')
     const h2c = (await import('html2canvas')).default
-    // Ensure jsPDF.html can find html2canvas
-    // @ts-ignore
+    // @ts-ignore make available to jsPDF.html
     window.html2canvas = h2c
 
-    const pdf = new jsPDF('p', 'pt', 'a4')
+    // Use US Letter (8.5 x 11 inches)
+    const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'letter' })
 
-    // --- margins & sizing ---
-    const MARGIN_PT = 36 // 0.5"
-    const pageWpt = pdf.internal.pageSize.getWidth()
-    const innerWpt = pageWpt - MARGIN_PT * 2 // width for PDF content (points)
+    // ---- margins & sizing (LETTER) ----
+    const PT_PER_IN = 72
+    const PX_PER_PT = 96 / 72
+    const MARGIN_IN = 0.5
+    const MARGIN_PT = MARGIN_IN * PT_PER_IN // 36pt
 
-    // Convert to CSS pixels for DOM rendering
-    const pxPerPt = 96 / 72
-    const innerWpx = Math.floor(innerWpt * pxPerPt) // ~697px
+    const pageWpt = pdf.internal.pageSize.getWidth()   // 612pt for Letter
+    const innerWpt = pageWpt - MARGIN_PT * 2           // 612 - 72 = 540pt
+    const innerWpx = Math.floor(innerWpt * PX_PER_PT)  // ≈ 540 * 1.333 = 720px
 
     const src = sheetRef.current
     if (!src) return
 
-    // Snapshot original inline styles to restore later
+    // Snapshot inline styles to restore after export
     const original = {
       boxSizing: src.style.boxSizing,
       width: src.style.width,
@@ -35,29 +36,29 @@ export default function Resume({ inModal = false }) {
       boxShadow: src.style.boxShadow,
     }
 
-    // Force exact width for export (includes padding via border-box)
+    // Force exact export width (border-box so padding is included)
     src.style.boxSizing = 'border-box'
     src.style.width = `${innerWpx}px`
     src.style.maxWidth = 'none'
     src.style.margin = '0 auto'
+    // remove border/shadow so they don't push width
     src.style.border = 'none'
     src.style.boxShadow = 'none'
 
-    // Ensure layout is applied before capture
     await new Promise(requestAnimationFrame)
 
     try {
       await pdf.html(src, {
-        x: MARGIN_PT,
+        x: MARGIN_PT,             // points
         y: MARGIN_PT,
-        width: innerWpt,        // jsPDF units (points)
-        windowWidth: innerWpx,  // DOM render width (pixels)
+        width: innerWpt,          // points (PDF units)
+        windowWidth: innerWpx,    // pixels (DOM render width)
         autoPaging: 'text',
         html2canvas: { scale: 2, backgroundColor: '#ffffff' },
         callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
       })
     } finally {
-      // Restore original styles so on-screen view is unchanged
+      // Restore on-screen styles
       src.style.boxSizing = original.boxSizing
       src.style.width = original.width
       src.style.maxWidth = original.maxWidth
@@ -69,12 +70,10 @@ export default function Resume({ inModal = false }) {
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
-      {/* Toolbar */}
       <div className="resume-toolbar no-print">
         <button className="pill" onClick={downloadPdf}>Download PDF</button>
       </div>
 
-      {/* On-screen sheet */}
       <article ref={sheetRef} className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
@@ -209,8 +208,3 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
-
-
-
-
-

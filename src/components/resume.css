@@ -20,6 +20,7 @@
     border-radius: 10px;
     padding: 18px 24px;
     max-width: 780px;
+    /* visual width in modal */
     margin: 0 auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -125,8 +126,10 @@
 
 /* Print rules (respected by jsPDF.html and browsers) */
 @media print {
+
+    /* Letter with 0.5" margins */
     @page {
-        size: A4;
+        size: letter;
         margin: 0.5in;
     }
 
