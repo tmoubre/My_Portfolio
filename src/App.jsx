@@ -177,10 +177,6 @@ export default function App() {
         Resume
       </button>
 
-      <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
-        Download CV
-      </a>
-
       <button
         className="modal-secondary btn-sm"
         type="button"
