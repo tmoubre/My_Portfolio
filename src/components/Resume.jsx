@@ -8,55 +8,31 @@ export default function Resume({ inModal = false }) {
     const { jsPDF } = await import('jspdf')
     const html2canvas = (await import('html2canvas')).default
 
-    const el = sheetRef.current
-    if (!el) return
-
-    // Render the resume to a high-res canvas
-    const canvas = await html2canvas(el, {
-      scale: 2,
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      logging: false,
-      windowWidth: el.scrollWidth,
-      windowHeight: el.scrollHeight,
-    })
-
-    const imgData = canvas.toDataURL('image/png')
-
-    // === PDF sizing with margins ===
     const pdf = new jsPDF('p', 'pt', 'a4')
-    const MARGIN = 36 /* 0.5 in @ 72pt/in */
+    const MARGIN = 36 // 0.5"
     const pageW = pdf.internal.pageSize.getWidth()
-    const pageH = pdf.internal.pageSize.getHeight()
     const innerW = pageW - MARGIN * 2
-    const innerH = pageH - MARGIN * 2
 
-    // Fit image width to innerW, keep aspect
-    const imgW = innerW
-    const imgH = (canvas.height * imgW) / canvas.width
-
-    // Add first page at top margin
-    pdf.addImage(imgData, 'PNG', MARGIN, MARGIN, imgW, imgH)
-
-    // If content is taller than one page, add the rest
-    let heightLeft = imgH - innerH
-    let yPos = MARGIN - innerH // move the image up by innerH each page
-
-    while (heightLeft > 0) {
-      pdf.addPage()
-      pdf.addImage(imgData, 'PNG', MARGIN, yPos, imgW, imgH)
-      heightLeft -= innerH
-      yPos -= innerH
-    }
-
-    pdf.save('Troy-Oubre-Resume.pdf')
+    // Auto-paginate the real HTML (respects CSS page-breaks)
+    await pdf.html(sheetRef.current, {
+      html2canvas: {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        windowWidth: sheetRef.current.scrollWidth,
+      },
+      x: MARGIN,
+      y: MARGIN,
+      width: innerW,
+      callback: (doc) => doc.save('Troy-Oubre-Resume.pdf'),
+      autoPaging: 'text', // split on text lines when possible
+    })
   }
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
       {/* Toolbar */}
       <div className="resume-toolbar no-print">
-        <button className="pill pill-sm" onClick={downloadPdf}>Download PDF</button>
+        <button className="pill" onClick={downloadPdf}>Download PDF</button>
       </div>
 
       {/* The sheet we capture for the PDF */}
@@ -88,7 +64,7 @@ export default function Resume({ inModal = false }) {
 
         <section>
           <h2>Core Strengths</h2>
-          <ul className="cols">
+          <ul className="cols avoid-break">
             <li>Operations & Financial Control</li>
             <li>Budgeting & Forecasting</li>
             <li>Cost Analysis & Reporting</li>
@@ -104,11 +80,14 @@ export default function Resume({ inModal = false }) {
           </ul>
         </section>
 
+        {/* Force Experience to start on a new page if needed */}
+        <div className="page-break" aria-hidden="true"></div>
+
         <section>
           <h2>Experience</h2>
 
           {/* BrandSafway — Operations Controller */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Operations Controller</h3>
               <div className="right">
@@ -128,7 +107,7 @@ export default function Resume({ inModal = false }) {
           </div>
 
           {/* BrandSafway — Division Resource Manager / Office Manager */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager / Office Manager</h3>
               <div className="right">
@@ -146,7 +125,7 @@ export default function Resume({ inModal = false }) {
           </div>
 
           {/* Brand Energy & Infrastructure Services — Division Resource Manager */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Division Resource Manager</h3>
               <div className="right">
@@ -162,7 +141,7 @@ export default function Resume({ inModal = false }) {
           </div>
 
           {/* Environmental Health & Safety Specialist */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Environmental Health & Safety Specialist</h3>
               <div className="right">
@@ -178,7 +157,7 @@ export default function Resume({ inModal = false }) {
           </div>
 
           {/* Sci-Net — Field Supervisor */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Field Supervisor</h3>
               <div className="right">
@@ -194,7 +173,7 @@ export default function Resume({ inModal = false }) {
           </div>
 
           {/* Cox — Systems Support Specialist II */}
-          <div className="role">
+          <div className="role avoid-break">
             <div className="role-head">
               <h3>Systems Support Specialist II</h3>
               <div className="right">
@@ -210,13 +189,16 @@ export default function Resume({ inModal = false }) {
           </div>
         </section>
 
+        {/* Optional forced break before Education if overflow occurs on page 2 */}
+        <div className="page-break" aria-hidden="true"></div>
+
         <section>
           <h2>Education & Certifications</h2>
-          <ul className="flat">
+          <ul className="flat avoid-break">
             <li><strong>Associate of Science, Computer Information Systems</strong> — ITI Technical College (Baton Rouge, LA)</li>
             <li><strong>Associate of Science, Computer Information Systems</strong> — Remington College (Baton Rouge, LA)</li>
           </ul>
-          <p className="muted">
+          <p className="muted avoid-break">
             CSST • CSS • NCCER Safety • OSHA-10 & OSHA-30 • First Aid/CPR (Alliance Safety Council)
           </p>
         </section>
@@ -224,3 +206,4 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
+
