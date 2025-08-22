@@ -1,23 +1,25 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import './resume.css'
 
+const PDF_PATH = '/Troy-Oubre-Resume.pdf' // file lives in /public
+
 export default function Resume({ inModal = false }) {
-  const sheetRef = useRef(null)
-
-  const printPdf = () => {
-    // Small rAF ensures CSS is applied before the print dialog opens
-    requestAnimationFrame(() => window.print())
-  }
-
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
-      {/* Toolbar (hidden when printing) */}
+      {/* Toolbar (no printing/conversion — just a real file link) */}
       <div className="resume-toolbar no-print">
-        <button className="pill" onClick={printPdf}>Download PDF</button>
+        {/* Direct download (most browsers will download; some may open in a tab) */}
+        <a className="pill" href={PDF_PATH} download>
+          Download PDF
+        </a>
+        {/* Optional: open in new tab as a second action */}
+        <a className="modal-secondary" href={PDF_PATH} target="_blank" rel="noopener">
+          Open PDF
+        </a>
       </div>
 
-      {/* Resume content */}
-      <article ref={sheetRef} className="resume-sheet" id="resume-sheet">
+      {/* On-screen resume content (what you already had) */}
+      <article className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
           <div className="meta">
@@ -151,5 +153,3 @@ export default function Resume({ inModal = false }) {
     </div>
   )
 }
-
-
