@@ -96,9 +96,6 @@ export default function App() {
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
-            <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
-              Download Resume
-            </a>
             <button className="modal-secondary btn-sm" type="button" onClick={openFormModal}>
               Get in touch
             </button>
