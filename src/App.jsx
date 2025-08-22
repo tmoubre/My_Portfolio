@@ -164,14 +164,34 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="footer container">
-  <div className="footer-actions">
+      <footer className="footer">
+  <div className="container footer-actions">
     <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
-    <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
-      Download Resume
-    </a>
+
+    <div className="actions">
+      <button
+        type="button"
+        className="modal-secondary btn-sm"
+        onClick={openResumeModal}
+      >
+        Resume
+      </button>
+
+      <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
+        Download CV
+      </a>
+
+      <button
+        className="modal-secondary btn-sm"
+        type="button"
+        onClick={openFormModal}
+      >
+        Get in touch
+      </button>
+    </div>
   </div>
 </footer>
+
 
       {/* Modals */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
