@@ -368,3 +368,28 @@ h2 {
   top: 12px;
   z-index: 10000;
 }
+
+/* ---- Contact buttons: ensure they behave like the others ---- */
+.contact a.modal-secondary,
+.contact button.modal-secondary {
+  /* keep your existing sizing/shape to avoid layout changes */
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  /* force the shared visual style to win over `.contact a/button` */
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, .25);
+  color: var(--text);
+}
+
+.contact a.modal-secondary:hover,
+.contact button.modal-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.contact a.modal-secondary:focus-visible,
+.contact button.modal-secondary:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}

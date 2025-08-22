@@ -156,9 +156,9 @@ export default function App() {
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
             <button type="button" onClick={openChoiceModal}>Email Me</button>
-            <a role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
-            <a role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
           </div>
         </section>
       </main>
