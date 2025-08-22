@@ -216,7 +216,6 @@ h2 {
   flex-wrap: wrap
 }
 
-/* Keep your original contact styles */
 .contact a {
   border: 1px solid rgba(148, 163, 184, .25);
   padding: 10px 12px;
@@ -313,52 +312,18 @@ h2 {
   display: block
 }
 
-/* --- UNIFIED SECONDARY BUTTONS (minimal change) --- */
-/* Make <a> and <button> with .modal-secondary look identical everywhere */
-.modal-secondary,
-button.modal-secondary,
-a.modal-secondary:link,
-a.modal-secondary:visited {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  vertical-align: middle;
-
-  min-height: 34px;
-  /* consistent height */
-  padding: 10px 12px;
-  /* keep your original spacing */
-  border-radius: 10px;
-  /* keep your original radius */
-
-  font: 600 0.95rem/1.1 inherit;
-  /* consistent text/line-height */
-  white-space: nowrap;
-  text-decoration: none;
-
-  background: transparent;
+.modal-secondary {
   border: 1px solid rgba(148, 163, 184, .25);
+  background: transparent;
   color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
   cursor: pointer;
 }
 
 .modal-secondary:hover {
   border-color: var(--accent);
   color: var(--accent)
-}
-
-.modal-secondary:focus-visible {
-  outline: 3px solid var(--ring);
-  outline-offset: 2px
-}
-
-/* Optional helper if you apply `btn-sm` in header/footer */
-.btn-sm {
-  min-height: 34px;
-  padding: 10px 12px;
-  font-size: 0.9rem;
-  line-height: 1.1
 }
 
 /* trap focus helper (clicking outside closes via X; this hidden button is for keyboard flow) */
