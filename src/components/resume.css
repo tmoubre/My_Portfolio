@@ -1,27 +1,37 @@
-/* Container in the modal */
+/* Modal context width */
 .resume-in-modal {
     max-width: 860px;
 }
 
-/* Toolbar inside the modal */
+/* Toolbar in modal */
 .resume-toolbar {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
 }
 
-/* The sheet we capture to PDF */
+/* On-screen sheet (nice to read) */
 .resume-sheet {
+    box-sizing: border-box;
+    /* include padding in width */
     background: #ffffff;
     color: #0f172a;
     border: 1px solid rgba(148, 163, 184, .25);
     border-radius: 10px;
     padding: 18px 24px;
     max-width: 780px;
-    /* readable width in modal */
     margin: 0 auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Hidden off-screen clone used only for PDF export */
+.resume-export {
+    position: fixed;
+    left: -10000px;
+    top: 0;
+    box-sizing: border-box;
+    /* keep clone border-box too */
 }
 
 /* Header */
@@ -107,13 +117,12 @@
     font-size: 13px;
 }
 
-/* ---- Pagination helpers ---- */
+/* Pagination helpers */
 .page-break {
     display: none;
 }
 
 /* hidden on screen */
-
 .avoid-break {
     break-inside: avoid;
     page-break-inside: avoid;
@@ -140,11 +149,5 @@
         page-break-before: always;
         break-before: page;
         height: 0;
-    }
-
-    .resume-export {
-        position: fixed;
-        left: -10000px;
-        top: 0;
     }
 }
