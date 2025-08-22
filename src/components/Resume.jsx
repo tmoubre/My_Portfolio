@@ -1,38 +1,52 @@
-// src/components/Resume.jsx
 import React, { useRef } from 'react'
 import './resume.css'
 
 export default function Resume({ inModal = false }) {
-  const resumeRef = useRef(null)
+  const sheetRef = useRef(null)
 
   const downloadPdf = async () => {
-    // Lazy-load libs to keep bundle small
     const { jsPDF } = await import('jspdf')
     const html2canvas = (await import('html2canvas')).default
 
-    const el = resumeRef.current
+    const el = sheetRef.current
     if (!el) return
 
-    const canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true })
+    // Render the resume to a high-res canvas
+    const canvas = await html2canvas(el, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false,
+      windowWidth: el.scrollWidth,
+      windowHeight: el.scrollHeight,
+    })
+
     const imgData = canvas.toDataURL('image/png')
 
+    // === PDF sizing with margins ===
     const pdf = new jsPDF('p', 'pt', 'a4')
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const pageHeight = pdf.internal.pageSize.getHeight()
-    const imgWidth = pageWidth
-    const imgHeight = canvas.height * (imgWidth / canvas.width)
+    const MARGIN = 36 /* 0.5 in @ 72pt/in */
+    const pageW = pdf.internal.pageSize.getWidth()
+    const pageH = pdf.internal.pageSize.getHeight()
+    const innerW = pageW - MARGIN * 2
+    const innerH = pageH - MARGIN * 2
 
-    let heightLeft = imgHeight
-    let position = 0
+    // Fit image width to innerW, keep aspect
+    const imgW = innerW
+    const imgH = (canvas.height * imgW) / canvas.width
 
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-    heightLeft -= pageHeight
+    // Add first page at top margin
+    pdf.addImage(imgData, 'PNG', MARGIN, MARGIN, imgW, imgH)
+
+    // If content is taller than one page, add the rest
+    let heightLeft = imgH - innerH
+    let yPos = MARGIN - innerH // move the image up by innerH each page
 
     while (heightLeft > 0) {
-      position -= pageHeight
       pdf.addPage()
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-      heightLeft -= pageHeight
+      pdf.addImage(imgData, 'PNG', MARGIN, yPos, imgW, imgH)
+      heightLeft -= innerH
+      yPos -= innerH
     }
 
     pdf.save('Troy-Oubre-Resume.pdf')
@@ -40,14 +54,13 @@ export default function Resume({ inModal = false }) {
 
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
-      {/* Toolbar inside the resume (modal-friendly) */}
+      {/* Toolbar */}
       <div className="resume-toolbar no-print">
         <button className="pill pill-sm" onClick={downloadPdf}>Download PDF</button>
-        {/* Direct download link removed as requested */}
       </div>
 
-      {/* Content captured for PDF */}
-      <article ref={resumeRef}>
+      {/* The sheet we capture for the PDF */}
+      <article ref={sheetRef} className="resume-sheet">
         <header className="resume-header">
           <h1 className="name">Troy Oubre</h1>
           <div className="meta">
@@ -66,9 +79,10 @@ export default function Resume({ inModal = false }) {
         <section>
           <h2>Professional Summary</h2>
           <p>
-            Operations Controller with 15+ years of experience driving financial control, job costing, inventory accountability,
-            and cross-functional execution. Recently completed a full-stack engineering program and built production-style apps
-            (React, Node/Express, serverless PWA, React Native, Angular). Known for clear reporting, process rigor, and hands-on delivery.
+            Operations Controller with 15+ years of experience driving financial control, job costing, inventory
+            accountability, and cross-functional execution. Recently completed a full-stack engineering program and
+            built production-style apps (React, Node/Express, serverless PWA, React Native, Angular). Known for clear
+            reporting, process rigor, and hands-on delivery.
           </p>
         </section>
 
@@ -77,8 +91,10 @@ export default function Resume({ inModal = false }) {
           <ul className="cols">
             <li>Operations & Financial Control</li>
             <li>Budgeting & Forecasting</li>
-            <li>Project Accounting & Job Costing</li>
+            <li>Cost Analysis & Reporting</li>
             <li>KPI Development & Dashboards</li>
+            <li>Project Accounting & Job Costing</li>
+            <li>Strategic Planning & Execution</li>
             <li>Inventory & Asset Management</li>
             <li>Intercompany Accounting</li>
             <li>Internal Controls & Compliance</li>
@@ -91,6 +107,7 @@ export default function Resume({ inModal = false }) {
         <section>
           <h2>Experience</h2>
 
+          {/* BrandSafway — Operations Controller */}
           <div className="role">
             <div className="role-head">
               <h3>Operations Controller</h3>
@@ -100,14 +117,17 @@ export default function Resume({ inModal = false }) {
               </div>
             </div>
             <ul>
-              <li>Own divisional budgeting, forecasting, and monthly close; standardize KPI cadence for leadership.</li>
-              <li>Lead job-cost reviews with project managers and estimators; tighten margin controls and variance tracking.</li>
-              <li>Prepare journals, accruals, capex tracking, and intercompany reconciliations to close on schedule.</li>
-              <li>Design reports/dashboards surfacing trends and project health to stakeholders.</li>
-              <li>Oversee system rollouts (timekeeping, job tracking) and improve data integrity.</li>
+              <li>Oversee financial operations ($7M+), including budgeting, forecasting, and cost reporting.</li>
+              <li>Perform monthly/quarterly balance-sheet reviews and variance analyses across operational accounts.</li>
+              <li>Partner with leadership on branch/region performance reviews; identify gaps and corrective actions.</li>
+              <li>Lead job-cost reviews and margin controls with project managers and estimators.</li>
+              <li>Own month-end close: journals, accruals, capex tracking, and intercompany accounting.</li>
+              <li>Deliver KPI dashboards and reports; support bid prep and exec presentations.</li>
+              <li>Oversee timekeeping/job-tracking system integrity; validate POs and vendor invoices.</li>
             </ul>
           </div>
 
+          {/* BrandSafway — Division Resource Manager / Office Manager */}
           <div className="role">
             <div className="role-head">
               <h3>Division Resource Manager / Office Manager</h3>
@@ -117,26 +137,90 @@ export default function Resume({ inModal = false }) {
               </div>
             </div>
             <ul>
-              <li>Directed divisional billing, procurement, and resource allocation while improving visibility.</li>
-              <li>Administered inventory controls for assets valued between $30M–$100M.</li>
+              <li>Directed divisional billing, procurement, and resource allocation.</li>
+              <li>Built reporting tools improving visibility to project and operational performance.</li>
+              <li>Administered inventory controls for $30M–$100M in assets.</li>
               <li>Supervised a multi-functional team; standardized processes across departments.</li>
+              <li>Negotiated supplier agreements and optimized purchasing terms.</li>
             </ul>
           </div>
 
-          {/* Add remaining roles as needed */}
+          {/* Brand Energy & Infrastructure Services — Division Resource Manager */}
+          <div className="role">
+            <div className="role-head">
+              <h3>Division Resource Manager</h3>
+              <div className="right">
+                <div>Brand Energy & Infrastructure Services — LaPlace, LA</div>
+                <div>2015 – 2018</div>
+              </div>
+            </div>
+            <ul>
+              <li>Directed inventory & logistics across multiple sites; managed $50M+ in assets.</li>
+              <li>Led a 10–20 person team, improving efficiency, planning, and on-time delivery.</li>
+              <li>Evaluated vendor contracts and drove cost-reduction initiatives.</li>
+            </ul>
+          </div>
+
+          {/* Environmental Health & Safety Specialist */}
+          <div className="role">
+            <div className="role-head">
+              <h3>Environmental Health & Safety Specialist</h3>
+              <div className="right">
+                <div>Brand (various sites)</div>
+                <div>2011 – 2015</div>
+              </div>
+            </div>
+            <ul>
+              <li>Coordinated regulatory compliance and safety audits; contributed to zero reportable incidents.</li>
+              <li>Produced RCI reports; advised on root-cause analysis and risk mitigation.</li>
+              <li>Monitored EHS metrics and recommended site-wide improvements.</li>
+            </ul>
+          </div>
+
+          {/* Sci-Net — Field Supervisor */}
+          <div className="role">
+            <div className="role-head">
+              <h3>Field Supervisor</h3>
+              <div className="right">
+                <div>Sci-Net, LLC — Baton Rouge, LA</div>
+                <div>Jun 2007 – Jul 2010</div>
+              </div>
+            </div>
+            <ul>
+              <li>Managed field operations and accurate inventory allocation/reporting.</li>
+              <li>Conducted performance reviews; maintained customer satisfaction and support.</li>
+              <li>Maintained infrastructure (DB/server performance and uptime).</li>
+            </ul>
+          </div>
+
+          {/* Cox — Systems Support Specialist II */}
+          <div className="role">
+            <div className="role-head">
+              <h3>Systems Support Specialist II</h3>
+              <div className="right">
+                <div>Cox Communications — Baton Rouge, LA</div>
+                <div>Jun 2001 – Jul 2007</div>
+              </div>
+            </div>
+            <ul>
+              <li>Built help-desk operations for VOIP/HSI; implemented escalation/resolution protocols.</li>
+              <li>Provided troubleshooting, ticket analysis, and user training.</li>
+              <li>Contributed to Unisys development efforts with end-user insights.</li>
+            </ul>
+          </div>
         </section>
 
         <section>
           <h2>Education & Certifications</h2>
           <ul className="flat">
-            <li><strong>Associate of Science, Computer Information Systems</strong> — ITI Technical College, Baton Rouge, LA</li>
-            <li><strong>Associate of Science, Computer Information Systems</strong> — Remington College, Baton Rouge, LA</li>
+            <li><strong>Associate of Science, Computer Information Systems</strong> — ITI Technical College (Baton Rouge, LA)</li>
+            <li><strong>Associate of Science, Computer Information Systems</strong> — Remington College (Baton Rouge, LA)</li>
           </ul>
-          <p className="muted">Certs: CSST, CSS, NCCER Safety, OSHA-10 & OSHA-30, First Aid/CPR (Alliance Safety Council)</p>
+          <p className="muted">
+            CSST • CSS • NCCER Safety • OSHA-10 & OSHA-30 • First Aid/CPR (Alliance Safety Council)
+          </p>
         </section>
       </article>
     </div>
   )
 }
-
-      

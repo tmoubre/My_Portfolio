@@ -1,101 +1,84 @@
-/* Print-friendly A4 page */
-.resume-page.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
+/* Container in the modal */
+.resume-root {}
+
+.resume-in-modal {
+    max-width: 860px;
 }
 
+/* Top toolbar inside the modal */
 .resume-toolbar {
     display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
 }
 
-@media print {
-    .no-print {
-        display: none !important;
-    }
+/* The sheet we capture to PDF */
+.resume-sheet {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid rgba(148, 163, 184, .25);
+    border-radius: 10px;
+    padding: 18px 24px;
+    /* visual inner margin */
+    max-width: 780px;
+    /* keeps readable line length */
+    margin: 0 auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-.resume-root {
-    --fg: #0e1420;
-    --muted: #5b6b7b;
-    background: #fff;
-    color: var(--fg);
-    border-radius: 14px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, .08);
-    padding: 28px 36px;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-}
-
-.resume-header {
-    border-bottom: 2px solid #e9eef5;
-    padding-bottom: 6px;
-    margin-bottom: 16px;
-}
-
+/* Header */
 .resume-header .name {
-    font-size: 28px;
-    margin: 0 0 6px 0;
+    margin: 0 0 6px;
+    font-size: 32px;
+    line-height: 1.1;
 }
 
 .resume-header .meta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    color: var(--muted);
+    color: #334155;
     font-size: 14px;
 }
 
-.resume-root h2 {
+.resume-header .meta a {
+    color: #2563eb;
+}
+
+/* Section titles */
+.resume-sheet h2 {
     font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    color: #2c3e50;
-    margin-top: 18px;
-    margin-bottom: 8px;
+    letter-spacing: .06em;
+    color: #0f172a;
+    margin: 18px 0 10px;
+    border-top: 4px solid #e5e7eb;
+    padding-top: 14px;
 }
 
-.resume-root p {
-    margin: 6px 0 10px;
-    font-size: 14px;
-}
-
-.resume-root .muted {
-    color: var(--muted);
-}
-
+/* Two-column list for strengths */
 .cols {
     columns: 2;
-    padding-left: 18px;
+    column-gap: 28px;
     margin: 0;
+    padding-left: 1rem;
 }
 
 .cols li {
     break-inside: avoid;
-    margin: 2px 0;
-    font-size: 14px;
+    margin: 4px 0;
 }
 
-.flat {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.flat li {
-    margin: 2px 0 6px;
-}
-
+/* Role blocks */
 .role {
-    margin-top: 16px;
+    margin-top: 14px;
 }
 
 .role-head {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .role-head h3 {
@@ -104,36 +87,42 @@
 }
 
 .role-head .right {
-    text-align: right;
+    color: #334155;
     font-size: 13px;
-    color: var(--muted);
 }
 
 .role ul {
-    margin: 6px 0 8px 18px;
+    margin: 8px 0 0 1rem;
 }
 
 .role li {
     margin: 4px 0;
-    font-size: 14px;
 }
 
-@media (max-width: 640px) {
-    .cols {
-        columns: 1;
+/* Flat list for education */
+.flat {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.muted {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Printing directly from browser */
+@media print {
+    @page {
+        size: A4;
+        margin: 0.5in;
     }
 
-    .role-head {
-        flex-direction: column;
-        align-items: flex-start;
+    .no-print {
+        display: none !important;
     }
 
-    .role-head .right {
-        text-align: left;
+    .resume-sheet {
+        box-shadow: none;
+        border: none;
     }
-
-    .resume-in-modal {
-        max-width: 800px;
-    }
-
 }
