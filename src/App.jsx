@@ -8,7 +8,7 @@ import projects from './data/projects.js'
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 // TODO: replace with your real LinkedIn profile URL:
-const LINKEDIN = 'https://www.linkedin.com/in/your-link'
+const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
 
 // Contact endpoint: Netlify Function in prod, Formspree direct in dev
@@ -168,13 +168,13 @@ export default function App() {
 
       {/* Footer */}
       <footer className="footer container">
-        <div style={{display:'flex', gap:12, alignItems:'center', justifyContent:'space-between', flexWrap:'wrap'}}>
-          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
-          <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
-            Download Resume
-          </a>
-        </div>
-      </footer>
+  <div className="footer-actions">
+    <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+    <a className="modal-secondary btn-sm" href={RESUME_PDF} download>
+      Download Resume
+    </a>
+  </div>
+</footer>
 
       {/* Modals */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
