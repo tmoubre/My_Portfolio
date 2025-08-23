@@ -90,7 +90,7 @@ export default function App() {
       {/* Header */}
       <header className="nav">
         <div className="container">
-          <div className="brand">Troy</div>
+          <div className="brand">Troy Oubre</div>
           <nav>
             {/* All nav items share the same style */}
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>

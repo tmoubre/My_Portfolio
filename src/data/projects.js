@@ -3,7 +3,7 @@ const projects = [
   {
     title: "Responsive Portfolio Website",
     description:
-      "A multi‑page, responsive website (Home, About, Work, Contact) that showcases my projects and makes it easy to get in touch. Built with semantic HTML and accessible CSS so it looks good and works well on any device.",
+      "A multi‑page, responsive website (Home, About, Work, Contact) that showcases my projects and makes it easy to get in touch. Built with semantic HTML and accessible CSS so it looks good and works well on any device. Tjhis was just an exercise not a complete project.",
     stack: ["HTML", "CSS"],
     links: {
       live: "https://tmoubre.github.io/Porfolio-WebSite/",
