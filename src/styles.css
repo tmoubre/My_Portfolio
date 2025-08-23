@@ -54,8 +54,9 @@ a {
 }
 
 .brand {
-  font-weight: 1000;
-  letter-spacing: .3px
+  font-weight: 600;
+  letter-spacing: .3px;
+  font-size: 25px;
 }
 
 .pill {
