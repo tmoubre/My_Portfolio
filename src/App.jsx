@@ -273,6 +273,6 @@ export default function App() {
       >
         {toast.msg}
       </div>
-    </div>  {/* <-- close the outer wrapper div */};
+    </div> 
   )
 }
