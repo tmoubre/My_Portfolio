@@ -224,8 +224,8 @@ export default function App() {
             <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
             <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>X (PDF)</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Medium (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={X} download>X (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} download>Medium (PDF)</a>
           </div>
         </section>
       </main>
