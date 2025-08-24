@@ -7,7 +7,7 @@ export default function Resume({ inModal = false }) {
   return (
     <div className={`resume-root ${inModal ? 'resume-in-modal' : ''}`} aria-label="Resume">
       {/* Toolbar (no printing/conversion — just a real file link) */}
-      <div className="resume-toolbar no-print">
+      <div className="modal-secondary">
         {/* Direct download (most browsers will download; some may open in a tab) */}
         <a className="pill" href={PDF_PATH} download>
           Download PDF
