@@ -285,6 +285,7 @@ const goToProjects = () => {
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
             <a className='modal-secondary btn-sm' role="listitem" href={X} target="_blank" rel="noreferrer">X</a>
             <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} target="_blank" rel="noreferrer">Medium</a>
+            
           </div>
         </section>
       </main>
