@@ -86,6 +86,17 @@ const toastTimerRef = useRef(null)
     return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) }
   }, [])
 
+  const goToBoards = () => {
+  const el = document.getElementById('boards')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    // update the URL hash for shareability/back button
+    if (typeof history !== 'undefined') history.replaceState(null, '', '#boards')
+    // accessibility: move focus to the section without re-scrolling
+    setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300)
+  }
+}
+
   const openFormModal = () => setIsFormOpen(true)
   const closeFormModal = () => {
     setIsFormOpen(false)
@@ -165,7 +176,10 @@ const toastTimerRef = useRef(null)
           </div>
           <nav>
             {/* Use <a> for section jump so sizing matches buttons after CSS normalizer */}
-            <button className="modal-secondary btn-sm" href="#boards">Trello Boards</button>
+            <button
+              type="button"className="modal-secondary btn-sm"onClick={goToBoards}>
+              Trello Boards
+            </button>
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
@@ -223,7 +237,7 @@ const toastTimerRef = useRef(null)
         </section>
 
         {/* Process & Trello Boards */}
-        <section id="boards" className="card">
+        <section id="boards" className="card" tabIndex={-1}>
           <h2>Process & Trello Boards</h2>
           <p className="muted">
             I used Trello during the program to familiarize myself with Kanban and simple workflow tracking. Because
