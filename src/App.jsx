@@ -129,6 +129,7 @@ export default function App() {
           </div>
           <nav>
             {/* All nav items share the same style */}
+            <a className="modal-secondary btn-sm" href="#boards">Trello Boards</a>
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
