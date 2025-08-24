@@ -19,8 +19,7 @@ html {
 body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background:
-    radial-gradient(1000px 600px at 80% -10%, rgba(34, 211, 238, .15), transparent),
+  background: radial-gradient(1000px 600px at 80% -10%, rgba(34, 211, 238, .15), transparent),
     radial-gradient(900px 500px at 10% -20%, rgba(14, 165, 233, .12), transparent),
     var(--bg);
   color: var(--text);
@@ -38,24 +37,22 @@ a {
   padding: 0 20px
 }
 
-/* NAV / HEADER */
 .nav {
   position: sticky;
   top: 0;
   backdrop-filter: saturate(180%) blur(8px);
   background: rgba(11, 18, 32, .6);
   border-bottom: 1px solid rgba(148, 163, 184, .15);
-  z-index: 10;
+  z-index: 10
 }
 
 .nav .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 14px 0
 }
 
-/* Brand (name + phone) */
 .brand {
   display: flex;
   flex-direction: column;
@@ -65,6 +62,7 @@ a {
 .brand-name {
   font-weight: 700;
   letter-spacing: .3px;
+  font-size: 26px;
 }
 
 .brand-phone {
@@ -74,6 +72,7 @@ a {
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
+  /* keeps it on one line */
 }
 
 .brand-phone:hover,
@@ -82,39 +81,41 @@ a {
   text-decoration: underline;
 }
 
-/* Buttons */
 .pill {
+  /* layout */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   vertical-align: middle;
 
+  /* consistent sizing */
   min-height: 40px;
+  /* fixed height for both */
   padding: 0 14px;
+  /* horizontal padding only */
   border-radius: 999px;
 
+  /* text */
   font: 600 0.95rem/1 inherit;
+  /* same font + line-height on both elements */
   white-space: nowrap;
   text-decoration: none;
 
+  /* visuals */
   color: #001018;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   border: none;
 
+  /* remove native button styles */
   appearance: none;
   -webkit-appearance: none;
 }
 
+/* ensure link color doesn't change on :visited */
 a.pill:link,
 a.pill:visited {
   color: #001018;
-}
-
-.btn-sm {
-  min-height: 34px;
-  padding: 0 12px;
-  font-size: 0.9rem;
 }
 
 .pill:focus-visible {
@@ -122,7 +123,6 @@ a.pill:visited {
   outline-offset: 3px
 }
 
-/* HERO */
 .hero {
   padding: 80px 0 40px
 }
@@ -130,7 +130,7 @@ a.pill:visited {
 .hero-wrap {
   display: grid;
   grid-template-columns: 1.2fr .8fr;
-  gap: 32px;
+  gap: 32px
 }
 
 .title {
@@ -163,12 +163,11 @@ a.pill:visited {
   font-size: 14px
 }
 
-/* CARDS / GRID */
 .card {
   background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .005));
   border: 1px solid rgba(148, 163, 184, .15);
   border-radius: 14px;
-  padding: 18px;
+  padding: 18px
 }
 
 .grid {
@@ -229,13 +228,11 @@ h2 {
   gap: 18px
 }
 
-/* FOOTER */
 .footer {
   padding: 40px 0 70px;
   color: var(--muted)
 }
 
-/* CONTACT SECTION */
 .contact {
   display: flex;
   gap: 10px;
@@ -245,24 +242,9 @@ h2 {
 .contact a {
   border: 1px solid rgba(148, 163, 184, .25);
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 10px
 }
 
-.contact button {
-  border: 1px solid rgba(148, 163, 184, .25);
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.contact button:hover {
-  border-color: var(--accent);
-  color: var(--accent)
-}
-
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .hero-wrap {
     grid-template-columns: 1fr
@@ -283,12 +265,28 @@ h2 {
   }
 }
 
+.contact button {
+  border: 1px solid rgba(148, 163, 184, .25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.contact button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(2, 6, 23, .3);
+  /* lighter */
   backdrop-filter: blur(4px);
+  /* adds frosted glass effect */
   display: grid;
   place-items: center;
   padding: 20px;
@@ -351,6 +349,14 @@ h2 {
   color: var(--accent)
 }
 
+/* trap focus helper (clicking outside closes via X; this hidden button is for keyboard flow) */
+.modal-sr-exit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip: rect(0, 0, 0, 0)
+}
+
 /* Form inputs inside modal */
 .modal input[type="text"],
 .modal input[type="email"],
@@ -370,15 +376,6 @@ h2 {
   margin-top: 6px
 }
 
-/* trap focus helper (hidden) */
-.modal-sr-exit {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  clip: rect(0, 0, 0, 0)
-}
-
-/* Skip link */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -392,42 +389,30 @@ h2 {
 .skip-link:focus {
   left: 12px;
   top: 12px;
-  z-index: 10000
+  z-index: 10000;
 }
 
-/* Toast */
-.toast {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 1000;
+/* ---- Contact buttons: ensure they behave like the others ---- */
+.contact a.modal-secondary,
+.contact button.modal-secondary {
+  /* keep your existing sizing/shape to avoid layout changes */
+  padding: 10px 12px;
+  border-radius: 10px;
 
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  color: #001018;
+  /* force the shared visual style to win over `.contact a/button` */
+  background: transparent;
   border: 1px solid rgba(148, 163, 184, .25);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-
-  padding: 10px 14px;
-  font-weight: 600;
-
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .2s ease, transform .2s ease;
+  color: var(--text);
 }
 
-.toast.show {
-  opacity: 1;
-  transform: translateY(0)
+.contact a.modal-secondary:hover,
+.contact button.modal-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-.toast.error {
-  background: #ef4444;
-  color: #fff
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .toast {
-    transition: none;
-  }
+.contact a.modal-secondary:focus-visible,
+.contact button.modal-secondary:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
 }
