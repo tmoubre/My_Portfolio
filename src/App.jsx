@@ -1,111 +1,88 @@
-import React, { useState, useEffect } from 'react'
-import ProjectCard from './components/ProjectCard.jsx'
-import Modal from './components/Modal.jsx'
-import Resume from './components/Resume.jsx'
-import projects from './data/projects.js'
-
-// ======== YOUR PERSONAL LINKS ========
-const EMAIL = 'oubre1@att.net'
-const GITHUB = 'https://github.com/tmoubre'
-// TODO: replace with your real LinkedIn profile URL:
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
-const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
-
-// Contact endpoint: Netlify Function in prod, Formspree direct in dev
-const CONTACT_URL = import.meta.env.PROD
-  ? '/.netlify/functions/contact'
-  : 'https://formspree.io/f/xblkvnzg'
+import React, { useState, useRef, useEffect } from "react";
+import "./styles.css";
+import Modal from "./components/Modal.jsx";
+import Resume from "./components/Resume.jsx"; // keep your existing Resume component
+import projects from "./data/projects";
 
 export default function App() {
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [isChoiceOpen, setIsChoiceOpen] = useState(false)
-  const [isResumeOpen, setIsResumeOpen] = useState(false)
-  const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
+  // --- Modals ---
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  const openFormModal = () => setIsContactOpen(true);
+  const closeFormModal = () => setIsContactOpen(false);
+
+  const openResumeModal = () => setIsResumeOpen(true);
+  const closeResumeModal = () => setIsResumeOpen(false);
+
+  // --- Toast ---
+  const [toast, setToast] = useState({ message: "", type: "success", visible: false });
+  const toastTimerRef = useRef(null);
+
+  const showToast = (message, type = "success", duration = 3500) => {
+    setToast({ message, type, visible: true });
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToast((t) => ({ ...t, visible: false }));
+    }, duration);
+  };
 
   useEffect(() => {
-    if (window.location.hash === '#contact') setIsFormOpen(true)
-  }, [])
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
 
-  const openFormModal = () => setIsFormOpen(true)
-  const closeFormModal = () => {
-    setIsFormOpen(false)
-    setFormStatus({ state: 'idle', msg: '' })
-  }
-
-  const openChoiceModal = () => setIsChoiceOpen(true)
-  const closeChoiceModal = () => setIsChoiceOpen(false)
-
-  const openResumeModal = () => setIsResumeOpen(true)
-  const closeResumeModal = () => setIsResumeOpen(false)
-
-  const handleEmailClient = () => {
-    window.location.href = `mailto:${EMAIL}`
-    closeChoiceModal()
-  }
-  const handleUseForm = () => {
-    closeChoiceModal()
-    openFormModal()
-  }
-
-  // Submit via Netlify Function (prod) or Formspree (dev)
-  const handleFormSubmit = async (e) => {
-    e.preventDefault()
-    setFormStatus({ state: 'sending', msg: '' })
+  // --- Contact submit handler (Formspree) ---
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
     try {
-      const form = e.currentTarget
-      const data = Object.fromEntries(new FormData(form).entries())
+      const res = await fetch("https://formspree.io/f/xblkvnzg", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
 
-      const res = await fetch(CONTACT_URL, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!res.ok) {
-        let msg = 'Something went wrong. Please try again or email me directly.'
-        try {
-          const json = await res.json()
-          if (json?.errors?.length) msg = json.errors.map(er => er.message).join(', ')
-        } catch {}
-        setFormStatus({ state: 'error', msg })
-        return
+      if (res.ok) {
+        form.reset();
+        closeFormModal();
+        showToast("Thanks! Your message was sent.", "success", 3500);
+      } else {
+        showToast("Something went wrong. Please email me directly.", "error", 5000);
       }
-
-      setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-      form.reset()
     } catch {
-      setFormStatus({
-        state: 'error',
-        msg: 'Network error. Please try again or email me directly.',
-      })
+      showToast("Network error. Please email me directly.", "error", 5000);
     }
-  }
+  };
 
   return (
-    <div>
-      {/* Header */}
+    <>
+      {/* Accessibility skip link */}
+      <a className="skip-link" href="#content">Skip to content</a>
+
+      {/* Header / Nav */}
       <header className="nav">
         <div className="container">
           <div className="brand">
-          <div className="brand-name">Troy Michael Oubre</div>
-          <a
-            className="brand-phone"
-            href="tel:+15047150645"
-            aria-label="Call Troy at 504 715 0645"
-          >
-            (504) 715-0645
-          </a>
-        </div>
+            <div className="brand-name">Troy Michael Oubre</div>
+            <a
+              className="brand-phone"
+              href="tel:+15047150645"
+              aria-label="Call Troy at 504 715 0645"
+            >
+              (504) 715-0645
+            </a>
+          </div>
+
           <nav>
-            {/* All nav items share the same style */}
-            <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
+            {/* Make both buttons identical styling */}
+            <button type="button" className="pill btn-sm" onClick={openResumeModal}>
               Resume
             </button>
-            <button className="modal-secondary btn-sm" type="button" onClick={openFormModal}>
+            <button className="pill btn-sm" type="button" onClick={openFormModal}>
               Get in touch
             </button>
           </nav>
@@ -113,133 +90,127 @@ export default function App() {
       </header>
 
       {/* Main */}
-      <main className="container">
+      <main id="content">
         {/* Hero */}
-        <section className="hero" id="home">
-          <div className="hero-wrap">
+        <section className="hero">
+          <div className="container hero-wrap">
             <div>
-              <h1 className="title">Operations Controller ➜ Full-Stack Developer</h1>
+              <h1 className="title">Operations Controller & Full-Stack Developer</h1>
               <p className="subtitle">
-                Graduate of a full-stack immersion building seven production-style apps: a responsive portfolio,
-                a JavaScript API app, a Node/Express REST API with MongoDB, a React SPA, a serverless PWA
-                built with a test-driven approach, a React Native chat app, and an Angular client.
+                I streamline operations with clean data, clear reporting, and production-quality apps.
               </p>
-              <div className="tags" aria-label="Skills">
+
+              <div className="tags">
                 <span className="tag">React</span>
                 <span className="tag">Node/Express</span>
                 <span className="tag">MongoDB</span>
-                <span className="tag">React Native</span>
-                <span className="tag">Angular (basics)</span>
-                <span className="tag">Testing (Jest/RTL/Cucumber)</span>
+                <span className="tag">Angular</span>
+                <span className="tag">Serverless</span>
               </div>
-              <a className="pill" href="#projects" aria-label="Skip to projects">View projects ↓</a>
-            </div>
 
-            <div className="card" aria-label="About Troy">
-              <h2>About</h2>
-              <p>
-                I’m Troy, an Ops Controller transitioning into software engineering. Through a hands-on full-stack
-                program, I practiced accessible UI, API design, authentication, routing &amp; state management,
-                data visualization, offline-first PWAs, and mobile development. I like clear interfaces, reliable
-                tests, and maintainable backends.
-              </p>
-              <p className="muted">Open to junior full-stack / frontend roles (remote-friendly).</p>
+              <div className="actions">
+                <a className="pill" href="/Troy-Oubre-Resume.pdf?v=1" target="_blank" rel="noopener">
+                  Download CV
+                </a>
+                <button className="pill" type="button" onClick={openFormModal}>
+                  Get in touch
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Projects */}
-        <section id="projects">
-          <h2>Projects</h2>
-          <div className="grid" role="list">
-            {projects.map((p) => (
-              <ProjectCard key={p.title} {...p} />
-            ))}
+        <section>
+          <div className="container">
+            <h2>Projects</h2>
+            <div className="grid">
+              {projects.map((p, idx) => (
+                <article key={idx} className="card project">
+                  <div className="proj-title">
+                    <h3>{p.title}</h3>
+                    <div className="proj-links">
+                      {p.links.github && (
+                        <a href={p.links.github} target="_blank" rel="noopener">GitHub</a>
+                      )}
+                      {/* Live/demo buttons get the simple bordered look, not pill */}
+                      {p.links.live && (
+                        <a href={p.links.live} target="_blank" rel="noopener">Live</a>
+                      )}
+                      {p.links.demo && (
+                        <a href={p.links.demo} target="_blank" rel="noopener">Demo</a>
+                      )}
+                    </div>
+                  </div>
+                  <p className="proj-desc">{p.description}</p>
+                  <div className="tags">
+                    {p.stack.map((t) => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Contact */}
-        <section id="contact" className="card">
-          <h2>Contact</h2>
-          <p className="muted">Prefer email or LinkedIn, or use the “Get in touch” button to open the form.</p>
-
-          <div className="contact" role="list" style={{ marginTop: '6px' }}>
-            <button type="button" onClick={openChoiceModal}>Email Me</button>
-            <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
+        {/* Contact section (footer links) */}
+        <section>
+          <div className="container">
+            <h2>Contact</h2>
+            <p className="muted">Prefer email? Or message me right here.</p>
+            <div className="contact">
+              <a href="mailto:oubre1@att.net">Email</a>
+              <a href="https://www.linkedin.com/in/troy-oubre/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://github.com/tmoubre" target="_blank" rel="noopener">GitHub</a>
+              <a href="/Troy-Oubre-Resume.pdf?v=1" target="_blank" rel="noopener">Resume (PDF)</a>
+              <button type="button" onClick={openFormModal}>Open form</button>
+            </div>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="footer">
+          <div className="container">
+            <div className="muted">© {new Date().getFullYear()} Troy Oubre</div>
+          </div>
+        </footer>
       </main>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container footer-actions">
-          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+      {/* Contact Modal */}
+      <Modal open={isContactOpen} onClose={closeFormModal} title="Get in touch">
+        <form onSubmit={handleContactSubmit} noValidate>
+          <label htmlFor="name">Name</label>
+          <input id="name" name="name" type="text" required placeholder="Your name" />
 
-          <div className="actions">
-            <button
-              type="button"
-              className="modal-secondary btn-sm"
-              onClick={openResumeModal}
-            >
-              Resume
-            </button>
+          <label htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" />
 
-            <button
-              className="modal-secondary btn-sm"
-              type="button"
-              onClick={openFormModal}
-            >
-              Get in touch
-            </button>
+          <label htmlFor="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Tell me a bit about your project…" />
+
+          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+            <button className="pill" type="submit">Send message</button>
+            <button className="modal-secondary" type="button" onClick={closeFormModal}>Cancel</button>
           </div>
-        </div>
-      </footer>
-
-
-      {/* Modals */}
-      <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
-        <form onSubmit={handleFormSubmit}>
-          <label htmlFor="name">Your Name:</label>
-          <input id="name" type="text" name="name" required />
-
-          <label htmlFor="email" style={{ marginTop: 10 }}>Your Email:</label>
-          <input id="email" type="email" name="email" required />
-
-          <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
-          <textarea id="message" name="message" rows="5" required />
-
-          {/* honeypot */}
-          <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
-
-          <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
-            <button type="submit" className="pill" disabled={formStatus.state === 'sending'}>
-              {formStatus.state === 'sending' ? 'Sending…' : 'Send Message'}
-            </button>
-            <button type="button" className="modal-secondary" onClick={closeFormModal}>Cancel</button>
-          </div>
-
-          {formStatus.state !== 'idle' && (
-            <p className="muted" style={{ marginTop: 10 }}>{formStatus.msg}</p>
-          )}
         </form>
       </Modal>
 
-      <Modal isOpen={isChoiceOpen} onClose={closeChoiceModal} title="Contact options">
-        <p className="muted" style={{ marginBottom: 14 }}>How would you like to get in touch?</p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button type="button" className="pill" onClick={handleEmailClient}>Open Email Client</button>
-          <button type="button" className="modal-secondary" onClick={handleUseForm}>Use Contact Form</button>
-        </div>
+      {/* Resume Modal (uses your existing component) */}
+      <Modal open={isResumeOpen} onClose={closeResumeModal} title="Resume">
+        {/* In your Resume.jsx, the toolbar has "Download PDF" and "Open PDF" */}
+        <Resume inModal />
       </Modal>
 
-      {/* Resume in a modal with side gutters */}
-      <Modal isOpen={isResumeOpen} onClose={closeResumeModal} title="Resume">
-        <div style={{ maxHeight: '70vh', overflow: 'auto', padding: '0 16px' }}>
-          <Resume inModal />
-        </div>
-      </Modal>
-    </div>
-  )
+      {/* Toast */}
+      <div
+        className={`toast ${toast.visible ? "show" : ""} ${toast.type}`}
+        role="status"
+        aria-live="polite"
+      >
+        {toast.message}
+      </div>
+    </>
+  );
 }
+
