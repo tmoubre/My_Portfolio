@@ -90,7 +90,16 @@ export default function App() {
       {/* Header */}
       <header className="nav">
         <div className="container">
-          <div className="brand">Troy Michael Oubre</div>
+          <div className="brand">
+          <div className="brand-name">Troy Michael Oubre</div>
+          <a
+            className="brand-phone"
+            href="tel:+15047150645"
+            aria-label="Call Troy at 504 715 0645"
+          >
+            (504) 715-0645
+          </a>
+        </div>
           <nav>
             {/* All nav items share the same style */}
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
@@ -165,28 +174,28 @@ export default function App() {
 
       {/* Footer */}
       <footer className="footer">
-  <div className="container footer-actions">
-    <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+        <div className="container footer-actions">
+          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
 
-    <div className="actions">
-      <button
-        type="button"
-        className="modal-secondary btn-sm"
-        onClick={openResumeModal}
-      >
-        Resume
-      </button>
+          <div className="actions">
+            <button
+              type="button"
+              className="modal-secondary btn-sm"
+              onClick={openResumeModal}
+            >
+              Resume
+            </button>
 
-      <button
-        className="modal-secondary btn-sm"
-        type="button"
-        onClick={openFormModal}
-      >
-        Get in touch
-      </button>
-    </div>
-  </div>
-</footer>
+            <button
+              className="modal-secondary btn-sm"
+              type="button"
+              onClick={openFormModal}
+            >
+              Get in touch
+            </button>
+          </div>
+        </div>
+      </footer>
 
 
       {/* Modals */}
