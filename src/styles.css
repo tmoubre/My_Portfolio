@@ -453,3 +453,9 @@ h2 {
     transition: none;
   }
 }
+
+.proj-links a:hover,
+.proj-links a:focus {
+  border-color: var(--accent);
+  color: var(--accent);
+}

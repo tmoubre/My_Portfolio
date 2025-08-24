@@ -196,7 +196,7 @@ export default function App() {
 
           <div className="grid" role="list" style={{ marginTop: 10 }}>
             {TRELLO_BOARDS.map((b) => (
-              <article key={b.title} className="card" role="listitem">
+              <article key={b.title} className="card project" role="listitem"> {/* <-- add project */}
                 <div className="proj-title">
                   <h3>{b.title}</h3>
                   <div className="proj-links">
