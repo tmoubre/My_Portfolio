@@ -223,7 +223,6 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume</a>
             <a className='modal-secondary btn-sm' role="listitem" href={X} download>X</a>
             <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} download>Medium</a>
           </div>
