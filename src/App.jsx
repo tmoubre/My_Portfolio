@@ -280,12 +280,11 @@ const goToProjects = () => {
           <p className="muted">Use the “Get in touch” button to contact me.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
-            <button className='modal-secondary btn-sm' type="button" onClick={openChoiceModal}>Email Me</button>
-            <a className='contact' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
+            <button className='contact button' type="button" onClick={openChoiceModal}>Email Me</button>
+            <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
             <a className='modal-secondary btn-sm' role="listitem" href={X} target="_blank" rel="noreferrer">X</a>
             <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} target="_blank" rel="noreferrer">Medium</a>
-            
           </div>
         </section>
       </main>
