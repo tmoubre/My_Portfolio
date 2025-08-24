@@ -90,6 +90,7 @@ export default function App() {
       setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
       form.reset()
       closeFormModal()
+      console.log('[contact] submit OK — showing toast')
       showToast('Thanks! Your message was sent.', 'success', 3500)
 
     } catch {
