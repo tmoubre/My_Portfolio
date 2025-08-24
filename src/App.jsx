@@ -9,6 +9,8 @@ const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
+const MEDIUM = 'https://https://medium.com/@scinetbr'
+const X = 'https://x.com/troydevelops'
 
 // Trello boards to show
 const TRELLO_BOARDS = [
@@ -222,6 +224,8 @@ export default function App() {
             <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
             <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>X (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Medium (PDF)</a>
           </div>
         </section>
       </main>
