@@ -1,33 +1,36 @@
-// src/components/ProjectCard.jsx
-export default function ProjectCard({ title, description, stack = [], links = {} }) {
-  const { live, github, demo } = links
+//projectcard.jsx
+import React from 'react'
+
+export default function ProjectCard({ title, description, stack = [], links = {}, highlights = [] }) {
+  const { live, github, demo } = links || {}
+
   return (
-    <article className="card" role="listitem">
-      <h3>{title}</h3>
-      <p>{description}</p>
-      {stack.length > 0 && (
-        <p className="muted"><strong>Stack:</strong> {stack.join(', ')}</p>
+    <article className="card project" role="listitem">
+      <div className="proj-title">
+        <h3>{title}</h3>
+        <div className="proj-links">
+          {github && <a href={github} target="_blank" rel="noopener">GitHub</a>}
+          {live && <a href={live} target="_blank" rel="noopener">Live</a>}
+          {demo && <a href={demo} target="_blank" rel="noopener">Demo</a>}
+        </div>
+      </div>
+
+      <p className="proj-desc">{description}</p>
+
+      {Array.isArray(highlights) && highlights.length > 0 && (
+        <ul className="proj-bullets">
+          {highlights.slice(0, 2).map((h, i) => <li key={i}>{h}</li>)}
+        </ul>
       )}
 
-      <div className="actions">
-        {live && (
-          <a className="modal-secondary btn-sm" href={live} target="_blank" rel="noopener noreferrer">
-            Live
-          </a>
-        )}
-        {github && (
-          <a className="modal-secondary btn-sm" href={github} target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-        )}
-        {demo && (
-          <a className="modal-secondary btn-sm" href={demo} target="_blank" rel="noopener noreferrer">
-            Demo
-          </a>
-        )}
-      </div>
+      {Array.isArray(stack) && stack.length > 0 && (
+        <div className="tags" aria-label="Tech stack">
+          {stack.map(s => <span key={s} className="tag">{s}</span>)}
+        </div>
+      )}
     </article>
   )
 }
+
 
 

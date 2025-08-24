@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ProjectCard from './components/ProjectCard.jsx'
 import Modal from './components/Modal.jsx'
 import Resume from './components/Resume.jsx'
-import projects from './data/projects.js'
+import projects from './data/projects.js' // keep as-is if you're using it
 
 // ======== YOUR PERSONAL LINKS ========
 const EMAIL = 'oubre1@att.net'
@@ -11,6 +11,34 @@ const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
 const MEDIUM = 'https://medium.com/@scinetbr'
 const X = 'https://x.com/troydevelops'
+
+// ---- Impact bullets without touching your data file ----
+const PROJECT_HIGHLIGHTS = {
+  'Responsive Portfolio Website': [
+    'Semantic, accessible, mobile-first layout with modal contact form',
+    'Deployed (Netlify) with resume PDF and smooth in-page navigation',
+  ],
+  'myFlix — REST API (Backend)': [
+    'JWT auth, CRUD endpoints for movies/genres/directors, MongoDB persistence',
+    'CORS + input validation; documented routes for easy client integration',
+  ],
+  'myFlix — React Client (Frontend)': [
+    'Protected routes, favorites management, profile update',
+    'Responsive SPA with routing and search; deployed to Netlify',
+  ],
+  'Meet App — Serverless PWA': [
+    'Serverless auth flow with Google Calendar API; offline support',
+    'Data viz for city/genre; tested with TDD approach',
+  ],
+  'React Native Chat App (Expo)': [
+    'Image & location messages; offline sync with Firestore',
+    'Simple room experience built with Gifted Chat components',
+  ],
+  'myFlix — Angular Client': [
+    'Angular Material UI; login/registration and details views',
+    'Typed services and docs for handoff',
+  ],
+}
 
 // Trello boards to show
 const TRELLO_BOARDS = [
@@ -48,7 +76,7 @@ export default function App() {
 
   useEffect(() => {
     if (window.location.hash === '#contact') setIsFormOpen(true)
-    return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) } // cleanup timer
+    return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) }
   }, [])
 
   const openFormModal = () => setIsFormOpen(true)
@@ -100,7 +128,6 @@ export default function App() {
         return
       }
 
-      // Success: reset, close modal, and show toast
       setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
       form.reset()
       closeFormModal()
@@ -130,8 +157,8 @@ export default function App() {
             </a>
           </div>
           <nav>
-            {/* All nav items share the same style */}
-            <button className="modal-secondary btn-sm" href="#boards">Trello Boards</button>
+            {/* Use <a> for section jump so sizing matches buttons after CSS normalizer */}
+            <a className="modal-secondary btn-sm" href="#boards">Trello Boards</a>
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
@@ -183,7 +210,7 @@ export default function App() {
           <h2>Projects</h2>
           <div className="grid" role="list">
             {projects.map((p) => (
-              <ProjectCard key={p.title} {...p} />
+              <ProjectCard key={p.title} {...p} highlights={PROJECT_HIGHLIGHTS[p.title]} />
             ))}
           </div>
         </section>
@@ -199,7 +226,7 @@ export default function App() {
 
           <div className="grid" role="list" style={{ marginTop: 10 }}>
             {TRELLO_BOARDS.map((b) => (
-              <article key={b.title} className="card project" role="listitem"> {/* <-- add project */}
+              <article key={b.title} className="card project" role="listitem">
                 <div className="proj-title">
                   <h3>{b.title}</h3>
                   <div className="proj-links">
@@ -223,8 +250,8 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={X} download>X</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} download>Medium</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={X} target="_blank" rel="noreferrer">X</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} target="_blank" rel="noreferrer">Medium</a>
           </div>
         </section>
       </main>
@@ -232,9 +259,12 @@ export default function App() {
       {/* Footer */}
       <footer className="footer">
         <div className="container footer-actions">
-          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
+          <small>
+            © {new Date().getFullYear()} Troy. Built with React + Vite. • Privacy: no trackers; the contact form sends via Formspree only.
+          </small>
 
           <div className="actions">
+            <a className="modal-secondary btn-sm" href="#boards">Trello Boards</a>
             <button
               type="button"
               className="modal-secondary btn-sm"
@@ -242,7 +272,6 @@ export default function App() {
             >
               Resume
             </button>
-
             <button
               className="modal-secondary btn-sm"
               type="button"
@@ -303,7 +332,6 @@ export default function App() {
         role="status"
         aria-live="polite"
         style={{
-          // inline fallback so it still shows even if CSS is missing
           position: 'fixed',
           right: 20,
           bottom: 20,
