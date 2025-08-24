@@ -7,7 +7,6 @@ import projects from './data/projects.js'
 // ======== YOUR PERSONAL LINKS ========
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
-// TODO: replace with your real LinkedIn profile URL:
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
 
@@ -22,8 +21,20 @@ export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
+  // --- Toast (NEW) ---
+  const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' })
+  const toastTimerRef = useRef(null)
+  const showToast = (message, type = 'success', duration = 3500) => {
+    setToast({ visible: true, msg: message, type })
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    toastTimerRef.current = setTimeout(() => {
+      setToast(t => ({ ...t, visible: false }))
+    }, duration)
+  }
+
   useEffect(() => {
     if (window.location.hash === '#contact') setIsFormOpen(true)
+    return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) } // cleanup timer
   }, [])
 
   const openFormModal = () => setIsFormOpen(true)
@@ -75,8 +86,12 @@ export default function App() {
         return
       }
 
+      // Success: reset, close modal, and show toast (NEW)
       setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
       form.reset()
+      closeFormModal()
+      showToast('Thanks! Your message was sent.', 'success', 3500)
+
     } catch {
       setFormStatus({
         state: 'error',
@@ -91,15 +106,15 @@ export default function App() {
       <header className="nav">
         <div className="container">
           <div className="brand">
-          <div className="brand-name">Troy Michael Oubre</div>
-          <a
-            className="brand-phone"
-            href="tel:+15047150645"
-            aria-label="Call Troy at 504 715 0645"
-          >
-            (504) 715-0645
-          </a>
-        </div>
+            <div className="brand-name">Troy Michael Oubre</div>
+            <a
+              className="brand-phone"
+              href="tel:+15047150645"
+              aria-label="Call Troy at 504 715 0645"
+            >
+              (504) 715-0645
+            </a>
+          </div>
           <nav>
             {/* All nav items share the same style */}
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
@@ -197,7 +212,6 @@ export default function App() {
         </div>
       </footer>
 
-
       {/* Modals */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
         <form onSubmit={handleFormSubmit}>
@@ -240,6 +254,15 @@ export default function App() {
           <Resume inModal />
         </div>
       </Modal>
+
+      {/* Toast (NEW) */}
+      <div
+        className={`toast ${toast.visible ? 'show' : ''} ${toast.type}`}
+        role="status"
+        aria-live="polite"
+      >
+        {toast.message}
+      </div>
     </div>
   )
 }
