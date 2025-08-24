@@ -158,7 +158,7 @@ export default function App() {
           </div>
           <nav>
             {/* Use <a> for section jump so sizing matches buttons after CSS normalizer */}
-            <a className="modal-secondary btn-sm" href="#boards">Trello Boards</a>
+            <button className="modal-secondary btn-sm" href="#boards">Trello Boards</button>
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
@@ -244,7 +244,7 @@ export default function App() {
         {/* Contact */}
         <section id="contact" className="card">
           <h2>Contact</h2>
-          <p className="muted">Prefer email or LinkedIn, or use the “Get in touch” button to open the form.</p>
+          <p className="muted">Use the “Get in touch” button to sned contact request.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
             <button type="button" onClick={openChoiceModal}>Email Me</button>
