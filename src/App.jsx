@@ -53,7 +53,12 @@ const TRELLO_BOARDS = [
 ]
 
 // Contact endpoint: Netlify Function in prod, Formspree direct in dev
-const CONTACT_URL = import.meta.env.PROD
+// Contact endpoint: Netlify Function in prod, Formspree direct in dev
+const IS_PROD =
+  typeof import.meta !== 'undefined' &&
+  /** @type {any} */ (import.meta).env?.PROD === true
+
+const CONTACT_URL = IS_PROD
   ? '/.netlify/functions/contact'
   : 'https://formspree.io/f/xblkvnzg'
 
@@ -64,8 +69,10 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
   // --- Toast ---
-  const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' })
-  const toastTimerRef = useRef(null)
+const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' })
+/** @type {React.MutableRefObject<ReturnType<typeof setTimeout> | null>} */
+const toastTimerRef = useRef(null)
+
   const showToast = (message, type = 'success', duration = 3500) => {
     setToast({ visible: true, msg: message, type })
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
@@ -244,7 +251,7 @@ export default function App() {
         {/* Contact */}
         <section id="contact" className="card">
           <h2>Contact</h2>
-          <p className="muted">Use the “Get in touch” button to send contact request.</p>
+          <p className="muted">Use the “Get in touch” button to contact me.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
             <button type="button" onClick={openChoiceModal}>Email Me</button>
@@ -260,7 +267,7 @@ export default function App() {
       <footer className="footer">
         <div className="container footer-actions">
           <small>
-            © {new Date().getFullYear()} Troy. Built with React + Vite. • Privacy: no trackers; the contact form sends via Formspree only.
+            © {new Date().getFullYear()} Troy. Built with React + Vite. 
           </small>
 
           <div className="actions">

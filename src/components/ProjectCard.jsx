@@ -1,6 +1,14 @@
-//projectcard.jsx
 import React from 'react'
 
+/**
+ * @param {{
+ *  title: string,
+ *  description: string,
+ *  stack?: string[],
+ *  links?: { live?: string, github?: string, demo?: string },
+ *  highlights?: string[]
+ * }} props
+ */
 export default function ProjectCard({ title, description, stack = [], links = {}, highlights = [] }) {
   const { live, github, demo } = links || {}
 
@@ -31,6 +39,7 @@ export default function ProjectCard({ title, description, stack = [], links = {}
     </article>
   )
 }
+
 
 
 
