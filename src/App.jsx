@@ -244,7 +244,7 @@ export default function App() {
         {/* Contact */}
         <section id="contact" className="card">
           <h2>Contact</h2>
-          <p className="muted">Use the “Get in touch” button to sned contact request.</p>
+          <p className="muted">Use the “Get in touch” button to send contact request.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
             <button type="button" onClick={openChoiceModal}>Email Me</button>
@@ -264,7 +264,6 @@ export default function App() {
           </small>
 
           <div className="actions">
-            <a className="modal-secondary btn-sm" href="#boards">Trello Boards</a>
             <button
               type="button"
               className="modal-secondary btn-sm"
