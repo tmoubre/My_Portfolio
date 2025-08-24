@@ -9,7 +9,7 @@ const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
 const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
-const MEDIUM = 'https://https://medium.com/@scinetbr'
+const MEDIUM = 'https://medium.com/@scinetbr'
 const X = 'https://x.com/troydevelops'
 
 // Trello boards to show
@@ -223,7 +223,7 @@ export default function App() {
             <button type="button" onClick={openChoiceModal}>Email Me</button>
             <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
             <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume (PDF)</a>
+            <a className='modal-secondary btn-sm' role="listitem" href={RESUME_PDF} download>Resume</a>
             <a className='modal-secondary btn-sm' role="listitem" href={X} download>X</a>
             <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} download>Medium</a>
           </div>
