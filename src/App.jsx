@@ -8,7 +8,19 @@ import projects from './data/projects.js'
 const EMAIL = 'oubre1@att.net'
 const GITHUB = 'https://github.com/tmoubre'
 const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
-const RESUME_PDF = '/Troy-Oubre-Resume.pdf' // file must live in /public
+const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
+
+// Trello boards to show
+const TRELLO_BOARDS = [
+  {
+    title: 'Collaboration & Project Management',
+    url: 'https://trello.com/b/jfGLe2w5/collaboration-project-management',
+  },
+  {
+    title: 'Full-Stack Developer Course',
+    url: 'https://trello.com/b/l1ARiGia/full-stack-developer-corse',
+  },
+]
 
 // Contact endpoint: Netlify Function in prod, Formspree direct in dev
 const CONTACT_URL = import.meta.env.PROD
@@ -21,7 +33,7 @@ export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
 
-  // --- Toast (NEW) ---
+  // --- Toast ---
   const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' })
   const toastTimerRef = useRef(null)
   const showToast = (message, type = 'success', duration = 3500) => {
@@ -86,11 +98,10 @@ export default function App() {
         return
       }
 
-      // Success: reset, close modal, and show toast (NEW)
+      // Success: reset, close modal, and show toast
       setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
       form.reset()
       closeFormModal()
-      console.log('[contact] submit OK — showing toast')
       showToast('Thanks! Your message was sent.', 'success', 3500)
 
     } catch {
@@ -170,6 +181,32 @@ export default function App() {
           <div className="grid" role="list">
             {projects.map((p) => (
               <ProjectCard key={p.title} {...p} />
+            ))}
+          </div>
+        </section>
+
+        {/* Process & Trello Boards */}
+        <section id="boards" className="card">
+          <h2>Process & Trello Boards</h2>
+          <p className="muted">
+            I used Trello during the program to familiarize myself with Kanban and simple workflow tracking. Because
+            the curriculum outlined the specific steps for each project, these boards were kept lightweight and used
+            when required—more as practice tools than full project management artifacts.
+          </p>
+
+          <div className="grid" role="list" style={{ marginTop: 10 }}>
+            {TRELLO_BOARDS.map((b) => (
+              <article key={b.title} className="card" role="listitem">
+                <div className="proj-title">
+                  <h3>{b.title}</h3>
+                  <div className="proj-links">
+                    <a href={b.url} target="_blank" rel="noopener">View Board</a>
+                  </div>
+                </div>
+                <p className="proj-desc">
+                  Snapshot of tasks and steps I tracked while following the curriculum for this build.
+                </p>
+              </article>
             ))}
           </div>
         </section>
@@ -262,7 +299,7 @@ export default function App() {
         role="status"
         aria-live="polite"
         style={{
-          // fallback so it still shows even if CSS is missing
+          // inline fallback so it still shows even if CSS is missing
           position: 'fixed',
           right: 20,
           bottom: 20,
@@ -273,6 +310,6 @@ export default function App() {
       >
         {toast.msg}
       </div>
-    </div> 
+    </div>
   )
 }
