@@ -86,6 +86,17 @@ const toastTimerRef = useRef(null)
     return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) }
   }, [])
 
+const goToProjects = () => {
+  const el = document.getElementById('projects')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (typeof history !== 'undefined') history.replaceState(null, '', '#projects')
+    // accessibility: put focus on the section without re-scrolling
+    setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300)
+  }
+
+}
+
   const goToBoards = () => {
   const el = document.getElementById('boards')
   if (el) {
@@ -175,7 +186,9 @@ const toastTimerRef = useRef(null)
             </a>
           </div>
           <nav>
-            {/* Use <a> for section jump so sizing matches buttons after CSS normalizer */}
+              <button type="button" className="modal-secondary btn-sm" onClick={goToProjects}>
+              View Projects
+            </button>
             <button
               type="button"className="modal-secondary btn-sm"onClick={goToBoards}>
               Trello Boards
@@ -210,7 +223,6 @@ const toastTimerRef = useRef(null)
                 <span className="tag">Angular (basics)</span>
                 <span className="tag">Testing (Jest/RTL/Cucumber)</span>
               </div>
-              <a className="pill" href="#projects" aria-label="Skip to projects">View projects ↓</a>
             </div>
 
             <div className="card" aria-label="About Troy">
@@ -227,7 +239,7 @@ const toastTimerRef = useRef(null)
         </section>
 
         {/* Projects */}
-        <section id="projects">
+        <section id="projects" tabIndex={-1}>
           <h2>Projects</h2>
           <div className="grid" role="list">
             {projects.map((p) => (
