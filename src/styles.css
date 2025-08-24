@@ -468,3 +468,8 @@ h2 {
 .proj-bullets li {
   margin: 2px 0;
 }
+
+/* make the Email Me button match the others */
+#contact .contact button {
+  font-size: 0.9rem;
+}
