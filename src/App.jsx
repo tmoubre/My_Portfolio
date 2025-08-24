@@ -256,22 +256,23 @@ export default function App() {
         </div>
       </Modal>
 
-  {/* Toast */}
-<div
-  className={`toast ${toast.visible ? 'show' : ''} ${toast.type}`}
-  role="status"
-  aria-live="polite"
-  style={{
-    /* fallback so it still shows even if CSS is missing */
-    position: 'fixed',
-    right: 20,
-    bottom: 20,
-    zIndex: 2000,
-    opacity: toast.visible ? 1 : 0,
-    transition: 'opacity .2s ease',
-  }}
->
-  {toast.message}
-</div>
+      {/* Toast */}
+      <div
+        className={`toast ${toast.visible ? 'show' : ''} ${toast.type}`}
+        role="status"
+        aria-live="polite"
+        style={{
+          // fallback so it still shows even if CSS is missing
+          position: 'fixed',
+          right: 20,
+          bottom: 20,
+          zIndex: 2000,
+          opacity: toast.visible ? 1 : 0,
+          transition: 'opacity .2s ease',
+        }}
+      >
+        {toast.msg}
+      </div>
+    </div>  {/* <-- close the outer wrapper div */};
   )
 }
