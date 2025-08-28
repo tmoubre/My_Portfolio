@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react'
-import ProjectCard from './components/ProjectCard.jsx'
-import Modal from './components/Modal.jsx'
-import Resume from './components/Resume.jsx'
-import projects from './data/projects.js' // keep as-is if you're using it
+// src/App.jsx
+import React, { useState, useEffect, useRef } from 'react';
+import ProjectCard from './components/ProjectCard.jsx';
+import Modal from './components/Modal.jsx';
+import Resume from './components/Resume.jsx';
+import projects from './data/projects.js'; // keep as-is if you're using it
+import CertsNavButton from './components/CertsNavButton.jsx';
+import CertsModal from './components/CertsModal.jsx'; // <-- render modal at root, not inside header
 
 // ======== YOUR PERSONAL LINKS ========
-const EMAIL = 'oubre1@att.net'
-const GITHUB = 'https://github.com/tmoubre'
-const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/'
-const RESUME_PDF = '/Troy-Oubre-Resume.pdf'
-const MEDIUM = 'https://medium.com/@scinetbr'
-const X = 'https://x.com/troydevelops'
+const EMAIL = 'oubre1@att.net';
+const GITHUB = 'https://github.com/tmoubre';
+const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/';
+const RESUME_PDF = '/Troy-Oubre-Resume.pdf';
+const MEDIUM = 'https://medium.com/@scinetbr';
+const X = 'https://x.com/troydevelops';
 
 // ---- Impact bullets without touching your data file ----
 const PROJECT_HIGHLIGHTS = {
@@ -38,7 +41,7 @@ const PROJECT_HIGHLIGHTS = {
     'Angular Material UI; login/registration and details views',
     'Typed services and docs for handoff',
   ],
-}
+};
 
 // Trello boards to show
 const TRELLO_BOARDS = [
@@ -50,93 +53,91 @@ const TRELLO_BOARDS = [
     title: 'Full-Stack Developer Course',
     url: 'https://trello.com/b/l1ARiGia/full-stack-developer-corse',
   },
-]
+];
 
-// Contact endpoint: Netlify Function in prod, Formspree direct in dev
 // Contact endpoint: Netlify Function in prod, Formspree direct in dev
 const IS_PROD =
   typeof import.meta !== 'undefined' &&
-  /** @type {any} */ (import.meta).env?.PROD === true
+  /** @type {any} */ (import.meta).env?.PROD === true;
 
 const CONTACT_URL = IS_PROD
   ? '/.netlify/functions/contact'
-  : 'https://formspree.io/f/xblkvnzg'
+  : 'https://formspree.io/f/xblkvnzg';
 
 export default function App() {
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [isChoiceOpen, setIsChoiceOpen] = useState(false)
-  const [isResumeOpen, setIsResumeOpen] = useState(false)
-  const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isChoiceOpen, setIsChoiceOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [certsOpen, setCertsOpen] = useState(false); // <-- Certs modal state (root-level)
+  const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' });
 
   // --- Toast ---
-const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' })
-/** @type {React.MutableRefObject<ReturnType<typeof setTimeout> | null>} */
-const toastTimerRef = useRef(null)
+  const [toast, setToast] = useState({ visible: false, msg: '', type: 'success' });
+  /** @type {React.MutableRefObject<ReturnType<typeof setTimeout> | null>} */
+  const toastTimerRef = useRef(null);
 
   const showToast = (message, type = 'success', duration = 3500) => {
-    setToast({ visible: true, msg: message, type })
-    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    setToast({ visible: true, msg: message, type });
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => {
-      setToast(t => ({ ...t, visible: false }))
-    }, duration)
-  }
+      setToast((t) => ({ ...t, visible: false }));
+    }, duration);
+  };
 
   useEffect(() => {
-    if (window.location.hash === '#contact') setIsFormOpen(true)
-    return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current) }
-  }, [])
+    if (window.location.hash === '#contact') setIsFormOpen(true);
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
 
-const goToProjects = () => {
-  const el = document.getElementById('projects')
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    if (typeof history !== 'undefined') history.replaceState(null, '', '#projects')
-    // accessibility: put focus on the section without re-scrolling
-    setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300)
-  }
-
-}
+  const goToProjects = () => {
+    const el = document.getElementById('projects');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (typeof history !== 'undefined') history.replaceState(null, '', '#projects');
+      setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300);
+    }
+  };
 
   const goToBoards = () => {
-  const el = document.getElementById('boards')
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    // update the URL hash for shareability/back button
-    if (typeof history !== 'undefined') history.replaceState(null, '', '#boards')
-    // accessibility: move focus to the section without re-scrolling
-    setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300)
-  }
-}
+    const el = document.getElementById('boards');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (typeof history !== 'undefined') history.replaceState(null, '', '#boards');
+      setTimeout(() => el.focus && el.focus({ preventScroll: true }), 300);
+    }
+  };
 
-  const openFormModal = () => setIsFormOpen(true)
+  const openFormModal = () => setIsFormOpen(true);
   const closeFormModal = () => {
-    setIsFormOpen(false)
-    setFormStatus({ state: 'idle', msg: '' })
-  }
+    setIsFormOpen(false);
+    setFormStatus({ state: 'idle', msg: '' });
+  };
 
-  const openChoiceModal = () => setIsChoiceOpen(true)
-  const closeChoiceModal = () => setIsChoiceOpen(false)
+  const openChoiceModal = () => setIsChoiceOpen(true);
+  const closeChoiceModal = () => setIsChoiceOpen(false);
 
-  const openResumeModal = () => setIsResumeOpen(true)
-  const closeResumeModal = () => setIsResumeOpen(false)
+  const openResumeModal = () => setIsResumeOpen(true);
+  const closeResumeModal = () => setIsResumeOpen(false);
 
   const handleEmailClient = () => {
-    window.location.href = `mailto:${EMAIL}`
-    closeChoiceModal()
-  }
+    window.location.href = `mailto:${EMAIL}`;
+    closeChoiceModal();
+  };
   const handleUseForm = () => {
-    closeChoiceModal()
-    openFormModal()
-  }
+    closeChoiceModal();
+    openFormModal();
+  };
 
   // Submit via Netlify Function (prod) or Formspree (dev)
   const handleFormSubmit = async (e) => {
-    e.preventDefault()
-    setFormStatus({ state: 'sending', msg: '' })
+    e.preventDefault();
+    setFormStatus({ state: 'sending', msg: '' });
 
     try {
-      const form = e.currentTarget
-      const data = Object.fromEntries(new FormData(form).entries())
+      const form = e.currentTarget;
+      const data = Object.fromEntries(new FormData(form).entries());
 
       const res = await fetch(CONTACT_URL, {
         method: 'POST',
@@ -145,30 +146,29 @@ const goToProjects = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!res.ok) {
-        let msg = 'Something went wrong. Please try again or email me directly.'
+        let msg = 'Something went wrong. Please try again or email me directly.';
         try {
-          const json = await res.json()
-          if (json?.errors?.length) msg = json.errors.map(er => er.message).join(', ')
+          const json = await res.json();
+          if (json?.errors?.length) msg = json.errors.map((er) => er.message).join(', ');
         } catch {}
-        setFormStatus({ state: 'error', msg })
-        return
+        setFormStatus({ state: 'error', msg });
+        return;
       }
 
-      setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' })
-      form.reset()
-      closeFormModal()
-      showToast('Thanks! Your message was sent.', 'success', 3500)
-
+      setFormStatus({ state: 'success', msg: 'Thanks! Your message has been sent.' });
+      form.reset();
+      closeFormModal();
+      showToast('Thanks! Your message was sent.', 'success', 3500);
     } catch {
       setFormStatus({
         state: 'error',
         msg: 'Network error. Please try again or email me directly.',
-      })
+      });
     }
-  }
+  };
 
   return (
     <div>
@@ -186,16 +186,26 @@ const goToProjects = () => {
             </a>
           </div>
           <nav>
-              <button type="button" className="modal-secondary btn-sm" onClick={goToProjects}>
+            <button type="button" className="modal-secondary btn-sm" onClick={goToProjects}>
               View Projects
             </button>
             <button
-              type="button"className="modal-secondary btn-sm"onClick={goToBoards}>
+              type="button"
+              className="modal-secondary btn-sm"
+              onClick={goToBoards}
+            >
               Trello Boards
             </button>
             <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
+
+            {/* Certs button triggers root-level modal */}
+            <CertsNavButton
+              className="modal-secondary btn-sm"
+              onOpen={() => setCertsOpen(true)}
+            />
+
             <button className="modal-secondary btn-sm" type="button" onClick={openFormModal}>
               Get in touch
             </button>
@@ -263,7 +273,9 @@ const goToProjects = () => {
                 <div className="proj-title">
                   <h3>{b.title}</h3>
                   <div className="proj-links">
-                    <a href={b.url} target="_blank" rel="noopener">View Board</a>
+                    <a href={b.url} target="_blank" rel="noopener">
+                      View Board
+                    </a>
                   </div>
                 </div>
                 <p className="proj-desc">
@@ -280,11 +292,21 @@ const goToProjects = () => {
           <p className="muted">Use the “Get in touch” button to contact me.</p>
 
           <div className="contact" role="list" style={{ marginTop: '6px' }}>
-            <button className='modal-secondary btn-sm' type="button" onClick={openChoiceModal}>Email Me</button>
-            <a className='modal-secondary btn-sm' role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={X} target="_blank" rel="noreferrer">X</a>
-            <a className='modal-secondary btn-sm' role="listitem" href={MEDIUM} target="_blank" rel="noreferrer">Medium</a>
+            <button className="modal-secondary btn-sm" type="button" onClick={openChoiceModal}>
+              Email Me
+            </button>
+            <a className="modal-secondary btn-sm" role="listitem" href={LINKEDIN} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a className="modal-secondary btn-sm" role="listitem" href={GITHUB} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a className="modal-secondary btn-sm" role="listitem" href={X} target="_blank" rel="noreferrer">
+              X
+            </a>
+            <a className="modal-secondary btn-sm" role="listitem" href={MEDIUM} target="_blank" rel="noreferrer">
+              Medium
+            </a>
           </div>
         </section>
       </main>
@@ -292,39 +314,33 @@ const goToProjects = () => {
       {/* Footer */}
       <footer className="footer">
         <div className="container footer-actions">
-          <small>
-            © {new Date().getFullYear()} Troy. Built with React + Vite. 
-          </small>
+          <small>© {new Date().getFullYear()} Troy. Built with React + Vite.</small>
 
           <div className="actions">
-            <button
-              type="button"
-              className="modal-secondary btn-sm"
-              onClick={openResumeModal}
-            >
+            <button type="button" className="modal-secondary btn-sm" onClick={openResumeModal}>
               Resume
             </button>
-            <button
-              className="modal-secondary btn-sm"
-              type="button"
-              onClick={openFormModal}
-            >
+            <button className="modal-secondary btn-sm" type="button" onClick={openFormModal}>
               Get in touch
             </button>
           </div>
         </div>
       </footer>
 
-      {/* Modals */}
+      {/* Modals (root-level, not inside header) */}
       <Modal isOpen={isFormOpen} onClose={closeFormModal} title="Get in touch">
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="name">Your Name:</label>
           <input id="name" type="text" name="name" required />
 
-          <label htmlFor="email" style={{ marginTop: 10 }}>Your Email:</label>
+          <label htmlFor="email" style={{ marginTop: 10 }}>
+            Your Email:
+          </label>
           <input id="email" type="email" name="email" required />
 
-          <label htmlFor="message" style={{ marginTop: 10 }}>Message:</label>
+          <label htmlFor="message" style={{ marginTop: 10 }}>
+            Message:
+          </label>
           <textarea id="message" name="message" rows="5" required />
 
           {/* honeypot */}
@@ -334,20 +350,24 @@ const goToProjects = () => {
             <button type="submit" className="pill" disabled={formStatus.state === 'sending'}>
               {formStatus.state === 'sending' ? 'Sending…' : 'Send Message'}
             </button>
-            <button type="button" className="modal-secondary" onClick={closeFormModal}>Cancel</button>
+            <button type="button" className="modal-secondary" onClick={closeFormModal}>
+              Cancel
+            </button>
           </div>
 
-          {formStatus.state !== 'idle' && (
-            <p className="muted" style={{ marginTop: 10 }}>{formStatus.msg}</p>
-          )}
+          {formStatus.state !== 'idle' && <p className="muted" style={{ marginTop: 10 }}>{formStatus.msg}</p>}
         </form>
       </Modal>
 
       <Modal isOpen={isChoiceOpen} onClose={closeChoiceModal} title="Contact options">
         <p className="muted" style={{ marginBottom: 14 }}>How would you like to get in touch?</p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button type="button" className="pill" onClick={handleEmailClient}>Open Email Client</button>
-          <button type="button" className="modal-secondary" onClick={handleUseForm}>Use Contact Form</button>
+          <button type="button" className="pill" onClick={handleEmailClient}>
+            Open Email Client
+          </button>
+          <button type="button" className="modal-secondary" onClick={handleUseForm}>
+            Use Contact Form
+          </button>
         </div>
       </Modal>
 
@@ -357,6 +377,9 @@ const goToProjects = () => {
           <Resume inModal />
         </div>
       </Modal>
+
+      {/* Certs modal rendered OUTSIDE the header */}
+      <CertsModal isOpen={certsOpen} onClose={() => setCertsOpen(false)} />
 
       {/* Toast */}
       <div
@@ -375,5 +398,5 @@ const goToProjects = () => {
         {toast.msg}
       </div>
     </div>
-  )
+  );
 }

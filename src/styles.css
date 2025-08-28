@@ -284,12 +284,32 @@ h2 {
   inset: 0;
   background: rgba(2, 6, 23, .3);
   /* lighter */
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   /* adds frosted glass effect */
   display: grid;
   place-items: center;
   padding: 20px;
   z-index: 50;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  /* key lines */
+  place-items: center;
+  /* key lines */
+  padding: 1rem;
+}
+
+/* Modal panel */
+.modal-panel {
+  width: min(960px, 100%);
+  max-height: 90svh;
+  overflow: auto;
+  margin: 0;
 }
 
 .modal {
@@ -471,4 +491,47 @@ h2 {
 
 #contact .contact button {
   font-size: 0.9rem;
+}
+
+/* Certificates Modal Specific Styles */
+.certs-wrap {
+  display: block;
+  max-width: 900px;
+  background-color: #0b1220;
+  /* tweak to match your resume modal width */
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+/* Thumbnails grid starts at TOP of modal */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-content: start;
+  /* <- top, not middle */
+  justify-items: stretch;
+}
+
+@media (max-width: 860px) {
+  .certs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .certs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Detail view also top-aligned */
+.certs-toolbar {
+  margin: 0 0 12px;
+}
+
+.certs-view {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
 }
