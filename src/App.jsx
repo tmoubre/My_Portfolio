@@ -2,6 +2,10 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+// ============================================================
+// LUCIDE UI / CONCEPT ICONS
+// ============================================================
+
 import {
     Home,
     Folder,
@@ -9,12 +13,9 @@ import {
     FileText,
     Mail,
     CheckCircle,
-    GitBranch,
     Database,
     LayoutDashboard,
     Share2,
-    Code2,
-    Circle,
     Link as LinkIcon,
     Send,
     ArrowRight,
@@ -22,24 +23,55 @@ import {
     ChevronDown,
 } from 'lucide-react';
 
+// ============================================================
+// BRAND / TECHNOLOGY ICONS
+// ============================================================
+
+import {
+    FaGithub,
+    FaLinkedinIn,
+    FaMedium,
+    FaXTwitter,
+} from 'react-icons/fa6';
+
+import {
+    SiReact,
+    SiJavascript,
+    SiNodedotjs,
+} from 'react-icons/si';
+
+import {
+    VscAzureDevops,
+} from 'react-icons/vsc';
+
+// ============================================================
+// COMPONENTS
+// ============================================================
+
 import ProjectCard from './components/ProjectCard.jsx';
 import Modal from './components/Modal.jsx';
 import Resume from './components/Resume.jsx';
-import projects from './data/projects.js';
 import CertsModal from './components/CertsModal.jsx';
 
+import projects from './data/projects.js';
 
 // ============================================================
 // PERSONAL LINKS
 // ============================================================
 
 const EMAIL = 'oubre1@att.net';
-const GITHUB = 'https://github.com/tmoubre';
+
+const GITHUB =
+    'https://github.com/tmoubre';
+
 const LINKEDIN =
     'https://www.linkedin.com/in/troy-oubre-32170a32/';
-const MEDIUM = 'https://medium.com/@scinetbr';
-const X = 'https://x.com/troydevelops';
 
+const MEDIUM =
+    'https://medium.com/@scinetbr';
+
+const X =
+    'https://x.com/troydevelops';
 
 // ============================================================
 // PROJECT HIGHLIGHTS
@@ -77,7 +109,6 @@ const PROJECT_HIGHLIGHTS = {
     ],
 };
 
-
 // ============================================================
 // CONTACT ENDPOINT
 // ============================================================
@@ -90,12 +121,15 @@ const CONTACT_URL = IS_PROD
     ? '/.netlify/functions/contact'
     : 'https://formspree.io/f/xblkvnzg';
 
-
 // ============================================================
 // APP
 // ============================================================
 
 export default function App() {
+    // ==========================================================
+    // STATE
+    // ==========================================================
+
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isChoiceOpen, setIsChoiceOpen] = useState(false);
     const [isResumeOpen, setIsResumeOpen] = useState(false);
@@ -114,7 +148,6 @@ export default function App() {
     });
 
     const toastTimerRef = useRef(null);
-
 
     // ==========================================================
     // TOAST
@@ -143,7 +176,6 @@ export default function App() {
         }, duration);
     };
 
-
     // ==========================================================
     // INITIAL LOAD
     // ==========================================================
@@ -159,7 +191,6 @@ export default function App() {
             }
         };
     }, []);
-
 
     // ==========================================================
     // NAVIGATION
@@ -180,7 +211,6 @@ export default function App() {
                 behavior: 'smooth',
             });
     };
-
 
     // ==========================================================
     // MODALS
@@ -223,7 +253,6 @@ export default function App() {
         setIsChoiceOpen(false);
     };
 
-
     // ==========================================================
     // CONTACT
     // ==========================================================
@@ -253,14 +282,19 @@ export default function App() {
                 new FormData(form).entries()
             );
 
-            const response = await fetch(CONTACT_URL, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+            const response = await fetch(
+                CONTACT_URL,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+
+                    body: JSON.stringify(data),
+                }
+            );
 
             if (!response.ok) {
                 let msg =
@@ -298,11 +332,11 @@ export default function App() {
         } catch {
             setFormStatus({
                 state: 'error',
-                msg: 'Network error. Please try again or email me directly.',
+                msg:
+                    'Network error. Please try again or email me directly.',
             });
         }
     };
-
 
     // ==========================================================
     // RENDER
@@ -312,7 +346,7 @@ export default function App() {
         <div className="site-shell">
 
             {/* =====================================================
-          DESKTOP LEFT NAV
+          DESKTOP SIDEBAR
           ===================================================== */}
 
             <aside className="side-nav">
@@ -323,6 +357,7 @@ export default function App() {
                         type="button"
                         className="side-nav-item active"
                         onClick={scrollHome}
+                        aria-label="Home"
                     >
                         <span className="side-nav-icon">
                             <Home size={24} />
@@ -333,11 +368,11 @@ export default function App() {
                         </span>
                     </button>
 
-
                     <button
                         type="button"
                         className="side-nav-item"
                         onClick={openPortfolioModal}
+                        aria-label="Projects"
                     >
                         <span className="side-nav-icon">
                             <Folder size={24} />
@@ -348,11 +383,11 @@ export default function App() {
                         </span>
                     </button>
 
-
                     <button
                         type="button"
                         className="side-nav-item"
                         onClick={() => setCertsOpen(true)}
+                        aria-label="Certifications"
                     >
                         <span className="side-nav-icon">
                             <Award size={24} />
@@ -363,11 +398,11 @@ export default function App() {
                         </span>
                     </button>
 
-
                     <button
                         type="button"
                         className="side-nav-item"
                         onClick={openResumeModal}
+                        aria-label="Resume"
                     >
                         <span className="side-nav-icon">
                             <FileText size={24} />
@@ -378,11 +413,11 @@ export default function App() {
                         </span>
                     </button>
 
-
                     <button
                         type="button"
                         className="side-nav-item"
                         onClick={openFormModal}
+                        aria-label="Contact"
                     >
                         <span className="side-nav-icon">
                             <Mail size={24} />
@@ -395,8 +430,9 @@ export default function App() {
 
                 </div>
 
-
-                {/* SOCIAL LINKS */}
+                {/* ===================================================
+            SOCIAL ICONS
+            =================================================== */}
 
                 <div className="side-social">
 
@@ -405,8 +441,9 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="GitHub"
+                        className="social-github"
                     >
-                        GH
+                        <FaGithub />
                     </a>
 
                     <a
@@ -414,8 +451,9 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="LinkedIn"
+                        className="social-linkedin"
                     >
-                        in
+                        <FaLinkedinIn />
                     </a>
 
                     <a
@@ -423,8 +461,9 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="Medium"
+                        className="social-medium"
                     >
-                        M
+                        <FaMedium />
                     </a>
 
                     <a
@@ -432,14 +471,14 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="X"
+                        className="social-x"
                     >
-                        X
+                        <FaXTwitter />
                     </a>
 
                 </div>
 
             </aside>
-
 
             {/* =====================================================
           HEADER
@@ -462,17 +501,22 @@ export default function App() {
                             </div>
 
                             <div className="brand-tagline">
+
                                 <span>BUILD</span>
                                 <span>•</span>
                                 <span>IMPROVE</span>
                                 <span>•</span>
                                 <span>DELIVER</span>
+
                             </div>
 
                         </div>
 
                     </div>
 
+                    {/* =================================================
+              MOBILE / TABLET NAV
+              ================================================= */}
 
                     <nav className="mobile-nav">
 
@@ -480,6 +524,7 @@ export default function App() {
                             type="button"
                             className="mobile-nav-link"
                             onClick={scrollHome}
+                            aria-label="Home"
                         >
                             <Home size={18} />
                         </button>
@@ -488,6 +533,7 @@ export default function App() {
                             type="button"
                             className="mobile-nav-link"
                             onClick={openPortfolioModal}
+                            aria-label="Projects"
                         >
                             <Folder size={18} />
                         </button>
@@ -496,6 +542,7 @@ export default function App() {
                             type="button"
                             className="mobile-nav-link"
                             onClick={() => setCertsOpen(true)}
+                            aria-label="Certifications"
                         >
                             <Award size={18} />
                         </button>
@@ -504,6 +551,7 @@ export default function App() {
                             type="button"
                             className="mobile-nav-link"
                             onClick={openResumeModal}
+                            aria-label="Resume"
                         >
                             <FileText size={18} />
                         </button>
@@ -512,6 +560,7 @@ export default function App() {
                             type="button"
                             className="mobile-nav-link"
                             onClick={openFormModal}
+                            aria-label="Contact"
                         >
                             <Mail size={18} />
                         </button>
@@ -522,9 +571,8 @@ export default function App() {
 
             </header>
 
-
             {/* =====================================================
-          CONTENT
+          PAGE CONTENT
           ===================================================== */}
 
             <div className="page-content">
@@ -544,6 +592,10 @@ export default function App() {
 
                             <div className="hero-main-grid">
 
+                                {/* =============================================
+                    HERO LEFT
+                    ============================================= */}
+
                                 <div className="hero-primary">
 
                                     <div className="hero-kicker">
@@ -557,11 +609,17 @@ export default function App() {
                                     </h1>
 
                                     <div className="hero-role">
+
                                         Product Owner
+
                                         <span>•</span>
+
                                         Technology Leader
+
                                         <span>•</span>
+
                                         Full-Stack Developer
+
                                     </div>
 
                                     <div className="hero-divider">
@@ -571,89 +629,129 @@ export default function App() {
                                     <div className="hero-summary">
 
                                         <p>
-                                            I build solutions at the intersection of business,
-                                            data, and technology. As a functional lead and
-                                            Product Owner, I translate complex operational needs
-                                            into practical, scalable solutions while guiding
-                                            delivery from requirements through testing, release,
+                                            I build solutions at the intersection of
+                                            business, data, and technology. As a
+                                            functional lead and Product Owner, I translate
+                                            complex operational needs into practical,
+                                            scalable solutions while guiding delivery
+                                            from requirements through testing, release,
                                             and production support.
                                         </p>
 
                                         <p>
                                             My background combines product ownership,
                                             enterprise applications, SQL and data analysis,
-                                            Azure DevOps delivery governance, systems integration,
-                                            UAT, process improvement, and hands-on software
-                                            development.
+                                            Azure DevOps delivery governance, systems
+                                            integration, UAT, process improvement,
+                                            and hands-on software development.
                                         </p>
 
                                     </div>
 
+                                    {/* =============================================
+                      CAPABILITY / TECHNOLOGY ICONS
+                      ============================================= */}
 
-                                    {/* CAPABILITY PILLS */}
-
-                                    <div className="hero-capabilities">
+                                    <div
+                                        className="hero-capabilities"
+                                        aria-label="Key capabilities"
+                                    >
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
+
+                                            <span className="cap-icon icon-product-owner">
                                                 <CheckCircle size={18} />
                                             </span>
+
                                             Product Owner
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
-                                                <GitBranch size={18} />
+
+                                            <span className="cap-icon brand-icon icon-azure-devops">
+                                                <VscAzureDevops />
                                             </span>
+
                                             Azure DevOps
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
+
+                                            <span className="cap-icon icon-sql">
                                                 <Database size={18} />
                                             </span>
+
                                             SQL
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
+
+                                            <span className="cap-icon icon-powerapps">
                                                 <LayoutDashboard size={18} />
                                             </span>
+
                                             Power Apps
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
+
+                                            <span className="cap-icon icon-sharepoint">
                                                 <Share2 size={18} />
                                             </span>
+
                                             SharePoint
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
-                                                <Code2 size={18} />
+
+                                            <span className="cap-icon brand-icon icon-javascript">
+                                                <SiJavascript />
                                             </span>
+
                                             JavaScript
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
-                                                <Circle size={18} />
+
+                                            <span className="cap-icon brand-icon icon-react">
+                                                <SiReact />
                                             </span>
+
                                             React
+
                                         </span>
 
                                         <span className="capability-pill">
-                                            <span className="cap-icon">
+
+                                            <span className="cap-icon brand-icon icon-node">
+                                                <SiNodedotjs />
+                                            </span>
+
+                                            Node.js
+
+                                        </span>
+
+                                        <span className="capability-pill">
+
+                                            <span className="cap-icon icon-api">
                                                 <LinkIcon size={18} />
                                             </span>
+
                                             API Integration
+
                                         </span>
 
                                     </div>
 
-
-                                    {/* CSPO */}
+                                    {/* =============================================
+                      CSPO CREDENTIAL
+                      ============================================= */}
 
                                     <div className="hero-cert-card">
 
@@ -667,9 +765,7 @@ export default function App() {
 
                                         </div>
 
-
                                         <div className="hero-cert-divider" />
-
 
                                         <div className="hero-cert-copy">
 
@@ -686,13 +782,13 @@ export default function App() {
                                             </strong>
 
                                             <p>
-                                                Professional credential supporting Agile product
-                                                leadership, prioritization, stakeholder alignment,
-                                                and iterative delivery of user-focused value.
+                                                Professional credential supporting Agile
+                                                product leadership, prioritization,
+                                                stakeholder alignment, and iterative
+                                                delivery of user-focused value.
                                             </p>
 
                                         </div>
-
 
                                         <button
                                             type="button"
@@ -700,6 +796,7 @@ export default function App() {
                                             onClick={() => setCertsOpen(true)}
                                         >
                                             View Certifications
+
                                             <ArrowRight size={16} />
                                         </button>
 
@@ -707,8 +804,9 @@ export default function App() {
 
                                 </div>
 
-
-                                {/* RIGHT SIDE */}
+                                {/* =============================================
+                    HERO RIGHT
+                    ============================================= */}
 
                                 <aside className="hero-side">
 
@@ -734,6 +832,9 @@ export default function App() {
 
                                     </div>
 
+                                    {/* =========================================
+                      ACTIONS
+                      ========================================= */}
 
                                     <div className="hero-action-panel">
 
@@ -742,6 +843,7 @@ export default function App() {
                                             className="hero-action hero-action-primary"
                                             onClick={openFormModal}
                                         >
+
                                             <span className="hero-action-icon">
                                                 <Send size={20} />
                                             </span>
@@ -754,14 +856,15 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
-                                        </button>
 
+                                        </button>
 
                                         <button
                                             type="button"
                                             className="hero-action"
                                             onClick={openResumeModal}
                                         >
+
                                             <span className="hero-action-icon">
                                                 <FileText size={20} />
                                             </span>
@@ -774,14 +877,15 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
-                                        </button>
 
+                                        </button>
 
                                         <button
                                             type="button"
                                             className="hero-action"
                                             onClick={openPortfolioModal}
                                         >
+
                                             <span className="hero-action-icon">
                                                 <Folder size={20} />
                                             </span>
@@ -794,10 +898,14 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
+
                                         </button>
 
                                     </div>
 
+                                    {/* =========================================
+                      PHILOSOPHY
+                      ========================================= */}
 
                                     <div className="hero-quote">
 
@@ -821,26 +929,30 @@ export default function App() {
 
                             </div>
 
+                            {/* =============================================
+                  SCROLL
+                  ============================================= */}
 
                             <button
                                 type="button"
                                 className="hero-scroll"
                                 onClick={scrollExpertise}
                             >
+
                                 <span>
                                     SCROLL TO EXPLORE
                                 </span>
 
                                 <ChevronDown size={21} />
+
                             </button>
 
                         </div>
 
                     </section>
 
-
                     {/* =================================================
-              EXPERTISE
+              PRODUCT & TECHNOLOGY EXPERTISE
               ================================================= */}
 
                     <section
@@ -857,63 +969,95 @@ export default function App() {
                         </h2>
 
                         <p className="muted">
-                            My experience sits at the intersection of business operations,
-                            enterprise technology, product delivery,
+                            My experience sits at the intersection of business
+                            operations, enterprise technology, product delivery,
                             and software development.
                         </p>
 
+                        <div
+                            className="grid"
+                            role="list"
+                        >
 
-                        <div className="grid">
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>Product Ownership</h3>
+                                <h3>
+                                    Product Ownership
+                                </h3>
 
                                 <p className="proj-desc">
                                     Requirements definition, backlog refinement,
-                                    prioritization, stakeholder alignment, roadmap support,
-                                    user feedback, enhancement planning,
+                                    prioritization, stakeholder alignment, roadmap
+                                    support, user feedback, enhancement planning,
                                     and product governance.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>Enterprise Applications</h3>
+                                <h3>
+                                    Enterprise Applications
+                                </h3>
 
                                 <p className="proj-desc">
-                                    Functional ownership, production support,
-                                    systems integration, application enhancements,
-                                    business process improvement, issue analysis,
-                                    and cross-functional delivery.
+                                    Functional ownership, production support, systems
+                                    integration, application enhancements, business
+                                    process improvement, issue analysis, and
+                                    cross-functional delivery.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>Data & SQL</h3>
+                                <h3>
+                                    Data & SQL
+                                </h3>
 
                                 <p className="proj-desc">
-                                    SQL investigation, data validation, reconciliation,
-                                    reporting, root-cause analysis,
+                                    SQL investigation, data validation,
+                                    reconciliation, reporting, root-cause analysis,
                                     production troubleshooting, and decision support.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>UAT & Release Delivery</h3>
+                                <h3>
+                                    UAT & Release Delivery
+                                </h3>
 
                                 <p className="proj-desc">
                                     Test planning, QA validation, UAT coordination,
-                                    defect triage, release readiness,
-                                    stakeholder communication, deployment governance,
+                                    defect triage, release readiness, stakeholder
+                                    communication, deployment governance,
                                     and post-release validation.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>Full-Stack Development</h3>
+                                <h3>
+                                    Full-Stack Development
+                                </h3>
 
                                 <p className="proj-desc">
                                     React, JavaScript, Node.js, Express, MongoDB,
@@ -921,11 +1065,17 @@ export default function App() {
                                     testing, serverless applications,
                                     and mobile development.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="card project"
+                                role="listitem"
+                            >
 
-                            <article className="card project">
-                                <h3>Business & Technology Bridge</h3>
+                                <h3>
+                                    Business & Technology Bridge
+                                </h3>
 
                                 <p className="proj-desc">
                                     Translating business requirements into technical
@@ -933,12 +1083,12 @@ export default function App() {
                                     operations teams, and leadership stay aligned
                                     throughout delivery.
                                 </p>
+
                             </article>
 
                         </div>
 
                     </section>
-
 
                     {/* =================================================
               PROFESSIONAL IMPACT
@@ -961,14 +1111,16 @@ export default function App() {
 
                             <p>
                                 From requirements and data investigation to UAT,
-                                release governance, production support, and user adoption,
-                                I work across the full product lifecycle.
+                                release governance, production support, and user
+                                adoption, I work across the full product lifecycle.
                             </p>
 
                         </div>
 
-
-                        <div className="impact-pill-row">
+                        <div
+                            className="impact-pill-row"
+                            aria-label="Professional impact areas"
+                        >
 
                             <span className="impact-pill">
                                 Product Ownership
@@ -988,11 +1140,19 @@ export default function App() {
 
                         </div>
 
+                        <div
+                            className="impact-grid"
+                            role="list"
+                        >
 
-                        <div className="impact-grid">
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">01</span>
+                                <span className="impact-number">
+                                    01
+                                </span>
 
                                 <h3>
                                     Enterprise Product Ownership
@@ -1000,65 +1160,90 @@ export default function App() {
 
                                 <p>
                                     Own and guide the evolution of a business-critical
-                                    enterprise platform, translating operational needs into
-                                    requirements, backlog priorities, enhancements,
-                                    testing strategies, and production releases.
+                                    enterprise platform, translating operational
+                                    needs into requirements, backlog priorities,
+                                    enhancements, testing strategies,
+                                    and production releases.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">02</span>
+                                <span className="impact-number">
+                                    02
+                                </span>
 
                                 <h3>
                                     Product Governance & Delivery Management
                                 </h3>
 
                                 <p>
-                                    Own the Azure DevOps delivery process for the product,
-                                    managing work from intake and refinement through
-                                    development, QA, UAT, change governance,
+                                    Own the Azure DevOps delivery process for the
+                                    product, managing work from intake and refinement
+                                    through development, QA, UAT, change governance,
                                     release readiness, deployment,
                                     and post-release validation.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">03</span>
+                                <span className="impact-number">
+                                    03
+                                </span>
 
                                 <h3>
                                     User Council & UAT Program
                                 </h3>
 
                                 <p>
-                                    Created a formal user council and UAT framework that
-                                    brings business users directly into product development
-                                    through structured testing, feedback,
+                                    Created a formal user council and UAT framework
+                                    that brings business users directly into product
+                                    development through structured testing, feedback,
                                     release readiness, and continuous improvement.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">04</span>
+                                <span className="impact-number">
+                                    04
+                                </span>
 
                                 <h3>
                                     Enterprise Data & System Mapping
                                 </h3>
 
                                 <p>
-                                    Conduct deep SQL and data analysis across interconnected
-                                    enterprise systems to map business processes,
-                                    trace transactions, reconcile data,
-                                    investigate production issues,
-                                    and support technical solution design.
+                                    Conduct deep SQL and data analysis across
+                                    interconnected enterprise systems to map business
+                                    processes, trace transactions, reconcile data,
+                                    investigate production issues, and support
+                                    technical solution design.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">05</span>
+                                <span className="impact-number">
+                                    05
+                                </span>
 
                                 <h3>
                                     Systems Integration & Process Modernization
@@ -1066,15 +1251,21 @@ export default function App() {
 
                                 <p>
                                     Partner with development, operations, finance,
-                                    and other stakeholders on integrations and workflow
-                                    improvements that connect enterprise platforms
-                                    and reduce operational friction.
+                                    and other stakeholders on integrations and
+                                    workflow improvements that connect enterprise
+                                    platforms and reduce operational friction.
                                 </p>
+
                             </article>
 
+                            <article
+                                className="impact-card"
+                                role="listitem"
+                            >
 
-                            <article className="impact-card">
-                                <span className="impact-number">06</span>
+                                <span className="impact-number">
+                                    06
+                                </span>
 
                                 <h3>
                                     Knowledge & Digital Experience
@@ -1083,14 +1274,18 @@ export default function App() {
                                 <p>
                                     Designed centralized digital workspaces,
                                     documentation experiences, release communications,
-                                    training resources, and self-service content
-                                    to improve product adoption and give users
-                                    better access to information.
+                                    training resources, and self-service content to
+                                    improve product adoption and give users better
+                                    access to information.
                                 </p>
+
                             </article>
 
                         </div>
 
+                        {/* ===============================================
+                PORTFOLIO CTA
+                =============================================== */}
 
                         <div className="impact-portfolio-cta">
 
@@ -1111,12 +1306,12 @@ export default function App() {
 
                             </div>
 
-
                             <button
                                 type="button"
                                 className="hero-action impact-portfolio-button"
                                 onClick={openPortfolioModal}
                             >
+
                                 <Folder size={18} />
 
                                 <span>
@@ -1124,12 +1319,12 @@ export default function App() {
                                 </span>
 
                                 <ArrowRight size={18} />
+
                             </button>
 
                         </div>
 
                     </section>
-
 
                     {/* =================================================
               CONTACT
@@ -1149,11 +1344,10 @@ export default function App() {
                         </h2>
 
                         <p className="muted">
-                            Interested in product leadership, enterprise technology,
-                            digital transformation, or software development?
-                            I’d be happy to connect.
+                            Interested in product leadership, enterprise
+                            technology, digital transformation, or software
+                            development? I’d be happy to connect.
                         </p>
-
 
                         <div className="contact">
 
@@ -1207,7 +1401,6 @@ export default function App() {
 
                 </main>
 
-
                 {/* ===================================================
             FOOTER
             =================================================== */}
@@ -1227,7 +1420,6 @@ export default function App() {
                             </small>
 
                         </div>
-
 
                         <div className="actions">
 
@@ -1263,9 +1455,8 @@ export default function App() {
 
             </div>
 
-
             {/* =====================================================
-          TECHNICAL PORTFOLIO
+          TECHNICAL PORTFOLIO MODAL
           ===================================================== */}
 
             <Modal
@@ -1283,28 +1474,35 @@ export default function App() {
                         </span>
 
                         <p>
-                            These projects demonstrate the hands-on software development
-                            foundation that complements my product ownership and enterprise
-                            technology work.
+                            These projects demonstrate the hands-on software
+                            development foundation that complements my product
+                            ownership and enterprise technology work.
                         </p>
 
                     </div>
 
+                    <div
+                        className="portfolio-modal-grid"
+                        role="list"
+                    >
 
-                    <div className="portfolio-modal-grid">
+                        {projects.map(
+                            (project) => (
 
-                        {projects.map((project) => (
-                            <ProjectCard
-                                key={project.title}
-                                {...project}
-                                highlights={
-                                    PROJECT_HIGHLIGHTS[project.title]
-                                }
-                            />
-                        ))}
+                                <ProjectCard
+                                    key={project.title}
+                                    {...project}
+                                    highlights={
+                                        PROJECT_HIGHLIGHTS[
+                                        project.title
+                                        ]
+                                    }
+                                />
+
+                            )
+                        )}
 
                     </div>
-
 
                     <div className="portfolio-modal-footer">
 
@@ -1328,7 +1526,6 @@ export default function App() {
 
             </Modal>
 
-
             {/* =====================================================
           CONTACT FORM
           ===================================================== */}
@@ -1339,7 +1536,9 @@ export default function App() {
                 title="Get in touch"
             >
 
-                <form onSubmit={handleFormSubmit}>
+                <form
+                    onSubmit={handleFormSubmit}
+                >
 
                     <label htmlFor="name">
                         Your Name:
@@ -1352,7 +1551,6 @@ export default function App() {
                         required
                     />
 
-
                     <label htmlFor="email">
                         Your Email:
                     </label>
@@ -1363,7 +1561,6 @@ export default function App() {
                         name="email"
                         required
                     />
-
 
                     <label htmlFor="message">
                         Message:
@@ -1376,26 +1573,32 @@ export default function App() {
                         required
                     />
 
-
                     <input
                         type="text"
                         name="_gotcha"
-                        style={{ display: 'none' }}
+                        style={{
+                            display: 'none',
+                        }}
                         tabIndex={-1}
                         autoComplete="off"
                     />
-
 
                     <div className="form-actions">
 
                         <button
                             type="submit"
                             className="pill"
-                            disabled={formStatus.state === 'sending'}
+                            disabled={
+                                formStatus.state ===
+                                'sending'
+                            }
                         >
-                            {formStatus.state === 'sending'
-                                ? 'Sending…'
-                                : 'Send Message'}
+                            {
+                                formStatus.state ===
+                                    'sending'
+                                    ? 'Sending…'
+                                    : 'Send Message'
+                            }
                         </button>
 
                         <button
@@ -1408,17 +1611,20 @@ export default function App() {
 
                     </div>
 
+                    {
+                        formStatus.state !==
+                        'idle' && (
 
-                    {formStatus.state !== 'idle' && (
-                        <p className="muted form-status">
-                            {formStatus.msg}
-                        </p>
-                    )}
+                            <p className="muted form-status">
+                                {formStatus.msg}
+                            </p>
+
+                        )
+                    }
 
                 </form>
 
             </Modal>
-
 
             {/* =====================================================
           CONTACT OPTIONS
@@ -1433,7 +1639,6 @@ export default function App() {
                 <p className="muted">
                     How would you like to get in touch?
                 </p>
-
 
                 <div className="form-actions">
 
@@ -1457,7 +1662,6 @@ export default function App() {
 
             </Modal>
 
-
             {/* =====================================================
           RESUME
           ===================================================== */}
@@ -1469,11 +1673,12 @@ export default function App() {
             >
 
                 <div className="resume-modal-scroll">
+
                     <Resume inModal />
+
                 </div>
 
             </Modal>
-
 
             {/* =====================================================
           CERTIFICATIONS
@@ -1481,21 +1686,28 @@ export default function App() {
 
             <CertsModal
                 isOpen={certsOpen}
-                onClose={() => setCertsOpen(false)}
+                onClose={() =>
+                    setCertsOpen(false)
+                }
             />
-
 
             {/* =====================================================
           TOAST
           ===================================================== */}
 
             <div
-                className={`toast ${toast.visible ? 'show' : ''
-                    } ${toast.type}`}
+                className={
+                    `toast ${toast.visible
+                        ? 'show'
+                        : ''
+                    } ${toast.type}`
+                }
                 role="status"
                 aria-live="polite"
             >
+
                 {toast.msg}
+
             </div>
 
         </div>
