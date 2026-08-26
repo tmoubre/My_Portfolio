@@ -60,10 +60,7 @@ export default function App() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isChoiceOpen, setIsChoiceOpen] = useState(false);
     const [isResumeOpen, setIsResumeOpen] = useState(false);
-
     const [certsOpen, setCertsOpen] = useState(false);
-
-    // Technical Portfolio modal
     const [portfolioOpen, setPortfolioOpen] = useState(false);
 
     const [formStatus, setFormStatus] = useState({
@@ -258,7 +255,6 @@ export default function App() {
                     </div>
 
                     <nav>
-
                         <button
                             type="button"
                             className="modal-secondary btn-sm"
@@ -287,8 +283,8 @@ export default function App() {
                         >
                             Get in touch
                         </button>
-
                     </nav>
+
                 </div>
             </header>
 
@@ -304,195 +300,186 @@ export default function App() {
                     className="hero"
                     id="home"
                 >
-                    <div className="hero-wrap">
+                    <div className="hero-shell">
 
-                        {/* Hero introduction */}
-                        <div className="hero-content">
+                        <div className="hero-wrap">
 
-                            <p className="hero-eyebrow">
-                                DIGITAL PRODUCTS • PRODUCT OWNERSHIP • TECHNOLOGY
-                            </p>
+                            {/* LEFT */}
+                            <div className="hero-content">
 
-                            <h1 className="title">
-                                Senior Analyst, Digital Products
+                                <div className="hero-status-row">
+                                    <span className="hero-status-dot" />
 
-                                <span className="title-accent">
-                                    Product Owner • Technology Leader • Full-Stack Developer
-                                </span>
-                            </h1>
-
-                            <p className="subtitle">
-                                I bridge business operations and technology to improve
-                                enterprise products, processes, and user experiences.
-                                My background combines product ownership, business analysis,
-                                Agile delivery, SQL and data analysis, UAT and release
-                                management, systems integration, and full-stack software
-                                development.
-                            </p>
-
-                            {/* Hero actions */}
-                            <div
-                                className="hero-actions"
-                                style={{
-                                    display: 'flex',
-                                    gap: 12,
-                                    flexWrap: 'wrap',
-                                    marginTop: 22,
-                                }}
-                            >
-
-                                <button
-                                    type="button"
-                                    className="pill"
-                                    onClick={openPortfolioModal}
-                                >
-                                    Explore Technical Work
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="modal-secondary"
-                                    onClick={openResumeModal}
-                                >
-                                    View Resume
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="modal-secondary"
-                                    onClick={openFormModal}
-                                >
-                                    Connect With Me
-                                </button>
-
-                            </div>
-
-                            {/* Expertise tags */}
-                            <div
-                                className="tags"
-                                aria-label="Professional expertise"
-                                style={{
-                                    marginTop: 24,
-                                }}
-                            >
-                                <span className="tag">
-                                    Product Ownership
-                                </span>
-
-                                <span className="tag">
-                                    Business Analysis
-                                </span>
-
-                                <span className="tag">
-                                    Agile Delivery
-                                </span>
-
-                                <span className="tag">
-                                    SQL & Data Analysis
-                                </span>
-
-                                <span className="tag">
-                                    UAT & QA
-                                </span>
-
-                                <span className="tag">
-                                    Release Management
-                                </span>
-
-                                <span className="tag">
-                                    Systems Integration
-                                </span>
-
-                                <span className="tag">
-                                    React
-                                </span>
-
-                                <span className="tag">
-                                    Node / Express
-                                </span>
-                            </div>
-
-                        </div>
-
-                        {/* =================================================
-                ABOUT CARD
-                ================================================= */}
-                        <div
-                            className="card hero-about-card"
-                            aria-label="About Troy"
-                        >
-
-                            <h2>
-                                About
-                            </h2>
-
-                            <p>
-                                I’m Troy, a Senior Analyst in Digital Products with a
-                                background that spans operations, product ownership,
-                                enterprise systems, business analysis, and software
-                                development.
-                            </p>
-
-                            <p>
-                                My work focuses on translating business needs into practical
-                                technology solutions, guiding products from requirements
-                                through development and testing, coordinating stakeholders,
-                                improving processes, and helping teams deliver reliable tools
-                                that users can actually work with.
-                            </p>
-
-                            <p>
-                                My full-stack development background gives me an additional
-                                technical perspective when working with developers,
-                                integrations, APIs, databases, application architecture,
-                                testing, and production support.
-                            </p>
-
-                            <p className="muted">
-                                Product-minded. Technically fluent. Operations grounded.
-                            </p>
-
-                            {/* CSPO Professional Credential */}
-                            <div className="hero-credential">
-
-                                <div className="hero-credential-image-wrap">
-                                    <img
-                                        src="/certs/CSPO.png"
-                                        alt="Certified Scrum Product Owner CSPO badge"
-                                        className="hero-credential-image"
-                                    />
+                                    <span>
+                                        DIGITAL PRODUCTS • PRODUCT OWNERSHIP • TECHNOLOGY
+                                    </span>
                                 </div>
 
-                                <div className="hero-credential-content">
+                                <h1 className="title">
+                                    Senior Analyst,
+                                    <br />
+                                    Digital Products
 
-                                    <span className="hero-credential-label">
-                                        PROFESSIONAL CERTIFICATION
+                                    <span className="title-accent">
+                                        Product Owner • Technology Leader • Full-Stack Developer
                                     </span>
+                                </h1>
 
-                                    <h3>
-                                        Certified Scrum Product Owner (CSPO)
-                                    </h3>
+                                <p className="subtitle">
+                                    I bridge business operations and technology to improve
+                                    enterprise products, processes, and user experiences.
+                                    My background combines product ownership, business analysis,
+                                    Agile delivery, SQL and data analysis, UAT and release
+                                    management, systems integration, and full-stack software
+                                    development.
+                                </p>
 
-                                    <p className="hero-credential-issuer">
-                                        Scrum Alliance
-                                    </p>
-
-                                    <p className="hero-credential-description">
-                                        Professional credential supporting product ownership,
-                                        prioritization, stakeholder collaboration, and Agile
-                                        product delivery.
-                                    </p>
+                                <div className="hero-actions">
+                                    <button
+                                        type="button"
+                                        className="pill"
+                                        onClick={openPortfolioModal}
+                                    >
+                                        Explore Technical Work
+                                    </button>
 
                                     <button
                                         type="button"
-                                        className="hero-credential-link"
-                                        onClick={() => setCertsOpen(true)}
+                                        className="modal-secondary"
+                                        onClick={openResumeModal}
                                     >
-                                        View Certifications →
+                                        View Resume
                                     </button>
 
+                                    <button
+                                        type="button"
+                                        className="modal-secondary"
+                                        onClick={openFormModal}
+                                    >
+                                        Connect With Me
+                                    </button>
                                 </div>
+
+                                <div
+                                    className="tags"
+                                    aria-label="Professional expertise"
+                                >
+                                    <span className="tag">Product Ownership</span>
+                                    <span className="tag">Business Analysis</span>
+                                    <span className="tag">Agile Delivery</span>
+                                    <span className="tag">SQL & Data Analysis</span>
+                                    <span className="tag">UAT & QA</span>
+                                    <span className="tag">Release Management</span>
+                                    <span className="tag">Systems Integration</span>
+                                    <span className="tag">React</span>
+                                    <span className="tag">Node / Express</span>
+                                </div>
+
                             </div>
+
+                            {/* RIGHT PROFILE CARD */}
+                            <aside
+                                className="hero-profile-card"
+                                aria-label="About Troy"
+                            >
+
+                                <div className="hero-profile-header">
+                                    <div>
+                                        <span className="hero-profile-kicker">
+                                            PRODUCT & TECHNOLOGY
+                                        </span>
+
+                                        <h2>
+                                            About
+                                        </h2>
+                                    </div>
+
+                                    <div
+                                        className="hero-profile-mark"
+                                        aria-hidden="true"
+                                    >
+                                        TO
+                                    </div>
+                                </div>
+
+                                <div className="hero-profile-copy">
+                                    <p>
+                                        I’m Troy, a Senior Analyst in Digital Products with a
+                                        background spanning operations, product ownership,
+                                        enterprise systems, business analysis, and software
+                                        development.
+                                    </p>
+
+                                    <p>
+                                        I translate business needs into practical technology
+                                        solutions and guide products from requirements through
+                                        development, testing, release, production support, and
+                                        continuous improvement.
+                                    </p>
+
+                                    <p>
+                                        My full-stack development background gives me an
+                                        additional technical perspective when partnering with
+                                        developers on integrations, APIs, databases,
+                                        application architecture, testing, and production issues.
+                                    </p>
+                                </div>
+
+                                {/* CURRENT FOCUS */}
+                                <div className="hero-focus">
+                                    <span className="hero-focus-label">
+                                        CURRENT FOCUS
+                                    </span>
+
+                                    <div className="hero-focus-items">
+                                        <span>Enterprise Products</span>
+                                        <span>Agile Delivery</span>
+                                        <span>Digital Transformation</span>
+                                    </div>
+                                </div>
+
+                                {/* CREDENTIAL */}
+                                <div className="hero-credential">
+
+                                    <div className="hero-credential-image-wrap">
+                                        <img
+                                            src="/certs/CSPO.png"
+                                            alt="Certified Scrum Product Owner CSPO badge"
+                                            className="hero-credential-image"
+                                        />
+                                    </div>
+
+                                    <div className="hero-credential-content">
+
+                                        <span className="hero-credential-label">
+                                            PROFESSIONAL CERTIFICATION
+                                        </span>
+
+                                        <h3>
+                                            Certified Scrum Product Owner
+                                        </h3>
+
+                                        <p className="hero-credential-issuer">
+                                            Scrum Alliance • CSPO
+                                        </p>
+
+                                        <button
+                                            type="button"
+                                            className="hero-credential-link"
+                                            onClick={() => setCertsOpen(true)}
+                                        >
+                                            View Certifications →
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="hero-profile-footer">
+                                    Product-minded. Technically fluent. Operations grounded.
+                                </div>
+
+                            </aside>
 
                         </div>
 
@@ -518,9 +505,7 @@ export default function App() {
                     <div
                         className="grid"
                         role="list"
-                        style={{
-                            marginTop: 16,
-                        }}
+                        style={{ marginTop: 16 }}
                     >
 
                         <article
@@ -562,8 +547,8 @@ export default function App() {
                             </h3>
 
                             <p className="proj-desc">
-                                SQL investigation, data validation, reconciliation, reporting,
-                                root-cause analysis, production troubleshooting,
+                                SQL investigation, data validation, reconciliation,
+                                reporting, root-cause analysis, production troubleshooting,
                                 and decision support.
                             </p>
                         </article>
@@ -789,7 +774,6 @@ export default function App() {
 
                     </div>
 
-                    {/* Technical portfolio bridge */}
                     <div className="impact-portfolio-cta">
 
                         <div>
@@ -840,9 +824,7 @@ export default function App() {
                     <div
                         className="contact"
                         role="list"
-                        style={{
-                            marginTop: '12px',
-                        }}
+                        style={{ marginTop: 12 }}
                     >
 
                         <button
@@ -894,6 +876,7 @@ export default function App() {
                         </a>
 
                     </div>
+
                 </section>
 
             </main>
@@ -902,6 +885,7 @@ export default function App() {
           FOOTER
           ===================================================== */}
             <footer className="footer">
+
                 <div className="container footer-actions">
 
                     <small>
@@ -938,6 +922,7 @@ export default function App() {
                     </div>
 
                 </div>
+
             </footer>
 
             {/* =====================================================
@@ -948,6 +933,7 @@ export default function App() {
                 onClose={closePortfolioModal}
                 title="Technical Portfolio"
             >
+
                 <div className="portfolio-modal-wrap">
 
                     <div className="portfolio-modal-intro">
@@ -978,6 +964,7 @@ export default function App() {
                     </div>
 
                     <div className="portfolio-modal-footer">
+
                         <p>
                             Additional source code and development work are available
                             through GitHub.
@@ -991,9 +978,11 @@ export default function App() {
                         >
                             Visit GitHub
                         </a>
+
                     </div>
 
                 </div>
+
             </Modal>
 
             {/* =====================================================
@@ -1004,6 +993,7 @@ export default function App() {
                 onClose={closeFormModal}
                 title="Get in touch"
             >
+
                 <form onSubmit={handleFormSubmit}>
 
                     <label htmlFor="name">
@@ -1019,9 +1009,7 @@ export default function App() {
 
                     <label
                         htmlFor="email"
-                        style={{
-                            marginTop: 10,
-                        }}
+                        style={{ marginTop: 10 }}
                     >
                         Your Email:
                     </label>
@@ -1035,9 +1023,7 @@ export default function App() {
 
                     <label
                         htmlFor="message"
-                        style={{
-                            marginTop: 10,
-                        }}
+                        style={{ marginTop: 10 }}
                     >
                         Message:
                     </label>
@@ -1049,13 +1035,10 @@ export default function App() {
                         required
                     />
 
-                    {/* Honeypot */}
                     <input
                         type="text"
                         name="_gotcha"
-                        style={{
-                            display: 'none',
-                        }}
+                        style={{ display: 'none' }}
                         tabIndex={-1}
                         autoComplete="off"
                     />
@@ -1091,15 +1074,14 @@ export default function App() {
                     {formStatus.state !== 'idle' && (
                         <p
                             className="muted"
-                            style={{
-                                marginTop: 10,
-                            }}
+                            style={{ marginTop: 10 }}
                         >
                             {formStatus.msg}
                         </p>
                     )}
 
                 </form>
+
             </Modal>
 
             {/* =====================================================
@@ -1113,9 +1095,7 @@ export default function App() {
 
                 <p
                     className="muted"
-                    style={{
-                        marginBottom: 14,
-                    }}
+                    style={{ marginBottom: 14 }}
                 >
                     How would you like to get in touch?
                 </p>
@@ -1156,6 +1136,7 @@ export default function App() {
                 onClose={closeResumeModal}
                 title="Resume"
             >
+
                 <div
                     style={{
                         maxHeight: '70vh',
@@ -1165,6 +1146,7 @@ export default function App() {
                 >
                     <Resume inModal />
                 </div>
+
             </Modal>
 
             {/* =====================================================
