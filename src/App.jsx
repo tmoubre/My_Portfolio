@@ -1,13 +1,8 @@
-// src/App.jsx
-
 import React, { useEffect, useRef, useState } from 'react';
-
-// ============================================================
-// LUCIDE UI / CONCEPT ICONS
-// ============================================================
 
 import {
     Home,
+    Briefcase,
     Folder,
     Award,
     FileText,
@@ -22,10 +17,6 @@ import {
     Quote,
     ChevronDown,
 } from 'lucide-react';
-
-// ============================================================
-// BRAND / TECHNOLOGY ICONS
-// ============================================================
 
 import {
     FaGithub,
@@ -44,38 +35,18 @@ import {
     VscAzureDevops,
 } from 'react-icons/vsc';
 
-// ============================================================
-// COMPONENTS
-// ============================================================
-
 import ProjectCard from './components/ProjectCard.jsx';
 import Modal from './components/Modal.jsx';
 import Resume from './components/Resume.jsx';
 import CertsModal from './components/CertsModal.jsx';
-
 import projects from './data/projects.js';
 
-// ============================================================
-// PERSONAL LINKS
-// ============================================================
-
 const EMAIL = 'oubre1@att.net';
-
-const GITHUB =
-    'https://github.com/tmoubre';
-
+const GITHUB = 'https://github.com/tmoubre';
 const LINKEDIN =
     'https://www.linkedin.com/in/troy-oubre-32170a32/';
-
-const MEDIUM =
-    'https://medium.com/@scinetbr';
-
-const X =
-    'https://x.com/troydevelops';
-
-// ============================================================
-// PROJECT HIGHLIGHTS
-// ============================================================
+const MEDIUM = 'https://medium.com/@scinetbr';
+const X = 'https://x.com/troydevelops';
 
 const PROJECT_HIGHLIGHTS = {
     'Responsive Portfolio Website': [
@@ -109,9 +80,77 @@ const PROJECT_HIGHLIGHTS = {
     ],
 };
 
-// ============================================================
-// CONTACT ENDPOINT
-// ============================================================
+const EXPERTISE = [
+    {
+        title: 'Product Ownership',
+        text:
+            'Requirements definition, backlog refinement, prioritization, stakeholder alignment, roadmap support, user feedback, enhancement planning, and product governance.',
+    },
+    {
+        title: 'Enterprise Applications',
+        text:
+            'Functional ownership, production support, systems integration, application enhancements, business process improvement, issue analysis, and cross-functional delivery.',
+    },
+    {
+        title: 'Data & SQL',
+        text:
+            'SQL investigation, data validation, reconciliation, reporting, root-cause analysis, production troubleshooting, and decision support.',
+    },
+    {
+        title: 'UAT & Release Delivery',
+        text:
+            'Test planning, QA validation, UAT coordination, defect triage, release readiness, stakeholder communication, deployment governance, and post-release validation.',
+    },
+    {
+        title: 'Full-Stack Development',
+        text:
+            'React, JavaScript, Node.js, Express, MongoDB, APIs, authentication, responsive interfaces, testing, serverless applications, and mobile development.',
+    },
+    {
+        title: 'Business & Technology Bridge',
+        text:
+            'Translating business requirements into technical direction while helping developers, users, operations teams, and leadership stay aligned throughout delivery.',
+    },
+];
+
+const PROFESSIONAL_IMPACT = [
+    {
+        number: '01',
+        title: 'Enterprise Product Ownership',
+        text:
+            'Own and guide the evolution of a business-critical enterprise platform, translating operational needs into requirements, backlog priorities, enhancements, testing strategies, and production releases.',
+    },
+    {
+        number: '02',
+        title: 'Product Governance & Delivery Management',
+        text:
+            'Own the Azure DevOps delivery process for the product, managing work from intake and refinement through development, QA, UAT, change governance, release readiness, deployment, and post-release validation.',
+    },
+    {
+        number: '03',
+        title: 'User Council & UAT Program',
+        text:
+            'Created a formal user council and UAT framework that brings business users directly into product development through structured testing, feedback, release readiness, and continuous improvement.',
+    },
+    {
+        number: '04',
+        title: 'Enterprise Data & System Mapping',
+        text:
+            'Conduct deep SQL and data analysis across interconnected enterprise systems to map business processes, trace transactions, reconcile data, investigate production issues, and support technical solution design.',
+    },
+    {
+        number: '05',
+        title: 'Systems Integration & Process Modernization',
+        text:
+            'Partner with development, operations, finance, and other stakeholders on integrations and workflow improvements that connect enterprise platforms and reduce operational friction.',
+    },
+    {
+        number: '06',
+        title: 'Knowledge & Digital Experience',
+        text:
+            'Designed centralized digital workspaces, documentation experiences, release communications, training resources, and self-service content to improve product adoption and give users better access to information.',
+    },
+];
 
 const IS_PROD =
     typeof import.meta !== 'undefined' &&
@@ -121,20 +160,17 @@ const CONTACT_URL = IS_PROD
     ? '/.netlify/functions/contact'
     : 'https://formspree.io/f/xblkvnzg';
 
-// ============================================================
-// APP
-// ============================================================
-
 export default function App() {
-    // ==========================================================
-    // STATE
-    // ==========================================================
+    const [experienceOpen, setExperienceOpen] = useState(false);
+    const [experienceTab, setExperienceTab] =
+        useState('expertise');
 
-    const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isChoiceOpen, setIsChoiceOpen] = useState(false);
-    const [isResumeOpen, setIsResumeOpen] = useState(false);
-    const [certsOpen, setCertsOpen] = useState(false);
     const [portfolioOpen, setPortfolioOpen] = useState(false);
+    const [certsOpen, setCertsOpen] = useState(false);
+    const [isResumeOpen, setIsResumeOpen] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+
+    const [activeNav, setActiveNav] = useState('home');
 
     const [formStatus, setFormStatus] = useState({
         state: 'idle',
@@ -148,10 +184,6 @@ export default function App() {
     });
 
     const toastTimerRef = useRef(null);
-
-    // ==========================================================
-    // TOAST
-    // ==========================================================
 
     const showToast = (
         message,
@@ -176,13 +208,10 @@ export default function App() {
         }, duration);
     };
 
-    // ==========================================================
-    // INITIAL LOAD
-    // ==========================================================
-
     useEffect(() => {
         if (window.location.hash === '#contact') {
             setIsFormOpen(true);
+            setActiveNav('contact');
         }
 
         return () => {
@@ -192,11 +221,9 @@ export default function App() {
         };
     }, []);
 
-    // ==========================================================
-    // NAVIGATION
-    // ==========================================================
-
     const scrollHome = () => {
+        setActiveNav('home');
+
         document
             .getElementById('home')
             ?.scrollIntoView({
@@ -204,67 +231,62 @@ export default function App() {
             });
     };
 
-    const scrollExpertise = () => {
-        document
-            .getElementById('expertise')
-            ?.scrollIntoView({
-                behavior: 'smooth',
-            });
+    const openExperienceModal = (
+        tab = 'expertise'
+    ) => {
+        setExperienceTab(tab);
+        setActiveNav('experience');
+        setExperienceOpen(true);
     };
 
-    // ==========================================================
-    // MODALS
-    // ==========================================================
+    const closeExperienceModal = () => {
+        setExperienceOpen(false);
+        setActiveNav('home');
+    };
 
     const openPortfolioModal = () => {
+        setActiveNav('projects');
         setPortfolioOpen(true);
     };
 
     const closePortfolioModal = () => {
         setPortfolioOpen(false);
+        setActiveNav('home');
+    };
+
+    const openCertsModal = () => {
+        setActiveNav('certs');
+        setCertsOpen(true);
+    };
+
+    const closeCertsModal = () => {
+        setCertsOpen(false);
+        setActiveNav('home');
     };
 
     const openResumeModal = () => {
+        setActiveNav('resume');
         setIsResumeOpen(true);
     };
 
     const closeResumeModal = () => {
         setIsResumeOpen(false);
+        setActiveNav('home');
     };
 
     const openFormModal = () => {
+        setActiveNav('contact');
         setIsFormOpen(true);
     };
 
     const closeFormModal = () => {
         setIsFormOpen(false);
+        setActiveNav('home');
 
         setFormStatus({
             state: 'idle',
             msg: '',
         });
-    };
-
-    const openChoiceModal = () => {
-        setIsChoiceOpen(true);
-    };
-
-    const closeChoiceModal = () => {
-        setIsChoiceOpen(false);
-    };
-
-    // ==========================================================
-    // CONTACT
-    // ==========================================================
-
-    const handleEmailClient = () => {
-        window.location.href = `mailto:${EMAIL}`;
-        closeChoiceModal();
-    };
-
-    const handleUseForm = () => {
-        closeChoiceModal();
-        openFormModal();
     };
 
     const handleFormSubmit = async (event) => {
@@ -321,7 +343,6 @@ export default function App() {
             }
 
             form.reset();
-
             closeFormModal();
 
             showToast(
@@ -338,15 +359,11 @@ export default function App() {
         }
     };
 
-    // ==========================================================
-    // RENDER
-    // ==========================================================
-
     return (
         <div className="site-shell">
 
             {/* =====================================================
-          DESKTOP SIDEBAR
+          SIDEBAR
           ===================================================== */}
 
             <aside className="side-nav">
@@ -355,7 +372,8 @@ export default function App() {
 
                     <button
                         type="button"
-                        className="side-nav-item active"
+                        className={`side-nav-item ${activeNav === 'home' ? 'active' : ''
+                            }`}
                         onClick={scrollHome}
                         aria-label="Home"
                     >
@@ -370,7 +388,26 @@ export default function App() {
 
                     <button
                         type="button"
-                        className="side-nav-item"
+                        className={`side-nav-item ${activeNav === 'experience' ? 'active' : ''
+                            }`}
+                        onClick={() =>
+                            openExperienceModal('expertise')
+                        }
+                        aria-label="Experience"
+                    >
+                        <span className="side-nav-icon">
+                            <Briefcase size={24} />
+                        </span>
+
+                        <span className="side-nav-label">
+                            Experience
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className={`side-nav-item ${activeNav === 'projects' ? 'active' : ''
+                            }`}
                         onClick={openPortfolioModal}
                         aria-label="Projects"
                     >
@@ -385,8 +422,9 @@ export default function App() {
 
                     <button
                         type="button"
-                        className="side-nav-item"
-                        onClick={() => setCertsOpen(true)}
+                        className={`side-nav-item ${activeNav === 'certs' ? 'active' : ''
+                            }`}
+                        onClick={openCertsModal}
                         aria-label="Certifications"
                     >
                         <span className="side-nav-icon">
@@ -400,7 +438,8 @@ export default function App() {
 
                     <button
                         type="button"
-                        className="side-nav-item"
+                        className={`side-nav-item ${activeNav === 'resume' ? 'active' : ''
+                            }`}
                         onClick={openResumeModal}
                         aria-label="Resume"
                     >
@@ -415,7 +454,8 @@ export default function App() {
 
                     <button
                         type="button"
-                        className="side-nav-item"
+                        className={`side-nav-item ${activeNav === 'contact' ? 'active' : ''
+                            }`}
                         onClick={openFormModal}
                         aria-label="Contact"
                     >
@@ -430,10 +470,6 @@ export default function App() {
 
                 </div>
 
-                {/* ===================================================
-            SOCIAL ICONS
-            =================================================== */}
-
                 <div className="side-social">
 
                     <a
@@ -441,6 +477,7 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="GitHub"
+                        title="GitHub"
                         className="social-github"
                     >
                         <FaGithub />
@@ -451,6 +488,7 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="LinkedIn"
+                        title="LinkedIn"
                         className="social-linkedin"
                     >
                         <FaLinkedinIn />
@@ -461,6 +499,7 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="Medium"
+                        title="Medium"
                         className="social-medium"
                     >
                         <FaMedium />
@@ -471,6 +510,7 @@ export default function App() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label="X"
+                        title="X"
                         className="social-x"
                     >
                         <FaXTwitter />
@@ -501,22 +541,16 @@ export default function App() {
                             </div>
 
                             <div className="brand-tagline">
-
                                 <span>BUILD</span>
                                 <span>•</span>
                                 <span>IMPROVE</span>
                                 <span>•</span>
                                 <span>DELIVER</span>
-
                             </div>
 
                         </div>
 
                     </div>
-
-                    {/* =================================================
-              MOBILE / TABLET NAV
-              ================================================= */}
 
                     <nav className="mobile-nav">
 
@@ -532,6 +566,17 @@ export default function App() {
                         <button
                             type="button"
                             className="mobile-nav-link"
+                            onClick={() =>
+                                openExperienceModal('expertise')
+                            }
+                            aria-label="Experience"
+                        >
+                            <Briefcase size={18} />
+                        </button>
+
+                        <button
+                            type="button"
+                            className="mobile-nav-link"
                             onClick={openPortfolioModal}
                             aria-label="Projects"
                         >
@@ -541,7 +586,7 @@ export default function App() {
                         <button
                             type="button"
                             className="mobile-nav-link"
-                            onClick={() => setCertsOpen(true)}
+                            onClick={openCertsModal}
                             aria-label="Certifications"
                         >
                             <Award size={18} />
@@ -572,16 +617,12 @@ export default function App() {
             </header>
 
             {/* =====================================================
-          PAGE CONTENT
+          HOME
           ===================================================== */}
 
             <div className="page-content">
 
                 <main className="container">
-
-                    {/* =================================================
-              HERO
-              ================================================= */}
 
                     <section
                         className="hero"
@@ -591,10 +632,6 @@ export default function App() {
                         <div className="hero-frame">
 
                             <div className="hero-main-grid">
-
-                                {/* =============================================
-                    HERO LEFT
-                    ============================================= */}
 
                                 <div className="hero-primary">
 
@@ -648,110 +685,75 @@ export default function App() {
 
                                     </div>
 
-                                    {/* =============================================
-                      CAPABILITY / TECHNOLOGY ICONS
-                      ============================================= */}
-
                                     <div
                                         className="hero-capabilities"
                                         aria-label="Key capabilities"
                                     >
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon icon-product-owner">
                                                 <CheckCircle size={18} />
                                             </span>
-
                                             Product Owner
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon brand-icon icon-azure-devops">
                                                 <VscAzureDevops />
                                             </span>
-
                                             Azure DevOps
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon icon-sql">
                                                 <Database size={18} />
                                             </span>
-
                                             SQL
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon icon-powerapps">
                                                 <LayoutDashboard size={18} />
                                             </span>
-
                                             Power Apps
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon icon-sharepoint">
                                                 <Share2 size={18} />
                                             </span>
-
                                             SharePoint
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon brand-icon icon-javascript">
                                                 <SiJavascript />
                                             </span>
-
                                             JavaScript
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon brand-icon icon-react">
                                                 <SiReact />
                                             </span>
-
                                             React
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon brand-icon icon-node">
                                                 <SiNodedotjs />
                                             </span>
-
                                             Node.js
-
                                         </span>
 
                                         <span className="capability-pill">
-
                                             <span className="cap-icon icon-api">
                                                 <LinkIcon size={18} />
                                             </span>
-
                                             API Integration
-
                                         </span>
 
                                     </div>
-
-                                    {/* =============================================
-                      CSPO CREDENTIAL
-                      ============================================= */}
 
                                     <div className="hero-cert-card">
 
@@ -793,20 +795,15 @@ export default function App() {
                                         <button
                                             type="button"
                                             className="hero-cert-link"
-                                            onClick={() => setCertsOpen(true)}
+                                            onClick={openCertsModal}
                                         >
                                             View Certifications
-
                                             <ArrowRight size={16} />
                                         </button>
 
                                     </div>
 
                                 </div>
-
-                                {/* =============================================
-                    HERO RIGHT
-                    ============================================= */}
 
                                 <aside className="hero-side">
 
@@ -832,10 +829,6 @@ export default function App() {
 
                                     </div>
 
-                                    {/* =========================================
-                      ACTIONS
-                      ========================================= */}
-
                                     <div className="hero-action-panel">
 
                                         <button
@@ -843,7 +836,6 @@ export default function App() {
                                             className="hero-action hero-action-primary"
                                             onClick={openFormModal}
                                         >
-
                                             <span className="hero-action-icon">
                                                 <Send size={20} />
                                             </span>
@@ -856,7 +848,6 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
-
                                         </button>
 
                                         <button
@@ -864,7 +855,6 @@ export default function App() {
                                             className="hero-action"
                                             onClick={openResumeModal}
                                         >
-
                                             <span className="hero-action-icon">
                                                 <FileText size={20} />
                                             </span>
@@ -877,7 +867,6 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
-
                                         </button>
 
                                         <button
@@ -885,7 +874,6 @@ export default function App() {
                                             className="hero-action"
                                             onClick={openPortfolioModal}
                                         >
-
                                             <span className="hero-action-icon">
                                                 <Folder size={20} />
                                             </span>
@@ -898,14 +886,9 @@ export default function App() {
                                                 className="hero-action-arrow"
                                                 size={18}
                                             />
-
                                         </button>
 
                                     </div>
-
-                                    {/* =========================================
-                      PHILOSOPHY
-                      ========================================= */}
 
                                     <div className="hero-quote">
 
@@ -929,471 +912,19 @@ export default function App() {
 
                             </div>
 
-                            {/* =============================================
-                  SCROLL
-                  ============================================= */}
-
                             <button
                                 type="button"
                                 className="hero-scroll"
-                                onClick={scrollExpertise}
+                                onClick={() =>
+                                    openExperienceModal('expertise')
+                                }
                             >
-
                                 <span>
-                                    SCROLL TO EXPLORE
+                                    EXPLORE EXPERIENCE
                                 </span>
 
                                 <ChevronDown size={21} />
-
                             </button>
-
-                        </div>
-
-                    </section>
-
-                    {/* =================================================
-              PRODUCT & TECHNOLOGY EXPERTISE
-              ================================================= */}
-
-                    <section
-                        className="card expertise-section"
-                        id="expertise"
-                    >
-
-                        <div className="section-kicker">
-                            CAPABILITY
-                        </div>
-
-                        <h2>
-                            Product & Technology Expertise
-                        </h2>
-
-                        <p className="muted">
-                            My experience sits at the intersection of business
-                            operations, enterprise technology, product delivery,
-                            and software development.
-                        </p>
-
-                        <div
-                            className="grid"
-                            role="list"
-                        >
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    Product Ownership
-                                </h3>
-
-                                <p className="proj-desc">
-                                    Requirements definition, backlog refinement,
-                                    prioritization, stakeholder alignment, roadmap
-                                    support, user feedback, enhancement planning,
-                                    and product governance.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    Enterprise Applications
-                                </h3>
-
-                                <p className="proj-desc">
-                                    Functional ownership, production support, systems
-                                    integration, application enhancements, business
-                                    process improvement, issue analysis, and
-                                    cross-functional delivery.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    Data & SQL
-                                </h3>
-
-                                <p className="proj-desc">
-                                    SQL investigation, data validation,
-                                    reconciliation, reporting, root-cause analysis,
-                                    production troubleshooting, and decision support.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    UAT & Release Delivery
-                                </h3>
-
-                                <p className="proj-desc">
-                                    Test planning, QA validation, UAT coordination,
-                                    defect triage, release readiness, stakeholder
-                                    communication, deployment governance,
-                                    and post-release validation.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    Full-Stack Development
-                                </h3>
-
-                                <p className="proj-desc">
-                                    React, JavaScript, Node.js, Express, MongoDB,
-                                    APIs, authentication, responsive interfaces,
-                                    testing, serverless applications,
-                                    and mobile development.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="card project"
-                                role="listitem"
-                            >
-
-                                <h3>
-                                    Business & Technology Bridge
-                                </h3>
-
-                                <p className="proj-desc">
-                                    Translating business requirements into technical
-                                    direction while helping developers, users,
-                                    operations teams, and leadership stay aligned
-                                    throughout delivery.
-                                </p>
-
-                            </article>
-
-                        </div>
-
-                    </section>
-
-                    {/* =================================================
-              PROFESSIONAL IMPACT
-              ================================================= */}
-
-                    <section
-                        className="professional-impact"
-                        id="impact"
-                    >
-
-                        <div className="impact-header">
-
-                            <span className="impact-eyebrow">
-                                PRODUCT LEADERSHIP IN PRACTICE
-                            </span>
-
-                            <h2>
-                                Professional Impact
-                            </h2>
-
-                            <p>
-                                From requirements and data investigation to UAT,
-                                release governance, production support, and user
-                                adoption, I work across the full product lifecycle.
-                            </p>
-
-                        </div>
-
-                        <div
-                            className="impact-pill-row"
-                            aria-label="Professional impact areas"
-                        >
-
-                            <span className="impact-pill">
-                                Product Ownership
-                            </span>
-
-                            <span className="impact-pill">
-                                Enterprise Systems
-                            </span>
-
-                            <span className="impact-pill">
-                                Cross-Functional Leadership
-                            </span>
-
-                            <span className="impact-pill">
-                                ADO & Agile Delivery
-                            </span>
-
-                        </div>
-
-                        <div
-                            className="impact-grid"
-                            role="list"
-                        >
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    01
-                                </span>
-
-                                <h3>
-                                    Enterprise Product Ownership
-                                </h3>
-
-                                <p>
-                                    Own and guide the evolution of a business-critical
-                                    enterprise platform, translating operational
-                                    needs into requirements, backlog priorities,
-                                    enhancements, testing strategies,
-                                    and production releases.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    02
-                                </span>
-
-                                <h3>
-                                    Product Governance & Delivery Management
-                                </h3>
-
-                                <p>
-                                    Own the Azure DevOps delivery process for the
-                                    product, managing work from intake and refinement
-                                    through development, QA, UAT, change governance,
-                                    release readiness, deployment,
-                                    and post-release validation.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    03
-                                </span>
-
-                                <h3>
-                                    User Council & UAT Program
-                                </h3>
-
-                                <p>
-                                    Created a formal user council and UAT framework
-                                    that brings business users directly into product
-                                    development through structured testing, feedback,
-                                    release readiness, and continuous improvement.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    04
-                                </span>
-
-                                <h3>
-                                    Enterprise Data & System Mapping
-                                </h3>
-
-                                <p>
-                                    Conduct deep SQL and data analysis across
-                                    interconnected enterprise systems to map business
-                                    processes, trace transactions, reconcile data,
-                                    investigate production issues, and support
-                                    technical solution design.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    05
-                                </span>
-
-                                <h3>
-                                    Systems Integration & Process Modernization
-                                </h3>
-
-                                <p>
-                                    Partner with development, operations, finance,
-                                    and other stakeholders on integrations and
-                                    workflow improvements that connect enterprise
-                                    platforms and reduce operational friction.
-                                </p>
-
-                            </article>
-
-                            <article
-                                className="impact-card"
-                                role="listitem"
-                            >
-
-                                <span className="impact-number">
-                                    06
-                                </span>
-
-                                <h3>
-                                    Knowledge & Digital Experience
-                                </h3>
-
-                                <p>
-                                    Designed centralized digital workspaces,
-                                    documentation experiences, release communications,
-                                    training resources, and self-service content to
-                                    improve product adoption and give users better
-                                    access to information.
-                                </p>
-
-                            </article>
-
-                        </div>
-
-                        {/* ===============================================
-                PORTFOLIO CTA
-                =============================================== */}
-
-                        <div className="impact-portfolio-cta">
-
-                            <div>
-
-                                <span className="impact-portfolio-label">
-                                    HANDS-ON TECHNICAL FOUNDATION
-                                </span>
-
-                                <h3>
-                                    Software Development Portfolio
-                                </h3>
-
-                                <p>
-                                    Explore the applications and development projects
-                                    behind my full-stack technical foundation.
-                                </p>
-
-                            </div>
-
-                            <button
-                                type="button"
-                                className="hero-action impact-portfolio-button"
-                                onClick={openPortfolioModal}
-                            >
-
-                                <Folder size={18} />
-
-                                <span>
-                                    View Technical Portfolio
-                                </span>
-
-                                <ArrowRight size={18} />
-
-                            </button>
-
-                        </div>
-
-                    </section>
-
-                    {/* =================================================
-              CONTACT
-              ================================================= */}
-
-                    <section
-                        id="contact"
-                        className="card contact-section"
-                    >
-
-                        <div className="section-kicker">
-                            CONNECT
-                        </div>
-
-                        <h2>
-                            Let’s Connect
-                        </h2>
-
-                        <p className="muted">
-                            Interested in product leadership, enterprise
-                            technology, digital transformation, or software
-                            development? I’d be happy to connect.
-                        </p>
-
-                        <div className="contact">
-
-                            <button
-                                className="modal-secondary btn-sm"
-                                type="button"
-                                onClick={openChoiceModal}
-                            >
-                                Email Me
-                            </button>
-
-                            <a
-                                className="modal-secondary btn-sm"
-                                href={LINKEDIN}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                LinkedIn
-                            </a>
-
-                            <a
-                                className="modal-secondary btn-sm"
-                                href={GITHUB}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                GitHub
-                            </a>
-
-                            <a
-                                className="modal-secondary btn-sm"
-                                href={X}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                X
-                            </a>
-
-                            <a
-                                className="modal-secondary btn-sm"
-                                href={MEDIUM}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Medium
-                            </a>
 
                         </div>
 
@@ -1402,51 +933,41 @@ export default function App() {
                 </main>
 
                 {/* ===================================================
-            FOOTER
+            CLEAN FOOTER
             =================================================== */}
 
                 <footer className="footer">
 
-                    <div className="container footer-actions">
+                    <div className="container footer-clean">
 
-                        <div>
+                        <div className="footer-brand">
 
-                            <strong className="footer-name">
-                                Troy M. Oubre
-                            </strong>
+                            <div className="footer-monogram">
+                                TO
+                            </div>
 
-                            <small>
-                                © {new Date().getFullYear()} • Built with React + Vite
-                            </small>
+                            <div>
+
+                                <strong className="footer-name">
+                                    Troy M. Oubre
+                                </strong>
+
+                                <div className="footer-meta">
+                                    © {new Date().getFullYear()}
+                                    <span>•</span>
+                                    Product
+                                    <span>•</span>
+                                    Technology
+                                    <span>•</span>
+                                    Delivery
+                                </div>
+
+                            </div>
 
                         </div>
 
-                        <div className="actions">
-
-                            <button
-                                type="button"
-                                className="modal-secondary btn-sm"
-                                onClick={openPortfolioModal}
-                            >
-                                Technical Portfolio
-                            </button>
-
-                            <button
-                                type="button"
-                                className="modal-secondary btn-sm"
-                                onClick={openResumeModal}
-                            >
-                                Resume
-                            </button>
-
-                            <button
-                                type="button"
-                                className="modal-secondary btn-sm"
-                                onClick={openFormModal}
-                            >
-                                Get in touch
-                            </button>
-
+                        <div className="footer-built">
+                            Built with React + Vite
                         </div>
 
                     </div>
@@ -1456,7 +977,201 @@ export default function App() {
             </div>
 
             {/* =====================================================
-          TECHNICAL PORTFOLIO MODAL
+          EXPERIENCE MODAL
+          ===================================================== */}
+
+            <Modal
+                isOpen={experienceOpen}
+                onClose={closeExperienceModal}
+                title="Experience"
+            >
+
+                <div className="experience-modal">
+
+                    <div className="experience-intro">
+
+                        <span className="experience-eyebrow">
+                            PRODUCT • TECHNOLOGY • DELIVERY
+                        </span>
+
+                        <h2>
+                            Experience & Professional Impact
+                        </h2>
+
+                        <p>
+                            Explore the capabilities and product leadership work
+                            behind my current role and technical foundation.
+                        </p>
+
+                    </div>
+
+                    <div
+                        className="experience-tabs"
+                        role="tablist"
+                        aria-label="Experience sections"
+                    >
+
+                        <button
+                            type="button"
+                            className={`experience-tab ${experienceTab === 'expertise'
+                                    ? 'active'
+                                    : ''
+                                }`}
+                            onClick={() =>
+                                setExperienceTab('expertise')
+                            }
+                        >
+                            Product & Technology
+                        </button>
+
+                        <button
+                            type="button"
+                            className={`experience-tab ${experienceTab === 'impact'
+                                    ? 'active'
+                                    : ''
+                                }`}
+                            onClick={() =>
+                                setExperienceTab('impact')
+                            }
+                        >
+                            Professional Impact
+                        </button>
+
+                    </div>
+
+                    <div className="experience-scroll">
+
+                        {experienceTab === 'expertise' && (
+
+                            <div className="experience-section">
+
+                                <div className="experience-section-header">
+
+                                    <span className="experience-label">
+                                        CAPABILITY
+                                    </span>
+
+                                    <h3>
+                                        Product & Technology Expertise
+                                    </h3>
+
+                                    <p>
+                                        My experience sits at the intersection of
+                                        business operations, enterprise technology,
+                                        product delivery, and software development.
+                                    </p>
+
+                                </div>
+
+                                <div className="experience-grid">
+
+                                    {EXPERTISE.map((item) => (
+
+                                        <article
+                                            className="experience-card"
+                                            key={item.title}
+                                        >
+
+                                            <h4>
+                                                {item.title}
+                                            </h4>
+
+                                            <p>
+                                                {item.text}
+                                            </p>
+
+                                        </article>
+
+                                    ))}
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+                        {experienceTab === 'impact' && (
+
+                            <div className="experience-section">
+
+                                <div className="experience-section-header">
+
+                                    <span className="experience-label">
+                                        PRODUCT LEADERSHIP IN PRACTICE
+                                    </span>
+
+                                    <h3>
+                                        Professional Impact
+                                    </h3>
+
+                                    <p>
+                                        From requirements and data investigation to
+                                        UAT, release governance, production support,
+                                        and user adoption, I work across the full
+                                        product lifecycle.
+                                    </p>
+
+                                </div>
+
+                                <div className="experience-pill-row">
+
+                                    <span>
+                                        Product Ownership
+                                    </span>
+
+                                    <span>
+                                        Enterprise Systems
+                                    </span>
+
+                                    <span>
+                                        Cross-Functional Leadership
+                                    </span>
+
+                                    <span>
+                                        ADO & Agile Delivery
+                                    </span>
+
+                                </div>
+
+                                <div className="experience-grid impact-experience-grid">
+
+                                    {PROFESSIONAL_IMPACT.map((item) => (
+
+                                        <article
+                                            className="experience-card impact-experience-card"
+                                            key={item.number}
+                                        >
+
+                                            <span className="experience-number">
+                                                {item.number}
+                                            </span>
+
+                                            <h4>
+                                                {item.title}
+                                            </h4>
+
+                                            <p>
+                                                {item.text}
+                                            </p>
+
+                                        </article>
+
+                                    ))}
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                </div>
+
+            </Modal>
+
+            {/* =====================================================
+          TECHNICAL PORTFOLIO
           ===================================================== */}
 
             <Modal
@@ -1486,21 +1201,19 @@ export default function App() {
                         role="list"
                     >
 
-                        {projects.map(
-                            (project) => (
+                        {projects.map((project) => (
 
-                                <ProjectCard
-                                    key={project.title}
-                                    {...project}
-                                    highlights={
-                                        PROJECT_HIGHLIGHTS[
-                                        project.title
-                                        ]
-                                    }
-                                />
+                            <ProjectCard
+                                key={project.title}
+                                {...project}
+                                highlights={
+                                    PROJECT_HIGHLIGHTS[
+                                    project.title
+                                    ]
+                                }
+                            />
 
-                            )
-                        )}
+                        ))}
 
                     </div>
 
@@ -1527,7 +1240,7 @@ export default function App() {
             </Modal>
 
             {/* =====================================================
-          CONTACT FORM
+          CONTACT
           ===================================================== */}
 
             <Modal
@@ -1536,9 +1249,7 @@ export default function App() {
                 title="Get in touch"
             >
 
-                <form
-                    onSubmit={handleFormSubmit}
-                >
+                <form onSubmit={handleFormSubmit}>
 
                     <label htmlFor="name">
                         Your Name:
@@ -1589,16 +1300,12 @@ export default function App() {
                             type="submit"
                             className="pill"
                             disabled={
-                                formStatus.state ===
-                                'sending'
+                                formStatus.state === 'sending'
                             }
                         >
-                            {
-                                formStatus.state ===
-                                    'sending'
-                                    ? 'Sending…'
-                                    : 'Send Message'
-                            }
+                            {formStatus.state === 'sending'
+                                ? 'Sending…'
+                                : 'Send Message'}
                         </button>
 
                         <button
@@ -1611,54 +1318,15 @@ export default function App() {
 
                     </div>
 
-                    {
-                        formStatus.state !==
-                        'idle' && (
+                    {formStatus.state !== 'idle' && (
 
-                            <p className="muted form-status">
-                                {formStatus.msg}
-                            </p>
+                        <p className="muted form-status">
+                            {formStatus.msg}
+                        </p>
 
-                        )
-                    }
+                    )}
 
                 </form>
-
-            </Modal>
-
-            {/* =====================================================
-          CONTACT OPTIONS
-          ===================================================== */}
-
-            <Modal
-                isOpen={isChoiceOpen}
-                onClose={closeChoiceModal}
-                title="Contact options"
-            >
-
-                <p className="muted">
-                    How would you like to get in touch?
-                </p>
-
-                <div className="form-actions">
-
-                    <button
-                        type="button"
-                        className="pill"
-                        onClick={handleEmailClient}
-                    >
-                        Open Email Client
-                    </button>
-
-                    <button
-                        type="button"
-                        className="modal-secondary"
-                        onClick={handleUseForm}
-                    >
-                        Use Contact Form
-                    </button>
-
-                </div>
 
             </Modal>
 
@@ -1673,9 +1341,7 @@ export default function App() {
             >
 
                 <div className="resume-modal-scroll">
-
                     <Resume inModal />
-
                 </div>
 
             </Modal>
@@ -1686,28 +1352,16 @@ export default function App() {
 
             <CertsModal
                 isOpen={certsOpen}
-                onClose={() =>
-                    setCertsOpen(false)
-                }
+                onClose={closeCertsModal}
             />
 
-            {/* =====================================================
-          TOAST
-          ===================================================== */}
-
             <div
-                className={
-                    `toast ${toast.visible
-                        ? 'show'
-                        : ''
-                    } ${toast.type}`
-                }
+                className={`toast ${toast.visible ? 'show' : ''
+                    } ${toast.type}`}
                 role="status"
                 aria-live="polite"
             >
-
                 {toast.msg}
-
             </div>
 
         </div>
