@@ -14,28 +14,33 @@ const LINKEDIN = 'https://www.linkedin.com/in/troy-oubre-32170a32/';
 const MEDIUM = 'https://medium.com/@scinetbr';
 const X = 'https://x.com/troydevelops';
 
-// ---- Impact bullets without touching your data file ----
+// ---- Development project highlights ----
 const PROJECT_HIGHLIGHTS = {
     'Responsive Portfolio Website': [
         'Semantic, accessible, mobile-first layout with modal contact form',
         'Deployed to Netlify with resume, certifications, and responsive navigation',
     ],
+
     'myFlix — REST API (Backend)': [
         'JWT authentication, CRUD endpoints for movies, genres, and directors',
         'MongoDB persistence, CORS, validation, and documented API routes',
     ],
+
     'myFlix — React Client (Frontend)': [
         'Protected routes, favorites management, and profile updates',
         'Responsive SPA with routing, search, and Netlify deployment',
     ],
+
     'Meet App — Serverless PWA': [
         'Serverless authentication flow with Google Calendar API and offline support',
         'Data visualization for city and genre with test-driven development',
     ],
+
     'React Native Chat App (Expo)': [
         'Image and location messaging with offline Firestore synchronization',
         'Mobile chat experience built with React Native and Gifted Chat',
     ],
+
     'myFlix — Angular Client': [
         'Angular Material UI with authentication and movie detail views',
         'Typed services, reusable components, and technical documentation',
@@ -55,7 +60,11 @@ export default function App() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isChoiceOpen, setIsChoiceOpen] = useState(false);
     const [isResumeOpen, setIsResumeOpen] = useState(false);
+
     const [certsOpen, setCertsOpen] = useState(false);
+
+    // Technical Portfolio modal
+    const [portfolioOpen, setPortfolioOpen] = useState(false);
 
     const [formStatus, setFormStatus] = useState({
         state: 'idle',
@@ -71,7 +80,11 @@ export default function App() {
     /** @type {React.MutableRefObject<ReturnType<typeof setTimeout> | null>} */
     const toastTimerRef = useRef(null);
 
-    const showToast = (message, type = 'success', duration = 3500) => {
+    const showToast = (
+        message,
+        type = 'success',
+        duration = 3500
+    ) => {
         setToast({
             visible: true,
             msg: message,
@@ -102,44 +115,42 @@ export default function App() {
         };
     }, []);
 
-    const goToProjects = () => {
-        const el = document.getElementById('projects');
-
-        if (el) {
-            el.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
-
-            if (typeof history !== 'undefined') {
-                history.replaceState(null, '', '#projects');
-            }
-
-            setTimeout(() => {
-                if (el.focus) {
-                    el.focus({
-                        preventScroll: true,
-                    });
-                }
-            }, 300);
-        }
+    const openPortfolioModal = () => {
+        setPortfolioOpen(true);
     };
 
-    const openFormModal = () => setIsFormOpen(true);
+    const closePortfolioModal = () => {
+        setPortfolioOpen(false);
+    };
+
+    const openFormModal = () => {
+        setIsFormOpen(true);
+    };
 
     const closeFormModal = () => {
         setIsFormOpen(false);
+
         setFormStatus({
             state: 'idle',
             msg: '',
         });
     };
 
-    const openChoiceModal = () => setIsChoiceOpen(true);
-    const closeChoiceModal = () => setIsChoiceOpen(false);
+    const openChoiceModal = () => {
+        setIsChoiceOpen(true);
+    };
 
-    const openResumeModal = () => setIsResumeOpen(true);
-    const closeResumeModal = () => setIsResumeOpen(false);
+    const closeChoiceModal = () => {
+        setIsChoiceOpen(false);
+    };
+
+    const openResumeModal = () => {
+        setIsResumeOpen(true);
+    };
+
+    const closeResumeModal = () => {
+        setIsResumeOpen(false);
+    };
 
     const handleEmailClient = () => {
         window.location.href = `mailto:${EMAIL}`;
@@ -161,14 +172,19 @@ export default function App() {
 
         try {
             const form = e.currentTarget;
-            const data = Object.fromEntries(new FormData(form).entries());
+
+            const data = Object.fromEntries(
+                new FormData(form).entries()
+            );
 
             const res = await fetch(CONTACT_URL, {
                 method: 'POST',
+
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
+
                 body: JSON.stringify(data),
             });
 
@@ -184,7 +200,9 @@ export default function App() {
                             .map((er) => er.message)
                             .join(', ');
                     }
-                } catch { }
+                } catch {
+                    // Keep fallback message
+                }
 
                 setFormStatus({
                     state: 'error',
@@ -200,6 +218,7 @@ export default function App() {
             });
 
             form.reset();
+
             closeFormModal();
 
             showToast(
@@ -217,9 +236,13 @@ export default function App() {
 
     return (
         <div>
-            {/* Header */}
+
+            {/* =====================================================
+          HEADER
+          ===================================================== */}
             <header className="nav">
                 <div className="container">
+
                     <div className="brand">
                         <div className="brand-name">
                             Troy Michael Oubre
@@ -235,12 +258,13 @@ export default function App() {
                     </div>
 
                     <nav>
+
                         <button
                             type="button"
                             className="modal-secondary btn-sm"
-                            onClick={goToProjects}
+                            onClick={openPortfolioModal}
                         >
-                            View Projects
+                            Technical Portfolio
                         </button>
 
                         <button
@@ -263,27 +287,35 @@ export default function App() {
                         >
                             Get in touch
                         </button>
+
                     </nav>
                 </div>
             </header>
 
-            {/* Main */}
+            {/* =====================================================
+          MAIN
+          ===================================================== */}
             <main className="container">
 
-                {/* Hero */}
+                {/* =====================================================
+            HERO
+            ===================================================== */}
                 <section
                     className="hero"
                     id="home"
                 >
                     <div className="hero-wrap">
 
+                        {/* Hero introduction */}
                         <div className="hero-content">
+
                             <p className="hero-eyebrow">
                                 DIGITAL PRODUCTS • PRODUCT OWNERSHIP • TECHNOLOGY
                             </p>
 
                             <h1 className="title">
                                 Senior Analyst, Digital Products
+
                                 <span className="title-accent">
                                     Product Owner • Technology Leader • Full-Stack Developer
                                 </span>
@@ -298,6 +330,7 @@ export default function App() {
                                 development.
                             </p>
 
+                            {/* Hero actions */}
                             <div
                                 className="hero-actions"
                                 style={{
@@ -307,12 +340,13 @@ export default function App() {
                                     marginTop: 22,
                                 }}
                             >
+
                                 <button
                                     type="button"
                                     className="pill"
-                                    onClick={goToProjects}
+                                    onClick={openPortfolioModal}
                                 >
-                                    Explore My Work
+                                    Explore Technical Work
                                 </button>
 
                                 <button
@@ -330,8 +364,10 @@ export default function App() {
                                 >
                                     Connect With Me
                                 </button>
+
                             </div>
 
+                            {/* Expertise tags */}
                             <div
                                 className="tags"
                                 aria-label="Professional expertise"
@@ -339,24 +375,56 @@ export default function App() {
                                     marginTop: 24,
                                 }}
                             >
-                                <span className="tag">Product Ownership</span>
-                                <span className="tag">Business Analysis</span>
-                                <span className="tag">Agile Delivery</span>
-                                <span className="tag">SQL & Data Analysis</span>
-                                <span className="tag">UAT & QA</span>
-                                <span className="tag">Release Management</span>
-                                <span className="tag">Systems Integration</span>
-                                <span className="tag">React</span>
-                                <span className="tag">Node / Express</span>
+                                <span className="tag">
+                                    Product Ownership
+                                </span>
+
+                                <span className="tag">
+                                    Business Analysis
+                                </span>
+
+                                <span className="tag">
+                                    Agile Delivery
+                                </span>
+
+                                <span className="tag">
+                                    SQL & Data Analysis
+                                </span>
+
+                                <span className="tag">
+                                    UAT & QA
+                                </span>
+
+                                <span className="tag">
+                                    Release Management
+                                </span>
+
+                                <span className="tag">
+                                    Systems Integration
+                                </span>
+
+                                <span className="tag">
+                                    React
+                                </span>
+
+                                <span className="tag">
+                                    Node / Express
+                                </span>
                             </div>
+
                         </div>
 
-                        {/* About card */}
+                        {/* =================================================
+                ABOUT CARD
+                ================================================= */}
                         <div
                             className="card hero-about-card"
                             aria-label="About Troy"
                         >
-                            <h2>About</h2>
+
+                            <h2>
+                                About
+                            </h2>
 
                             <p>
                                 I’m Troy, a Senior Analyst in Digital Products with a
@@ -386,6 +454,7 @@ export default function App() {
 
                             {/* CSPO Professional Credential */}
                             <div className="hero-credential">
+
                                 <div className="hero-credential-image-wrap">
                                     <img
                                         src="/certs/CSPO.png"
@@ -395,6 +464,7 @@ export default function App() {
                                 </div>
 
                                 <div className="hero-credential-content">
+
                                     <span className="hero-credential-label">
                                         PROFESSIONAL CERTIFICATION
                                     </span>
@@ -420,14 +490,18 @@ export default function App() {
                                     >
                                         View Certifications →
                                     </button>
+
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
                 </section>
 
-                {/* Product & Technology Expertise */}
+                {/* =====================================================
+            PRODUCT & TECHNOLOGY EXPERTISE
+            ===================================================== */}
                 <section
                     className="card"
                     id="expertise"
@@ -448,8 +522,15 @@ export default function App() {
                             marginTop: 16,
                         }}
                     >
-                        <article className="card project" role="listitem">
-                            <h3>Product Ownership</h3>
+
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                Product Ownership
+                            </h3>
+
                             <p className="proj-desc">
                                 Requirements definition, backlog refinement, prioritization,
                                 stakeholder alignment, roadmap support, user feedback,
@@ -457,8 +538,14 @@ export default function App() {
                             </p>
                         </article>
 
-                        <article className="card project" role="listitem">
-                            <h3>Enterprise Applications</h3>
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                Enterprise Applications
+                            </h3>
+
                             <p className="proj-desc">
                                 Functional ownership, production support, systems integration,
                                 application enhancements, business process improvement,
@@ -466,25 +553,44 @@ export default function App() {
                             </p>
                         </article>
 
-                        <article className="card project" role="listitem">
-                            <h3>Data & SQL</h3>
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                Data & SQL
+                            </h3>
+
                             <p className="proj-desc">
                                 SQL investigation, data validation, reconciliation, reporting,
-                                root-cause analysis, production troubleshooting, and decision support.
+                                root-cause analysis, production troubleshooting,
+                                and decision support.
                             </p>
                         </article>
 
-                        <article className="card project" role="listitem">
-                            <h3>UAT & Release Delivery</h3>
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                UAT & Release Delivery
+                            </h3>
+
                             <p className="proj-desc">
                                 Test planning, QA validation, UAT coordination, defect triage,
-                                release readiness, stakeholder communication, deployment governance,
-                                and post-release validation.
+                                release readiness, stakeholder communication,
+                                deployment governance, and post-release validation.
                             </p>
                         </article>
 
-                        <article className="card project" role="listitem">
-                            <h3>Full-Stack Development</h3>
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                Full-Stack Development
+                            </h3>
+
                             <p className="proj-desc">
                                 React, JavaScript, Node.js, Express, MongoDB, APIs,
                                 authentication, responsive interfaces, testing,
@@ -492,23 +598,34 @@ export default function App() {
                             </p>
                         </article>
 
-                        <article className="card project" role="listitem">
-                            <h3>Business & Technology Bridge</h3>
+                        <article
+                            className="card project"
+                            role="listitem"
+                        >
+                            <h3>
+                                Business & Technology Bridge
+                            </h3>
+
                             <p className="proj-desc">
                                 Translating business requirements into technical direction
                                 while helping developers, users, operations teams, and
                                 leadership stay aligned throughout delivery.
                             </p>
                         </article>
+
                     </div>
                 </section>
 
-                {/* Professional Impact */}
+                {/* =====================================================
+            PROFESSIONAL IMPACT
+            ===================================================== */}
                 <section
                     className="professional-impact"
                     id="impact"
                 >
+
                     <div className="impact-header">
+
                         <span className="impact-eyebrow">
                             PRODUCT LEADERSHIP IN PRACTICE
                         </span>
@@ -518,129 +635,206 @@ export default function App() {
                         </h2>
 
                         <p>
-                            From requirements and data investigation to UAT, release governance,
-                            production support, and user adoption, I work across the full product lifecycle.
+                            From requirements and data investigation to UAT,
+                            release governance, production support, and user adoption,
+                            I work across the full product lifecycle.
                         </p>
+
                     </div>
 
                     <div
                         className="impact-pill-row"
                         aria-label="Professional impact areas"
                     >
-                        <span className="impact-pill">Product Ownership</span>
-                        <span className="impact-pill">Enterprise Systems</span>
-                        <span className="impact-pill">Cross-Functional Leadership</span>
-                        <span className="impact-pill">ADO & Agile Delivery</span>
+                        <span className="impact-pill">
+                            Product Ownership
+                        </span>
+
+                        <span className="impact-pill">
+                            Enterprise Systems
+                        </span>
+
+                        <span className="impact-pill">
+                            Cross-Functional Leadership
+                        </span>
+
+                        <span className="impact-pill">
+                            ADO & Agile Delivery
+                        </span>
                     </div>
 
                     <div
                         className="impact-grid"
                         role="list"
                     >
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">01</span>
-                            <h3>Enterprise Product Ownership</h3>
+
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                01
+                            </span>
+
+                            <h3>
+                                Enterprise Product Ownership
+                            </h3>
+
                             <p>
-                                Own and guide the evolution of a business-critical enterprise platform,
-                                translating operational needs into requirements, backlog priorities,
-                                enhancements, testing strategies, and production releases.
+                                Own and guide the evolution of a business-critical enterprise
+                                platform, translating operational needs into requirements,
+                                backlog priorities, enhancements, testing strategies,
+                                and production releases.
                             </p>
                         </article>
 
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">02</span>
-                            <h3>Product Governance & Delivery Management</h3>
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                02
+                            </span>
+
+                            <h3>
+                                Product Governance & Delivery Management
+                            </h3>
+
                             <p>
-                                Own the Azure DevOps delivery process for the product, managing work from
-                                intake and refinement through development, QA, UAT, change governance,
-                                release readiness, deployment, and post-release validation. Maintain
-                                backlog structure, workflow visibility, priorities, and coordination
-                                across development and business stakeholders.
+                                Own the Azure DevOps delivery process for the product,
+                                managing work from intake and refinement through development,
+                                QA, UAT, change governance, release readiness, deployment,
+                                and post-release validation.
                             </p>
                         </article>
 
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">03</span>
-                            <h3>User Council & UAT Program</h3>
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                03
+                            </span>
+
+                            <h3>
+                                User Council & UAT Program
+                            </h3>
+
                             <p>
-                                Created a formal user council and UAT framework that brings business users
-                                directly into product development through structured testing, feedback,
-                                release readiness, and continuous improvement.
+                                Created a formal user council and UAT framework that brings
+                                business users directly into product development through
+                                structured testing, feedback, release readiness,
+                                and continuous improvement.
                             </p>
                         </article>
 
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">04</span>
-                            <h3>Enterprise Data & System Mapping</h3>
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                04
+                            </span>
+
+                            <h3>
+                                Enterprise Data & System Mapping
+                            </h3>
+
                             <p>
-                                Conduct deep SQL and data analysis across interconnected enterprise systems
-                                to map business processes, trace transactions, reconcile data,
-                                investigate production issues, and support technical solution design.
+                                Conduct deep SQL and data analysis across interconnected
+                                enterprise systems to map business processes, trace
+                                transactions, reconcile data, investigate production issues,
+                                and support technical solution design.
                             </p>
                         </article>
 
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">05</span>
-                            <h3>Systems Integration & Process Modernization</h3>
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                05
+                            </span>
+
+                            <h3>
+                                Systems Integration & Process Modernization
+                            </h3>
+
                             <p>
-                                Partner with development, operations, finance, and other stakeholders
-                                on integrations and workflow improvements that connect enterprise platforms
-                                and reduce operational friction.
+                                Partner with development, operations, finance, and other
+                                stakeholders on integrations and workflow improvements that
+                                connect enterprise platforms and reduce operational friction.
                             </p>
                         </article>
 
-                        <article className="impact-card" role="listitem">
-                            <span className="impact-number">06</span>
-                            <h3>Knowledge & Digital Experience</h3>
+                        <article
+                            className="impact-card"
+                            role="listitem"
+                        >
+                            <span className="impact-number">
+                                06
+                            </span>
+
+                            <h3>
+                                Knowledge & Digital Experience
+                            </h3>
+
                             <p>
-                                Designed centralized digital workspaces, documentation experiences,
-                                release communications, training resources, and self-service content
-                                to improve product adoption and give users better access to information.
+                                Designed centralized digital workspaces, documentation
+                                experiences, release communications, training resources,
+                                and self-service content to improve product adoption
+                                and give users better access to information.
                             </p>
                         </article>
+
                     </div>
+
+                    {/* Technical portfolio bridge */}
+                    <div className="impact-portfolio-cta">
+
+                        <div>
+                            <span className="impact-portfolio-label">
+                                HANDS-ON TECHNICAL FOUNDATION
+                            </span>
+
+                            <h3>
+                                Software Development Portfolio
+                            </h3>
+
+                            <p>
+                                Explore the applications and development projects behind
+                                my full-stack technical foundation.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="modal-secondary impact-portfolio-button"
+                            onClick={openPortfolioModal}
+                        >
+                            View Technical Portfolio
+                        </button>
+
+                    </div>
+
                 </section>
 
-                {/* Projects */}
-                <section
-                    id="projects"
-                    tabIndex={-1}
-                >
-                    <h2>
-                        Development Portfolio
-                    </h2>
-
-                    <p className="muted">
-                        These projects demonstrate the hands-on software development
-                        foundation that complements my product and enterprise technology work.
-                    </p>
-
-                    <div
-                        className="grid"
-                        role="list"
-                    >
-                        {projects.map((p) => (
-                            <ProjectCard
-                                key={p.title}
-                                {...p}
-                                highlights={PROJECT_HIGHLIGHTS[p.title]}
-                            />
-                        ))}
-                    </div>
-                </section>
-
-                {/* Contact */}
+                {/* =====================================================
+            CONTACT
+            ===================================================== */}
                 <section
                     id="contact"
                     className="card"
                 >
+
                     <h2>
                         Let’s Connect
                     </h2>
 
                     <p className="muted">
                         Interested in product leadership, enterprise technology,
-                        digital transformation, or software development? I’d be happy to connect.
+                        digital transformation, or software development?
+                        I’d be happy to connect.
                     </p>
 
                     <div
@@ -650,6 +844,7 @@ export default function App() {
                             marginTop: '12px',
                         }}
                     >
+
                         <button
                             className="modal-secondary btn-sm"
                             type="button"
@@ -697,20 +892,33 @@ export default function App() {
                         >
                             Medium
                         </a>
+
                     </div>
                 </section>
 
             </main>
 
-            {/* Footer */}
+            {/* =====================================================
+          FOOTER
+          ===================================================== */}
             <footer className="footer">
                 <div className="container footer-actions">
+
                     <small>
                         © {new Date().getFullYear()} Troy Michael Oubre.
                         Built with React + Vite.
                     </small>
 
                     <div className="actions">
+
+                        <button
+                            type="button"
+                            className="modal-secondary btn-sm"
+                            onClick={openPortfolioModal}
+                        >
+                            Technical Portfolio
+                        </button>
+
                         <button
                             type="button"
                             className="modal-secondary btn-sm"
@@ -726,17 +934,78 @@ export default function App() {
                         >
                             Get in touch
                         </button>
+
                     </div>
+
                 </div>
             </footer>
 
-            {/* Contact Form Modal */}
+            {/* =====================================================
+          TECHNICAL PORTFOLIO MODAL
+          ===================================================== */}
+            <Modal
+                isOpen={portfolioOpen}
+                onClose={closePortfolioModal}
+                title="Technical Portfolio"
+            >
+                <div className="portfolio-modal-wrap">
+
+                    <div className="portfolio-modal-intro">
+
+                        <span className="portfolio-modal-eyebrow">
+                            SOFTWARE DEVELOPMENT
+                        </span>
+
+                        <p>
+                            These projects demonstrate the hands-on software development
+                            foundation that complements my product ownership and enterprise
+                            technology work.
+                        </p>
+
+                    </div>
+
+                    <div
+                        className="portfolio-modal-grid"
+                        role="list"
+                    >
+                        {projects.map((p) => (
+                            <ProjectCard
+                                key={p.title}
+                                {...p}
+                                highlights={PROJECT_HIGHLIGHTS[p.title]}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="portfolio-modal-footer">
+                        <p>
+                            Additional source code and development work are available
+                            through GitHub.
+                        </p>
+
+                        <a
+                            href={GITHUB}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="modal-secondary"
+                        >
+                            Visit GitHub
+                        </a>
+                    </div>
+
+                </div>
+            </Modal>
+
+            {/* =====================================================
+          CONTACT FORM MODAL
+          ===================================================== */}
             <Modal
                 isOpen={isFormOpen}
                 onClose={closeFormModal}
                 title="Get in touch"
             >
                 <form onSubmit={handleFormSubmit}>
+
                     <label htmlFor="name">
                         Your Name:
                     </label>
@@ -750,7 +1019,9 @@ export default function App() {
 
                     <label
                         htmlFor="email"
-                        style={{ marginTop: 10 }}
+                        style={{
+                            marginTop: 10,
+                        }}
                     >
                         Your Email:
                     </label>
@@ -764,7 +1035,9 @@ export default function App() {
 
                     <label
                         htmlFor="message"
-                        style={{ marginTop: 10 }}
+                        style={{
+                            marginTop: 10,
+                        }}
                     >
                         Message:
                     </label>
@@ -776,10 +1049,13 @@ export default function App() {
                         required
                     />
 
+                    {/* Honeypot */}
                     <input
                         type="text"
                         name="_gotcha"
-                        style={{ display: 'none' }}
+                        style={{
+                            display: 'none',
+                        }}
                         tabIndex={-1}
                         autoComplete="off"
                     />
@@ -791,6 +1067,7 @@ export default function App() {
                             marginTop: 14,
                         }}
                     >
+
                         <button
                             type="submit"
                             className="pill"
@@ -808,28 +1085,37 @@ export default function App() {
                         >
                             Cancel
                         </button>
+
                     </div>
 
                     {formStatus.state !== 'idle' && (
                         <p
                             className="muted"
-                            style={{ marginTop: 10 }}
+                            style={{
+                                marginTop: 10,
+                            }}
                         >
                             {formStatus.msg}
                         </p>
                     )}
+
                 </form>
             </Modal>
 
-            {/* Contact Choice Modal */}
+            {/* =====================================================
+          CONTACT CHOICE MODAL
+          ===================================================== */}
             <Modal
                 isOpen={isChoiceOpen}
                 onClose={closeChoiceModal}
                 title="Contact options"
             >
+
                 <p
                     className="muted"
-                    style={{ marginBottom: 14 }}
+                    style={{
+                        marginBottom: 14,
+                    }}
                 >
                     How would you like to get in touch?
                 </p>
@@ -841,6 +1127,7 @@ export default function App() {
                         flexWrap: 'wrap',
                     }}
                 >
+
                     <button
                         type="button"
                         className="pill"
@@ -856,10 +1143,14 @@ export default function App() {
                     >
                         Use Contact Form
                     </button>
+
                 </div>
+
             </Modal>
 
-            {/* Resume Modal */}
+            {/* =====================================================
+          RESUME MODAL
+          ===================================================== */}
             <Modal
                 isOpen={isResumeOpen}
                 onClose={closeResumeModal}
@@ -876,13 +1167,17 @@ export default function App() {
                 </div>
             </Modal>
 
-            {/* Certifications Modal */}
+            {/* =====================================================
+          CERTIFICATIONS MODAL
+          ===================================================== */}
             <CertsModal
                 isOpen={certsOpen}
                 onClose={() => setCertsOpen(false)}
             />
 
-            {/* Toast */}
+            {/* =====================================================
+          TOAST
+          ===================================================== */}
             <div
                 className={`toast ${toast.visible ? 'show' : ''} ${toast.type}`}
                 role="status"
@@ -898,6 +1193,7 @@ export default function App() {
             >
                 {toast.msg}
             </div>
+
         </div>
     );
 }
