@@ -7,10 +7,11 @@
 .resume-toolbar {
     display: flex;
     justify-content: flex-end;
+    gap: 8px;
     margin-bottom: 10px;
 }
 
-/* On-screen sheet (readable) */
+/* On-screen sheet */
 .resume-sheet {
     box-sizing: border-box;
     background: #ffffff;
@@ -21,17 +22,26 @@
     max-width: 780px;
     margin: 0 auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-
-    /* prevent overflow on long strings */
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     overflow-wrap: anywhere;
     word-break: normal;
 }
 
+    /* Force resume text to remain dark even when
+   global portfolio styles target headings/paragraphs */
+    .resume-sheet p,
+    .resume-sheet li,
+    .resume-sheet span,
+    .resume-sheet strong {
+        color: #1e293b;
+    }
+
 /* Header */
 .resume-header .name {
     margin: 0 0 6px;
+    color: #0f172a;
     font-size: 32px;
+    font-weight: 800;
     line-height: 1.1;
 }
 
@@ -43,18 +53,29 @@
     font-size: 14px;
 }
 
-.resume-header .meta a {
-    color: #2563eb;
-}
+    .resume-header .meta span {
+        color: #334155;
+    }
+
+    .resume-header .meta a {
+        color: #2563eb;
+        font-weight: 500;
+    }
+
+        .resume-header .meta a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
 
 /* Section titles */
 .resume-sheet h2 {
-    font-size: 16px;
-    letter-spacing: .06em;
-    color: #0f172a;
     margin: 18px 0 10px;
-    border-top: 4px solid #e5e7eb;
     padding-top: 14px;
+    border-top: 4px solid #e5e7eb;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: .06em;
 }
 
 /* Two-column list for strengths */
@@ -65,10 +86,11 @@
     padding-left: 1rem;
 }
 
-.cols li {
-    break-inside: avoid;
-    margin: 4px 0;
-}
+    .cols li {
+        break-inside: avoid;
+        margin: 4px 0;
+        color: #1e293b;
+    }
 
 /* Role blocks */
 .role {
@@ -77,27 +99,45 @@
 
 .role-head {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
 }
 
-.role-head h3 {
+/* IMPORTANT:
+   Override global site h3 color */
+.resume-sheet .role-head h3 {
     margin: 0;
+    color: #0f172a !important;
     font-size: 16px;
+    font-weight: 800;
+    line-height: 1.25;
+    flex: 1;
 }
 
-.role-head .right {
-    color: #334155;
+/* Employer / location / dates */
+.resume-sheet .role-head .right {
+    min-width: 190px;
+    color: #334155 !important;
     font-size: 13px;
+    line-height: 1.35;
+    text-align: right;
 }
 
+    .resume-sheet .role-head .right div {
+        color: #334155 !important;
+    }
+
+/* Role bullets */
 .role ul {
     margin: 8px 0 0 1rem;
+    padding-left: .9rem;
 }
 
 .role li {
     margin: 4px 0;
+    color: #1e293b;
+    line-height: 1.45;
 }
 
 /* Flat list */
@@ -106,9 +146,19 @@
     padding-left: 1rem;
 }
 
-.muted {
-    color: #64748b;
+    .flat li {
+        color: #1e293b;
+    }
+
+/* Resume-only muted text */
+.resume-sheet .muted {
+    color: #64748b !important;
     font-size: 13px;
+}
+
+/* Paragraph readability */
+.resume-sheet p {
+    line-height: 1.55;
 }
 
 /* Pagination helpers */
@@ -121,16 +171,19 @@
     page-break-inside: avoid;
 }
 
-/* ---------- PRINT TO PDF (Letter 8.5x11, margins 0.5") ---------- */
+/* ========================================
+   PRINT TO PDF
+   Letter 8.5 x 11, margins 0.5"
+   ======================================== */
+
 @media print {
 
-    /* Letter page with 0.5" margins */
     @page {
         size: letter;
         margin: 0.5in;
     }
 
-    /* Hide everything except the resume itself */
+    /* Hide everything except the resume */
     body * {
         visibility: hidden !important;
     }
@@ -140,17 +193,14 @@
         visibility: visible !important;
     }
 
-    /* Make the resume fill the printable area safely */
     .resume-sheet {
         position: static;
         margin: 0;
         width: 100%;
-        /* equals 7.5in inside 0.5" margins on Letter */
         max-width: none;
         border: none;
+        border-radius: 0;
         box-shadow: none;
-
-        /* print-optimized type sizes so nothing spills */
         font-size: 11pt;
         line-height: 1.4;
     }
@@ -167,19 +217,29 @@
         font-size: 12pt;
     }
 
-    .role-head h3 {
+    .resume-sheet .role-head h3 {
+        color: #000000 !important;
         font-size: 12pt;
     }
 
-    .role-head .right {
+    .resume-sheet .role-head .right,
+    .resume-sheet .role-head .right div {
+        color: #222222 !important;
         font-size: 10pt;
     }
 
-    .muted {
+    .resume-sheet p,
+    .resume-sheet li,
+    .resume-sheet span,
+    .resume-sheet strong {
+        color: #111111;
+    }
+
+    .resume-sheet .muted {
+        color: #444444 !important;
         font-size: 10pt;
     }
 
-    /* Keep two columns but with tighter gap on paper */
     .cols {
         columns: 2;
         column-gap: 18pt;
