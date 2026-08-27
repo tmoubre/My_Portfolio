@@ -97,10 +97,18 @@
     letter-spacing: -0.025em;
 }
 
-/* Guaranteed spacing between contact info and first section */
+/* Keep the header itself compact */
 .resume-sheet > .resume-header {
-    margin-bottom: 0;
-    padding-bottom: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+   The first resume section is a plain <section> in Resume.jsx.
+   Put the spacing on that exact element so it cannot collapse.
+*/
+.resume-sheet > .resume-header + section {
+    padding-top: 34px;
 }
 
 .resume-contact {
@@ -322,8 +330,8 @@
         font-size: 1.65rem;
     }
 
-    .resume-sheet > .resume-header {
-        padding-bottom: 18px;
+    .resume-sheet > .resume-header + section {
+        padding-top: 28px;
     }
 
     .resume-contact {
