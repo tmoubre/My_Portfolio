@@ -44,21 +44,22 @@
     inset: 0 0 0 auto;
     width: 67%;
     pointer-events: none;
-    opacity: .72;
+    opacity: .70;
     background-image:
-        radial-gradient(circle at 69% 14%, rgba(79,242,255,.98) 0 2px, rgba(25,217,241,.34) 3px, transparent 10px),
-        radial-gradient(circle at 88% 24%, rgba(79,242,255,.92) 0 2px, rgba(25,217,241,.30) 3px, transparent 10px),
-        radial-gradient(circle at 61% 46%, rgba(79,242,255,.90) 0 2px, rgba(25,217,241,.27) 3px, transparent 9px),
-        radial-gradient(circle at 82% 56%, rgba(79,242,255,.86) 0 2px, rgba(25,217,241,.25) 3px, transparent 9px),
-        radial-gradient(circle at 72% 76%, rgba(79,242,255,.82) 0 2px, rgba(25,217,241,.22) 3px, transparent 9px),
-        radial-gradient(circle at 94% 83%, rgba(79,242,255,.80) 0 2px, rgba(25,217,241,.20) 3px, transparent 9px),
-        radial-gradient(circle, rgba(25,217,241,.32) 0 1px, transparent 1.4px),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 650'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.72' stroke-width='1.6'%3E%3Cpolygon points='335,45 405,85 405,165 335,205 265,165 265,85'/%3E%3Cpolygon points='500,95 560,130 560,200 500,235 440,200 440,130'/%3E%3Cpolygon points='405,225 480,268 480,354 405,397 330,354 330,268'/%3E%3Cpolygon points='590,250 650,285 650,355 590,390 530,355 530,285'/%3E%3Cpolygon points='520,405 585,442 585,516 520,553 455,516 455,442'/%3E%3Cpolygon points='350,430 410,465 410,535 350,570 290,535 290,465'/%3E%3Cpath d='M405 125L440 165M500 235L480 268M480 311L530 320M590 390L552 424M455 479L410 500M330 311L265 340M335 205L365 240'/%3E%3Cpath d='M265 125L195 165L195 245L265 285M650 320L710 355L710 430L650 465' stroke-opacity='.48'/%3E%3C/g%3E%3Cg fill='%234ff2ff'%3E%3Ccircle cx='335' cy='45' r='4'/%3E%3Ccircle cx='405' cy='165' r='4'/%3E%3Ccircle cx='500' cy='95' r='4'/%3E%3Ccircle cx='560' cy='200' r='4'/%3E%3Ccircle cx='405' cy='225' r='4'/%3E%3Ccircle cx='480' cy='354' r='4'/%3E%3Ccircle cx='590' cy='250' r='4'/%3E%3Ccircle cx='650' cy='355' r='4'/%3E%3Ccircle cx='520' cy='405' r='4'/%3E%3Ccircle cx='585' cy='516' r='4'/%3E%3Ccircle cx='350' cy='430' r='4'/%3E%3Ccircle cx='290' cy='535' r='4'/%3E%3Ccircle cx='195' cy='165' r='3'/%3E%3Ccircle cx='710' cy='430' r='3'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,16px 16px,100% 100%;
-    background-position: center,center,center,center,center,center,0 0,center;
-    background-repeat: no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.18) 8%, rgba(0,0,0,.82) 30%, #000 58%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.18) 8%, rgba(0,0,0,.82) 30%, #000 58%, #000 100%);
+        radial-gradient(circle at 72% 18%, rgba(79,242,255,.86) 0 1.5px, rgba(25,217,241,.24) 2.5px, transparent 9px),
+        radial-gradient(circle at 89% 31%, rgba(79,242,255,.78) 0 1.5px, rgba(25,217,241,.20) 2.5px, transparent 8px),
+        radial-gradient(circle at 65% 53%, rgba(79,242,255,.72) 0 1.5px, rgba(25,217,241,.17) 2.5px, transparent 8px),
+        radial-gradient(circle at 83% 69%, rgba(79,242,255,.68) 0 1.5px, rgba(25,217,241,.16) 2.5px, transparent 8px),
+        radial-gradient(circle at 73% 46%, rgba(0,174,240,.10), transparent 31%),
+        radial-gradient(circle at 90% 72%, rgba(25,217,241,.07), transparent 24%),
+        radial-gradient(circle, rgba(25,217,241,.28) 0 1px, transparent 1.35px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 650'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.20' stroke-width='1'%3E%3Cpolygon points='250,70 292,94 292,142 250,166 208,142 208,94'/%3E%3Cpolygon points='410,55 448,77 448,121 410,143 372,121 372,77'/%3E%3Cpolygon points='550,145 592,169 592,217 550,241 508,217 508,169'/%3E%3Cpolygon points='315,255 360,281 360,333 315,359 270,333 270,281'/%3E%3Cpolygon points='485,320 525,343 525,389 485,412 445,389 445,343'/%3E%3Cpolygon points='615,390 653,412 653,456 615,478 577,456 577,412'/%3E%3Cpolygon points='380,470 422,494 422,542 380,566 338,542 338,494'/%3E%3Cpath d='M292 118L372 99M448 99L508 193M360 307L445 366M525 366L577 434M422 518L505 490M270 307L205 345'/%3E%3C/g%3E%3Cg fill='%234ff2ff' fill-opacity='.25'%3E%3Ccircle cx='292' cy='118' r='2.5'/%3E%3Ccircle cx='448' cy='99' r='2.5'/%3E%3Ccircle cx='508' cy='193' r='2.5'/%3E%3Ccircle cx='360' cy='307' r='2.5'/%3E%3Ccircle cx='525' cy='366' r='2.5'/%3E%3Ccircle cx='577' cy='434' r='2.5'/%3E%3Ccircle cx='422' cy='518' r='2.5'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 650'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.58' stroke-width='1.35'%3E%3Cpolygon points='355,105 405,134 405,192 355,221 305,192 305,134'/%3E%3Cpolygon points='505,205 551,232 551,286 505,313 459,286 459,232'/%3E%3Cpolygon points='395,345 445,374 445,432 395,461 345,432 345,374'/%3E%3Cpolygon points='555,455 600,481 600,533 555,559 510,533 510,481'/%3E%3Cpath d='M405 163L459 259M505 313L445 403M445 403L510 507M305 163L250 205M551 259L620 290'/%3E%3C/g%3E%3Cg fill='%234ff2ff'%3E%3Ccircle cx='355' cy='105' r='3.2'/%3E%3Ccircle cx='405' cy='192' r='3.2'/%3E%3Ccircle cx='505' cy='205' r='3.2'/%3E%3Ccircle cx='551' cy='286' r='3.2'/%3E%3Ccircle cx='395' cy='345' r='3.2'/%3E%3Ccircle cx='445' cy='432' r='3.2'/%3E%3Ccircle cx='555' cy='455' r='3.2'/%3E%3Ccircle cx='600' cy='533' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,16px 16px,112% 112%,100% 100%;
+    background-position: center,center,center,center,center,center,0 0,58% 52%,center;
+    background-repeat: no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat,no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.15) 8%, rgba(0,0,0,.72) 29%, #000 60%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.15) 8%, rgba(0,0,0,.72) 29%, #000 60%, #000 100%);
     z-index: 0;
 }
 
@@ -81,7 +82,7 @@
 
     .hero-frame::after {
         width: 70%;
-        opacity: .48;
+        opacity: .46;
     }
 }
 
@@ -106,8 +107,8 @@
         bottom: auto;
         width: 100%;
         height: 58%;
-        opacity: .20;
-        -webkit-mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.55) 45%, transparent 100%);
-        mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.55) 45%, transparent 100%);
+        opacity: .18;
+        -webkit-mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.50) 45%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.50) 45%, transparent 100%);
     }
 }
