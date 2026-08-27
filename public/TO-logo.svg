@@ -30,6 +30,7 @@
     </filter>
   </defs>
 
+
   <!-- transparent background -->
 
   <!-- cyan orbital ring -->
@@ -119,4 +120,4 @@
         stroke-width="6"
         stroke-linecap="round"
         opacity=".75"/>
-</svg>
+

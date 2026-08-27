@@ -1,0 +1,114 @@
+/* Portfolio visual enhancements: TO logo, header value strip, digital hero network */
+
+.brand-monogram {
+    width: 78px !important;
+    height: 62px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    box-shadow: none !important;
+    background-image: url('/TO-logo.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+    filter: drop-shadow(0 0 7px rgba(25,217,241,.20)) drop-shadow(0 0 16px rgba(0,174,240,.08));
+}
+
+.nav {
+    height: auto;
+    min-height: var(--header-height);
+}
+
+.nav-inner {
+    position: relative;
+    padding-bottom: 38px;
+}
+
+.nav-inner::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    height: 31px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1040 44'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='42' cy='22' r='10'/%3E%3Ccircle cx='42' cy='22' r='4'/%3E%3Cpath d='M42 6v5M42 33v5M26 22h5M53 22h5'/%3E%3Crect x='286' y='12' width='18' height='18' rx='3'/%3E%3Cpath d='M290 17h10M290 22h10M290 27h10'/%3E%3Cpath d='M548 30l9-9 7 7 12-14'/%3E%3Cpath d='M566 14h10v10'/%3E%3Ccircle cx='814' cy='17' r='5'/%3E%3Ccircle cx='803' cy='29' r='5'/%3E%3Ccircle cx='825' cy='29' r='5'/%3E%3Cpath d='M809 21l-4 4M819 21l4 4M808 29h12'/%3E%3C/g%3E%3Cg fill='%23dceaf4' font-family='Arial,Helvetica,sans-serif' font-size='12' font-weight='700' letter-spacing='1.2'%3E%3Ctext x='62' y='26'%3EPRODUCT LEADERSHIP%3C/text%3E%3Ctext x='316' y='26'%3EENTERPRISE TECHNOLOGY%3C/text%3E%3Ctext x='590' y='26'%3EDATA DRIVEN DECISIONS%3C/text%3E%3Ctext x='842' y='26'%3EDELIVERING BUSINESS VALUE%3C/text%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: min(1040px, 100%) auto;
+    opacity: .92;
+    pointer-events: none;
+}
+
+.hero-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    pointer-events: none;
+    opacity: .48;
+    background-image:
+        radial-gradient(circle at 78% 19%, rgba(70,236,255,.95) 0 2px, rgba(25,217,241,.32) 3px, transparent 8px),
+        radial-gradient(circle at 91% 37%, rgba(70,236,255,.85) 0 2px, rgba(25,217,241,.25) 3px, transparent 8px),
+        radial-gradient(circle at 72% 62%, rgba(70,236,255,.72) 0 2px, rgba(25,217,241,.20) 3px, transparent 8px),
+        radial-gradient(circle at 88% 78%, rgba(70,236,255,.72) 0 2px, rgba(25,217,241,.18) 3px, transparent 8px),
+        radial-gradient(circle, rgba(25,217,241,.42) 0 1px, transparent 1.5px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 620 620'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.42' stroke-width='1.35'%3E%3Cpolygon points='315,55 375,90 375,160 315,195 255,160 255,90'/%3E%3Cpolygon points='435,125 485,155 485,215 435,245 385,215 385,155'/%3E%3Cpolygon points='330,245 395,282 395,357 330,394 265,357 265,282'/%3E%3Cpolygon points='470,315 520,344 520,402 470,431 420,402 420,344'/%3E%3Cpolygon points='365,425 415,454 415,512 365,541 315,512 315,454'/%3E%3Cpath d='M375 125L435 155M395 320L420 373M365 394L365 425M315 195L330 245'/%3E%3C/g%3E%3Cg fill='%2346ecff'%3E%3Ccircle cx='315' cy='55' r='4'/%3E%3Ccircle cx='375' cy='160' r='4'/%3E%3Ccircle cx='435' cy='125' r='4'/%3E%3Ccircle cx='485' cy='215' r='4'/%3E%3Ccircle cx='330' cy='245' r='4'/%3E%3Ccircle cx='395' cy='357' r='4'/%3E%3Ccircle cx='470' cy='315' r='4'/%3E%3Ccircle cx='520' cy='402' r='4'/%3E%3Ccircle cx='365' cy='425' r='4'/%3E%3Ccircle cx='415' cy='512' r='4'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 100% 100%,100% 100%,100% 100%,100% 100%,16px 16px,100% 100%;
+    background-position: center,center,center,center,0 0,center;
+    background-repeat: no-repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.18) 12%, rgba(0,0,0,.78) 43%, #000 72%, rgba(0,0,0,.88) 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.18) 12%, rgba(0,0,0,.78) 43%, #000 72%, rgba(0,0,0,.88) 100%);
+    z-index: 0;
+}
+
+.hero-main-grid {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 1100px) {
+    .brand-monogram {
+        width: 68px !important;
+        height: 55px !important;
+    }
+
+    .nav-inner::after {
+        opacity: .75;
+        background-size: 920px auto;
+    }
+
+    .hero-frame::after {
+        width: 66%;
+        opacity: .34;
+    }
+}
+
+@media (max-width: 760px) {
+    .nav-inner {
+        padding-bottom: 0;
+    }
+
+    .nav-inner::after {
+        display: none;
+    }
+
+    .brand-monogram {
+        width: 55px !important;
+        height: 47px !important;
+    }
+
+    .hero-frame::after {
+        top: 0;
+        right: 0;
+        bottom: auto;
+        width: 100%;
+        height: 58%;
+        opacity: .17;
+        -webkit-mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.55) 45%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000, rgba(0,0,0,.55) 45%, transparent 100%);
+    }
+}
