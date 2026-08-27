@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     padding: 18px 20px 22px;
+    overflow: hidden;
 }
 
     /* Header stays visible */
@@ -16,10 +17,11 @@
     }
 
     /*
-   IMPORTANT MOBILE FIX:
-   Modal body becomes the controlled viewport.
+   The modal body is the fixed flex viewport.
+   The actual scrolling happens inside .certs-wrap.
 */
     .modal:has(.certs-wrap) .modal-body {
+        display: flex;
         flex: 1 1 auto;
         min-height: 0;
         overflow: hidden;
@@ -27,9 +29,11 @@
 
 /* Main certificate container becomes the scroll area */
 .certs-wrap {
+    flex: 1 1 auto;
     width: 100%;
     max-width: 1080px;
-    height: 100%;
+    min-height: 0;
+    height: auto;
     max-height: 100%;
     margin: 0 auto;
     padding: 0 4px 12px 0;
@@ -38,7 +42,9 @@
     overflow-x: hidden;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
+
 
 /* ========================================
    SCROLLBAR
@@ -67,6 +73,7 @@
             background: rgba(34, 211, 238, 0.65);
         }
 
+
 /* ========================================
    INTRO
    ======================================== */
@@ -80,6 +87,7 @@
         color: #94a3b8;
         font-size: 0.95rem;
     }
+
 
 /* ========================================
    FILTERS
@@ -137,6 +145,7 @@
     font-weight: 800;
 }
 
+
 /* ========================================
    GRID
    ======================================== */
@@ -148,6 +157,7 @@
     padding: 0;
     margin: 0;
 }
+
 
 /* ========================================
    CARD
@@ -197,6 +207,7 @@
     cursor: pointer;
 }
 
+
 /* ========================================
    IMAGES
    ======================================== */
@@ -227,6 +238,7 @@
     height: 170px;
     object-fit: contain;
 }
+
 
 /* ========================================
    CARD CONTENT
@@ -295,6 +307,7 @@
     color: #67e8f9;
 }
 
+
 /* ========================================
    FOOTER MESSAGE
    ======================================== */
@@ -316,6 +329,7 @@
     color: #22d3ee;
     font-style: normal;
 }
+
 
 /* ========================================
    DETAIL VIEW
@@ -376,6 +390,7 @@
     height: auto;
 }
 
+
 /* ========================================
    ACTION BUTTONS
    ======================================== */
@@ -423,6 +438,7 @@
             box-shadow: 0 8px 26px rgba(14, 165, 233, 0.2);
         }
 
+
 /* ========================================
    TABLET
    ======================================== */
@@ -439,33 +455,69 @@
     }
 }
 
+
 /* ========================================
    PHONE
    ======================================== */
 
 @media (max-width: 620px) {
 
+    /*
+       IMPORTANT:
+       Give the modal an actual viewport-relative height,
+       not only max-height.
+    */
     .modal:has(.certs-wrap) {
         width: calc(100vw - 20px);
+        height: calc(100dvh - 20px);
         max-height: calc(100dvh - 20px);
         padding: 14px;
+        overflow: hidden;
     }
 
+        /*
+       This creates the constrained flex viewport
+       below the fixed modal header.
+    */
         .modal:has(.certs-wrap) .modal-body {
+            display: flex;
+            flex: 1 1 auto;
             min-height: 0;
             overflow: hidden;
         }
 
+    /*
+       This is the only element that scrolls.
+    */
     .certs-wrap {
-        height: 100%;
-        max-height: 100%;
-        padding-right: 2px;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        max-height: none;
+        padding-right: 5px;
         padding-bottom: 24px;
-        overflow-y: auto;
+        overflow-y: scroll;
         overflow-x: hidden;
+        overscroll-behavior-y: contain;
         touch-action: pan-y;
         -webkit-overflow-scrolling: touch;
     }
+
+        /*
+       Make WebKit scrollbar easier to see while scrolling.
+       iOS itself may still auto-hide the scrollbar.
+    */
+        .certs-wrap::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .certs-wrap::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .certs-wrap::-webkit-scrollbar-thumb {
+            background: rgba(34, 211, 238, 0.58);
+        }
 
     .certs-intro {
         margin-bottom: 14px;
@@ -552,6 +604,7 @@
         }
 }
 
+
 /* ========================================
    EXTRA SMALL PHONES
    ======================================== */
@@ -560,6 +613,7 @@
 
     .modal:has(.certs-wrap) {
         width: calc(100vw - 12px);
+        height: calc(100dvh - 12px);
         max-height: calc(100dvh - 12px);
         padding: 11px;
     }
@@ -573,6 +627,7 @@
         height: 150px;
     }
 }
+
 
 /* ========================================
    REDUCED MOTION
