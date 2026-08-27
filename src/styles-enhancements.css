@@ -32,9 +32,6 @@
 .nav {
     height: auto;
     min-height: var(--header-height);
-    /*
-       Keep the header visible above the modal workspace.
-    */
     z-index: 130;
 }
 
@@ -43,61 +40,30 @@
     padding-bottom: 38px;
 }
 
-
-    /* ============================================================
-   HEADER VALUE STRIP
-   ============================================================ */
-
-    .nav-inner::after {
-        content: '';
-        position: absolute;
-        /*
-       Leave a dedicated zone for:
-       TO logo + Troy M. Oubre
-    */
-        left: 290px;
-        right: 40px;
-        bottom: 5px;
-        height: 31px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1040 44'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='42' cy='22' r='10'/%3E%3Ccircle cx='42' cy='22' r='4'/%3E%3Cpath d='M42 6v5M42 33v5M26 22h5M53 22h5'/%3E%3Crect x='286' y='12' width='18' height='18' rx='3'/%3E%3Cpath d='M290 17h10M290 22h10M290 27h10'/%3E%3Cpath d='M548 30l9-9 7 7 12-14'/%3E%3Cpath d='M566 14h10v10'/%3E%3Ccircle cx='814' cy='17' r='5'/%3E%3Ccircle cx='803' cy='29' r='5'/%3E%3Ccircle cx='825' cy='29' r='5'/%3E%3Cpath d='M809 21l-4 4M819 21l4 4M808 29h12'/%3E%3C/g%3E%3Cg fill='%23dceaf4' font-family='Arial,Helvetica,sans-serif' font-size='12' font-weight='700' letter-spacing='1.2'%3E%3Ctext x='62' y='26'%3EPRODUCT LEADERSHIP%3C/text%3E%3Ctext x='316' y='26'%3EENTERPRISE TECHNOLOGY%3C/text%3E%3Ctext x='590' y='26'%3EDATA DRIVEN DECISIONS%3C/text%3E%3Ctext x='842' y='26'%3EDELIVERING BUSINESS VALUE%3C/text%3E%3C/g%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 100% auto;
-        opacity: .92;
-        pointer-events: none;
-    }
+.nav-inner::after {
+    content: '';
+    position: absolute;
+    left: 290px;
+    right: 40px;
+    bottom: 5px;
+    height: 31px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1040 44'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='42' cy='22' r='10'/%3E%3Ccircle cx='42' cy='22' r='4'/%3E%3Cpath d='M42 6v5M42 33v5M26 22h5M53 22h5'/%3E%3Crect x='286' y='12' width='18' height='18' rx='3'/%3E%3Cpath d='M290 17h10M290 22h10M290 27h10'/%3E%3Cpath d='M548 30l9-9 7 7 12-14'/%3E%3Cpath d='M566 14h10v10'/%3E%3Ccircle cx='814' cy='17' r='5'/%3E%3Ccircle cx='803' cy='29' r='5'/%3E%3Ccircle cx='825' cy='29' r='5'/%3E%3Cpath d='M809 21l-4 4M819 21l4 4M808 29h12'/%3E%3C/g%3E%3Cg fill='%23dceaf4' font-family='Arial,Helvetica,sans-serif' font-size='12' font-weight='700' letter-spacing='1.2'%3E%3Ctext x='62' y='26'%3EPRODUCT LEADERSHIP%3C/text%3E%3Ctext x='316' y='26'%3EENTERPRISE TECHNOLOGY%3C/text%3E%3Ctext x='590' y='26'%3EDATA DRIVEN DECISIONS%3C/text%3E%3Ctext x='842' y='26'%3EDELIVERING BUSINESS VALUE%3C/text%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
+    opacity: .92;
+    pointer-events: none;
+}
 
 
 /* ============================================================
    SIDEBAR + MODAL WORKSPACE
    ============================================================ */
 
-/*
-   Keep sidebar above modal backdrop.
-*/
 .side-nav {
     z-index: 120;
 }
 
-
-/*
-   IMPORTANT:
-
-   The original modal backdrop used:
-
-       inset: 0;
-
-   That covered:
-   - the header
-   - the sidebar
-   - the entire browser viewport
-
-   Instead, desktop modals now occupy only the application's
-   usable content workspace:
-
-   TOP    = below header
-   LEFT   = right of sidebar
-*/
 .modal-backdrop {
     position: fixed !important;
     top: var(--header-height) !important;
@@ -111,15 +77,64 @@
     overflow: auto;
 }
 
+.modal-backdrop > .modal {
+    margin: auto;
+    max-height: calc( 100dvh - var(--header-height) - 32px );
+}
 
-    /*
-   Make sure generic modals cannot become taller than the
-   usable area beneath the header.
-*/
-    .modal-backdrop > .modal {
-        margin: auto;
-        max-height: calc( 100dvh - var(--header-height) - 32px );
-    }
+
+/* ============================================================
+   SHARED MODAL DIGITAL NETWORK
+   ============================================================ */
+
+.modal,
+.experience-shell {
+    position: relative;
+    isolation: isolate;
+}
+
+.modal::before,
+.experience-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .22;
+    background-image:
+        radial-gradient(circle at 78% 17%, rgba(79,242,255,.70) 0 1.2px, rgba(25,217,241,.18) 2px, transparent 7px),
+        radial-gradient(circle at 91% 48%, rgba(79,242,255,.55) 0 1.2px, rgba(25,217,241,.15) 2px, transparent 7px),
+        radial-gradient(circle, rgba(25,217,241,.22) 0 1px, transparent 1.25px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 650'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.28' stroke-width='1'%3E%3Cpolygon points='250,70 292,94 292,142 250,166 208,142 208,94'/%3E%3Cpolygon points='410,55 448,77 448,121 410,143 372,121 372,77'/%3E%3Cpolygon points='550,145 592,169 592,217 550,241 508,217 508,169'/%3E%3Cpolygon points='315,255 360,281 360,333 315,359 270,333 270,281'/%3E%3Cpolygon points='485,320 525,343 525,389 485,412 445,389 445,343'/%3E%3Cpolygon points='615,390 653,412 653,456 615,478 577,456 577,412'/%3E%3Cpolygon points='380,470 422,494 422,542 380,566 338,542 338,494'/%3E%3Cpath d='M292 118L372 99M448 99L508 193M360 307L445 366M525 366L577 434M422 518L505 490M270 307L205 345'/%3E%3C/g%3E%3Cg fill='%234ff2ff' fill-opacity='.32'%3E%3Ccircle cx='292' cy='118' r='2.5'/%3E%3Ccircle cx='448' cy='99' r='2.5'/%3E%3Ccircle cx='508' cy='193' r='2.5'/%3E%3Ccircle cx='360' cy='307' r='2.5'/%3E%3Ccircle cx='525' cy='366' r='2.5'/%3E%3Ccircle cx='577' cy='434' r='2.5'/%3E%3Ccircle cx='422' cy='518' r='2.5'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 650'%3E%3Cg fill='none' stroke='%2319d9f1' stroke-opacity='.46' stroke-width='1.15'%3E%3Cpolygon points='355,105 405,134 405,192 355,221 305,192 305,134'/%3E%3Cpolygon points='505,205 551,232 551,286 505,313 459,286 459,232'/%3E%3Cpolygon points='395,345 445,374 445,432 395,461 345,432 345,374'/%3E%3Cpolygon points='555,455 600,481 600,533 555,559 510,533 510,481'/%3E%3Cpath d='M405 163L459 259M505 313L445 403M445 403L510 507M305 163L250 205M551 259L620 290'/%3E%3C/g%3E%3Cg fill='%234ff2ff' fill-opacity='.55'%3E%3Ccircle cx='355' cy='105' r='3'/%3E%3Ccircle cx='405' cy='192' r='3'/%3E%3Ccircle cx='505' cy='205' r='3'/%3E%3Ccircle cx='551' cy='286' r='3'/%3E%3Ccircle cx='395' cy='345' r='3'/%3E%3Ccircle cx='445' cy='432' r='3'/%3E%3Ccircle cx='555' cy='455' r='3'/%3E%3Ccircle cx='600' cy='533' r='3'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:
+        100% 100%,
+        100% 100%,
+        17px 17px,
+        95% 95%,
+        84% 84%;
+    background-position:
+        center,
+        center,
+        0 0,
+        58% 50%,
+        64% 52%;
+    background-repeat:
+        no-repeat,
+        no-repeat,
+        repeat,
+        no-repeat,
+        no-repeat;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.30) 14%, #000 44%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.30) 14%, #000 44%, #000 100%);
+}
+
+.modal > *,
+.experience-shell > * {
+    position: relative;
+    z-index: 1;
+}
 
 
 /* ============================================================
@@ -172,14 +187,6 @@
         opacity: .46;
     }
 
-
-    /*
-       The main stylesheet intentionally changes to the
-       top mobile navigation at this breakpoint.
-
-       Since the sidebar is no longer present, the modal
-       uses the full width below the header.
-    */
     .modal-backdrop {
         left: 0 !important;
     }
@@ -196,9 +203,9 @@
         padding-bottom: 0;
     }
 
-        .nav-inner::after {
-            display: none;
-        }
+    .nav-inner::after {
+        display: none;
+    }
 
     .brand-monogram {
         width: 55px !important;
@@ -226,7 +233,20 @@
         overflow-y: auto;
     }
 
-        .modal-backdrop > .modal {
-            max-height: calc( 100dvh - var(--header-height) - 20px );
-        }
+    .modal-backdrop > .modal {
+        max-height: calc( 100dvh - var(--header-height) - 20px );
+    }
+
+    .modal::before,
+    .experience-shell::before {
+        opacity: .16;
+        background-size:
+            100% 100%,
+            100% 100%,
+            18px 18px,
+            120% 120%,
+            108% 108%;
+        -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.70) 60%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.70) 60%, transparent 100%);
+    }
 }
