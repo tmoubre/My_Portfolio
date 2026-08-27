@@ -2,26 +2,75 @@
    CERTIFICATES MODAL
    ======================================== */
 
-/*
-  The normal site modal is intentionally smaller.
-  Certificates need more horizontal room.
-*/
 .modal:has(.certs-wrap) {
     width: min(1120px, 96vw);
     max-height: 92vh;
+    display: flex;
+    flex-direction: column;
     padding: 18px 20px 22px;
 }
 
-/* Main certificate container */
+    /* Header stays visible */
+    .modal:has(.certs-wrap) .modal-header {
+        flex: 0 0 auto;
+    }
+
+    /*
+   IMPORTANT MOBILE FIX:
+   Modal body becomes the controlled viewport.
+*/
+    .modal:has(.certs-wrap) .modal-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+/* Main certificate container becomes the scroll area */
 .certs-wrap {
     width: 100%;
     max-width: 1080px;
+    height: 100%;
+    max-height: 100%;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 4px 12px 0;
     background: transparent;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Intro copy */
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
+.certs-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(34, 211, 238, 0.45) rgba(15, 23, 42, 0.35);
+}
+
+    .certs-wrap::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .certs-wrap::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.35);
+        border-radius: 999px;
+    }
+
+    .certs-wrap::-webkit-scrollbar-thumb {
+        background: rgba(34, 211, 238, 0.4);
+        border-radius: 999px;
+    }
+
+        .certs-wrap::-webkit-scrollbar-thumb:hover {
+            background: rgba(34, 211, 238, 0.65);
+        }
+
+/* ========================================
+   INTRO
+   ======================================== */
+
 .certs-intro {
     margin-bottom: 18px;
 }
@@ -98,7 +147,6 @@
     gap: 20px;
     padding: 0;
     margin: 0;
-    overflow: visible;
 }
 
 /* ========================================
@@ -134,7 +182,6 @@
     border-color: rgba(34, 211, 238, 0.23);
 }
 
-/* Entire card remains clickable */
 .certs-card-btn {
     position: relative;
     z-index: 1;
@@ -174,7 +221,6 @@
     border-radius: 10px;
 }
 
-/* CSPO is a badge rather than a landscape certificate */
 .certs-thumb-badge {
     width: auto;
     max-width: 185px;
@@ -259,7 +305,7 @@
     align-items: center;
     gap: 10px;
     margin-top: 24px;
-    padding-top: 18px;
+    padding: 18px 0 8px;
     border-top: 1px solid rgba(148, 163, 184, 0.1);
     color: #94a3b8;
     font-size: 0.9rem;
@@ -276,14 +322,18 @@
    ======================================== */
 
 .certs-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     margin-bottom: 16px;
+    padding: 4px 0 10px;
+    background: linear-gradient( 180deg, rgba(15, 23, 42, 0.98) 70%, rgba(15, 23, 42, 0) );
 }
 
 .certs-view {
     display: grid;
     gap: 18px;
-    padding: 0;
-    overflow: visible;
+    padding: 0 0 12px;
 }
 
 .certs-detail-heading {
@@ -335,6 +385,7 @@
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
+    padding-bottom: 6px;
 }
 
 .certs-btn {
@@ -351,6 +402,7 @@
     font-size: 0.88rem;
     font-weight: 650;
     cursor: pointer;
+    text-decoration: none;
 }
 
     .certs-btn:hover {
@@ -361,7 +413,7 @@
 
     .certs-btn.solid {
         border-color: transparent;
-        background: linear-gradient( 90deg, #0ea5e9, #22d3ee );
+        background: linear-gradient(90deg, #0ea5e9, #22d3ee);
         color: #001018;
         font-weight: 750;
     }
@@ -372,12 +424,14 @@
         }
 
 /* ========================================
-   RESPONSIVE
+   TABLET
    ======================================== */
 
 @media (max-width: 920px) {
+
     .modal:has(.certs-wrap) {
         width: min(760px, 96vw);
+        max-height: 94dvh;
     }
 
     .certs-grid {
@@ -385,15 +439,43 @@
     }
 }
 
+/* ========================================
+   PHONE
+   ======================================== */
+
 @media (max-width: 620px) {
+
     .modal:has(.certs-wrap) {
-        width: 96vw;
+        width: calc(100vw - 20px);
+        max-height: calc(100dvh - 20px);
         padding: 14px;
+    }
+
+        .modal:has(.certs-wrap) .modal-body {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+    .certs-wrap {
+        height: 100%;
+        max-height: 100%;
+        padding-right: 2px;
+        padding-bottom: 24px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .certs-intro {
+        margin-bottom: 14px;
     }
 
     .certs-filters {
         display: grid;
         grid-template-columns: 1fr;
+        gap: 9px;
+        margin-bottom: 18px;
     }
 
     .certs-filter-btn {
@@ -402,19 +484,102 @@
 
     .certs-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .certs-card-btn {
+        padding: 14px;
     }
 
     .certs-image-wrap {
         height: 200px;
+        margin-bottom: 14px;
+    }
+
+    .certs-card-title {
+        font-size: 1.05rem;
+    }
+
+    .certs-card-desc {
+        margin-bottom: 15px;
     }
 
     .certs-footer-message {
         align-items: flex-start;
+        justify-content: flex-start;
         text-align: left;
+        padding-bottom: 20px;
+    }
+
+    .certs-toolbar {
+        top: 0;
+        margin-bottom: 12px;
+    }
+
+    .certs-view {
+        gap: 14px;
+    }
+
+    .certs-detail-heading h3 {
+        font-size: 1.15rem;
+    }
+
+    .certs-view-image-wrap {
+        padding: 10px;
+    }
+
+    .certs-view-image {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+
+    .certs-badge-detail .certs-view-image {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+    }
+
+    .certs-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding-bottom: 20px;
+    }
+
+        .certs-actions .certs-btn {
+            width: 100%;
+        }
+}
+
+/* ========================================
+   EXTRA SMALL PHONES
+   ======================================== */
+
+@media (max-width: 390px) {
+
+    .modal:has(.certs-wrap) {
+        width: calc(100vw - 12px);
+        max-height: calc(100dvh - 12px);
+        padding: 11px;
+    }
+
+    .certs-image-wrap {
+        height: 175px;
+    }
+
+    .certs-thumb-badge {
+        max-width: 160px;
+        height: 150px;
     }
 }
 
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
+
     .certs-card,
     .certs-filter-btn {
         transition: none;
