@@ -97,9 +97,10 @@
     letter-spacing: -0.025em;
 }
 
-/* Add breathing room between contact info and first section */
-.resume-header {
-    margin-bottom: 22px;
+/* Guaranteed spacing between contact info and first section */
+.resume-sheet > .resume-header {
+    margin-bottom: 0;
+    padding-bottom: 22px;
 }
 
 .resume-contact {
@@ -321,8 +322,8 @@
         font-size: 1.65rem;
     }
 
-    .resume-header {
-        margin-bottom: 18px;
+    .resume-sheet > .resume-header {
+        padding-bottom: 18px;
     }
 
     .resume-contact {
