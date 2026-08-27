@@ -87,19 +87,134 @@
 }
 
 .resume-sheet h1 {
-    margin: 0 0 4px;
+    margin: 0;
     font-size: 2rem;
     line-height: 1.1;
     letter-spacing: -0.025em;
 }
 
+/* ========================================
+   RESUME HEADER / BRANDING
+   ======================================== */
+
 .resume-sheet > .resume-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0;
-    padding: 0;
+    padding: 0 0 4px;
+    text-align: center;
+}
+
+.resume-sheet > .resume-header::before {
+    content: '';
+    display: block;
+    width: 74px;
+    height: 64px;
+    margin: 0 auto 10px;
+    background: transparent url('/TO-logo.svg') center / contain no-repeat;
+    filter: drop-shadow(0 0 5px rgba(0, 174, 240, .20));
+}
+
+.resume-header .name {
+    margin-bottom: 18px;
+}
+
+/*
+   Existing contact markup is preserved exactly as-is.
+   The separator bullets become unnecessary once the items
+   are displayed as a responsive contact grid.
+*/
+.resume-header .meta {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    padding: 14px 0 16px;
+    border-top: 1px solid #dbe5ee;
+    border-bottom: 1px solid #dbe5ee;
 }
 
 .resume-header .meta > span:nth-child(even) {
-    margin: 0 6px;
+    display: none;
+}
+
+.resume-header .meta > :nth-child(odd) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+    min-width: 0;
+    padding: 2px 5px;
+    color: #334155;
+    font-size: .78rem;
+    font-weight: 650;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.resume-header .meta > a:nth-child(odd) {
+    color: #0284c7;
+}
+
+.resume-header .meta > a:nth-child(odd):hover {
+    color: #0369a1;
+    text-decoration: underline;
+}
+
+.resume-header .meta > :nth-child(odd)::before {
+    content: '';
+    display: block;
+    width: 29px;
+    height: 29px;
+    flex: 0 0 29px;
+    background-color: #0284c7;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: 24px 24px;
+    mask-size: 24px 24px;
+}
+
+/* Location */
+.resume-header .meta > :nth-child(1)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+}
+
+/* Phone */
+.resume-header .meta > :nth-child(3)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.33 1.85.56 2.81.69A2 2 0 0 1 22 16.92Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.33 1.85.56 2.81.69A2 2 0 0 1 22 16.92Z'/%3E%3C/svg%3E");
+}
+
+/* Email */
+.resume-header .meta > :nth-child(5)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='16' x='2' y='4' rx='2'/%3E%3Cpath d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='16' x='2' y='4' rx='2'/%3E%3Cpath d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'/%3E%3C/svg%3E");
+}
+
+/* Portfolio */
+.resume-header .meta > :nth-child(7)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z'/%3E%3C/svg%3E");
+}
+
+/* GitHub */
+.resume-header .meta > :nth-child(9)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.24c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.47.11-3.04 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.13c.98 0 1.95.13 2.86.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.57.23 2.75.11 3.04.74.8 1.19 1.82 1.19 3.08 0 4.41-2.71 5.38-5.29 5.67.42.36.79 1.08.79 2.17v3.25c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.24c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.1-.75.4-1.27.74-1.56-2.57-.29-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.47.11-3.04 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.13c.98 0 1.95.13 2.86.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.57.23 2.75.11 3.04.74.8 1.19 1.82 1.19 3.08 0 4.41-2.71 5.38-5.29 5.67.42.36.79 1.08.79 2.17v3.25c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z'/%3E%3C/svg%3E");
+}
+
+/* LinkedIn */
+.resume-header .meta > :nth-child(11)::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41A2.07 2.07 0 1 1 5.32 3.27a2.07 2.07 0 0 1 0 4.14Zm1.78 13.04H3.54V8.98H7.1v11.47Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41A2.07 2.07 0 1 1 5.32 3.27a2.07 2.07 0 0 1 0 4.14Zm1.78 13.04H3.54V8.98H7.1v11.47Z'/%3E%3C/svg%3E");
 }
 
 .resume-sheet > .resume-header + section {
@@ -196,6 +311,11 @@
         padding: 32px 30px 40px;
     }
 
+    .resume-header .meta {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px 10px;
+    }
+
     .role-head {
         display: block;
         margin-bottom: 12px;
@@ -259,6 +379,26 @@
 
     .resume-sheet h1 {
         font-size: 1.65rem;
+    }
+
+    .resume-sheet > .resume-header::before {
+        width: 64px;
+        height: 56px;
+        margin-bottom: 8px;
+    }
+
+    .resume-header .name {
+        margin-bottom: 15px;
+    }
+
+    .resume-header .meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px 8px;
+        padding: 14px 0;
+    }
+
+    .resume-header .meta > :nth-child(odd) {
+        font-size: .76rem;
     }
 
     .resume-sheet > .resume-header + section {
@@ -329,5 +469,10 @@
 
     .resume-toolbar {
         grid-template-columns: 1fr;
+    }
+
+    .resume-header .meta {
+        grid-template-columns: 1fr;
+        gap: 13px;
     }
 }
