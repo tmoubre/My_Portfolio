@@ -103,12 +103,16 @@
     padding: 0;
 }
 
+.resume-header .meta > span:nth-child(even) {
+    margin: 0 6px;
+}
+
 /*
    The first resume section is a plain <section> in Resume.jsx.
    Put the spacing on that exact element so it cannot collapse.
 */
 .resume-sheet > .resume-header + section {
-    padding-top: 34px;
+    padding-top: 24px;
 }
 
 .resume-contact {
