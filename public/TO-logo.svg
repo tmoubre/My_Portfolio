@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">TO Logo</title>
+  <desc id="desc">Vector TO monogram with cyan orbital ring and metallic silver lettering.</desc>
+
+  <defs>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#47f2ff"/>
+      <stop offset="55%" stop-color="#05c7e7"/>
+      <stop offset="100%" stop-color="#0098c7"/>
+    </linearGradient>
+
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="32%" stop-color="#f7fbff"/>
+      <stop offset="58%" stop-color="#d8e0e8"/>
+      <stop offset="82%" stop-color="#a9b6c2"/>
+      <stop offset="100%" stop-color="#f6f8fb"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="letterShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#000000" flood-opacity=".35"/>
+    </filter>
+  </defs>
+
+  <!-- transparent background -->
+
+  <!-- cyan orbital ring -->
+  <path d="M112 128
+           C150 72 218 44 286 52
+           C358 60 414 106 438 168"
+        fill="none"
+        stroke="url(#cyan)"
+        stroke-width="18"
+        stroke-linecap="round"
+        filter="url(#softGlow)"/>
+
+  <path d="M436 174
+           C462 251 440 338 382 396
+           C329 449 249 470 177 447
+           C126 431 83 396 58 350"
+        fill="none"
+        stroke="url(#cyan)"
+        stroke-width="18"
+        stroke-linecap="round"
+        filter="url(#softGlow)"/>
+
+  <path d="M61 343
+           C38 290 40 230 59 181
+           C70 153 88 128 112 106"
+        fill="none"
+        stroke="url(#cyan)"
+        stroke-width="10"
+        stroke-linecap="round"
+        opacity=".95"/>
+
+  <!-- subtle interior ring accent -->
+  <path d="M122 117
+           C166 76 229 60 288 67
+           C346 73 394 101 423 145"
+        fill="none"
+        stroke="#79f7ff"
+        stroke-width="4"
+        stroke-linecap="round"
+        opacity=".55"/>
+
+  <!-- Stylized T -->
+  <path d="M105 177
+           L285 177
+           L273 223
+           L214 223
+           L181 352
+           L126 352
+           L159 223
+           L94 223
+           Z"
+        fill="url(#metal)"
+        filter="url(#letterShadow)"/>
+
+  <!-- Stylized O -->
+  <path d="M244 193
+           C274 169 313 157 352 160
+           C396 164 423 188 426 222
+           C430 268 406 322 366 350
+           C337 371 297 379 263 371
+           C230 364 211 341 211 311
+           C211 268 224 217 244 193
+           Z
+
+           M286 216
+           C270 230 260 259 256 288
+           C252 315 264 329 287 331
+           C311 333 334 318 346 295
+           C359 272 366 241 359 226
+           C353 212 338 207 321 208
+           C308 208 296 211 286 216
+           Z"
+        fill="url(#metal)"
+        fill-rule="evenodd"
+        filter="url(#letterShadow)"/>
+
+  <!-- linking slash/accent between letters -->
+  <path d="M262 185 L303 185 L288 229 L248 229 Z"
+        fill="url(#metal)"
+        opacity=".98"/>
+
+  <!-- small cyan lower sweep -->
+  <path d="M178 439
+           C245 460 321 445 374 400"
+        fill="none"
+        stroke="#18d8ef"
+        stroke-width="6"
+        stroke-linecap="round"
+        opacity=".75"/>
+</svg>
