@@ -31,9 +31,7 @@ import {
     SiNodedotjs,
 } from 'react-icons/si';
 
-import {
-    VscAzureDevops,
-} from 'react-icons/vsc';
+import { VscAzureDevops } from 'react-icons/vsc';
 
 import ProjectCard from './components/ProjectCard.jsx';
 import Modal from './components/Modal.jsx';
@@ -42,6 +40,7 @@ import CertsModal from './components/CertsModal.jsx';
 import ExperienceModal from './components/ExperienceModal.jsx';
 
 import projects from './data/projects.js';
+
 
 const GITHUB = 'https://github.com/tmoubre';
 
@@ -101,23 +100,27 @@ const CONTACT_URL = IS_PROD
 
 export default function App() {
 
-    const [experienceOpen, setExperienceOpen] =
-        useState(false);
+    /*
+     * ============================================================
+     * MODAL STATE
+     * ============================================================
+     *
+     * Only ONE modal can be active at a time.
+     *
+     * Valid values:
+     * null
+     * 'resume'
+     * 'experience'
+     * 'projects'
+     * 'certs'
+     * 'contact'
+     */
+
+    const [activeModal, setActiveModal] =
+        useState(null);
 
     const [experienceTab, setExperienceTab] =
         useState('expertise');
-
-    const [portfolioOpen, setPortfolioOpen] =
-        useState(false);
-
-    const [certsOpen, setCertsOpen] =
-        useState(false);
-
-    const [isResumeOpen, setIsResumeOpen] =
-        useState(false);
-
-    const [isFormOpen, setIsFormOpen] =
-        useState(false);
 
     const [activeNav, setActiveNav] =
         useState('home');
@@ -141,6 +144,12 @@ export default function App() {
     const toastTimerRef =
         useRef(null);
 
+
+    /*
+     * ============================================================
+     * TOAST
+     * ============================================================
+     */
 
     const showToast = (
         message,
@@ -172,11 +181,17 @@ export default function App() {
     };
 
 
+    /*
+     * ============================================================
+     * INITIAL LOAD
+     * ============================================================
+     */
+
     useEffect(() => {
 
         if (window.location.hash === '#contact') {
 
-            setIsFormOpen(true);
+            setActiveModal('contact');
             setActiveNav('contact');
         }
 
@@ -191,8 +206,70 @@ export default function App() {
     }, []);
 
 
+    /*
+     * ============================================================
+     * MODAL / NAVIGATION CONTROL
+     * ============================================================
+     */
+
+    const closeModal = () => {
+
+        setActiveModal(null);
+        setActiveNav('home');
+
+        setFormStatus({
+            state: 'idle',
+            msg: '',
+        });
+    };
+
+
+    const openResumeModal = () => {
+
+        setActiveModal('resume');
+        setActiveNav('resume');
+    };
+
+
+    const openExperienceModal = (
+        tab = 'expertise'
+    ) => {
+
+        setExperienceTab(tab);
+
+        setActiveModal('experience');
+        setActiveNav('experience');
+    };
+
+
+    const openPortfolioModal = () => {
+
+        setActiveModal('projects');
+        setActiveNav('projects');
+    };
+
+
+    const openCertsModal = () => {
+
+        setActiveModal('certs');
+        setActiveNav('certs');
+    };
+
+
+    const openFormModal = () => {
+
+        setActiveModal('contact');
+        setActiveNav('contact');
+    };
+
+
     const scrollHome = () => {
 
+        /*
+         * Closing the current modal first guarantees that
+         * Home always restores the normal page view.
+         */
+        setActiveModal(null);
         setActiveNav('home');
 
         document
@@ -203,83 +280,69 @@ export default function App() {
     };
 
 
-    const openExperienceModal = (
-        tab = 'expertise'
-    ) => {
+    /*
+     * ============================================================
+     * NAVIGATION CONFIGURATION
+     * ============================================================
+     *
+     * Desktop and mobile navigation both use this same array.
+     * That prevents the two navigation systems from drifting
+     * into different orders later.
+     */
 
-        setExperienceTab(tab);
-        setActiveNav('experience');
-        setExperienceOpen(true);
-    };
+    const navItems = [
 
+        {
+            id: 'home',
+            label: 'Home',
+            icon: Home,
+            action: scrollHome,
+        },
 
-    const closeExperienceModal = () => {
+        {
+            id: 'resume',
+            label: 'Resume',
+            icon: FileText,
+            action: openResumeModal,
+        },
 
-        setExperienceOpen(false);
-        setActiveNav('home');
-    };
+        {
+            id: 'experience',
+            label: 'Experience',
+            icon: Briefcase,
+            action: () =>
+                openExperienceModal('expertise'),
+        },
 
+        {
+            id: 'projects',
+            label: 'Projects',
+            icon: Folder,
+            action: openPortfolioModal,
+        },
 
-    const openPortfolioModal = () => {
+        {
+            id: 'certs',
+            label: 'Certs',
+            ariaLabel: 'Certifications',
+            icon: Award,
+            action: openCertsModal,
+        },
 
-        setActiveNav('projects');
-        setPortfolioOpen(true);
-    };
-
-
-    const closePortfolioModal = () => {
-
-        setPortfolioOpen(false);
-        setActiveNav('home');
-    };
-
-
-    const openCertsModal = () => {
-
-        setActiveNav('certs');
-        setCertsOpen(true);
-    };
-
-
-    const closeCertsModal = () => {
-
-        setCertsOpen(false);
-        setActiveNav('home');
-    };
-
-
-    const openResumeModal = () => {
-
-        setActiveNav('resume');
-        setIsResumeOpen(true);
-    };
-
-
-    const closeResumeModal = () => {
-
-        setIsResumeOpen(false);
-        setActiveNav('home');
-    };
-
-
-    const openFormModal = () => {
-
-        setActiveNav('contact');
-        setIsFormOpen(true);
-    };
+        {
+            id: 'contact',
+            label: 'Contact',
+            icon: Mail,
+            action: openFormModal,
+        },
+    ];
 
 
-    const closeFormModal = () => {
-
-        setIsFormOpen(false);
-        setActiveNav('home');
-
-        setFormStatus({
-            state: 'idle',
-            msg: '',
-        });
-    };
-
+    /*
+     * ============================================================
+     * CONTACT FORM
+     * ============================================================
+     */
 
     const handleFormSubmit = async (
         event
@@ -366,7 +429,7 @@ export default function App() {
 
             form.reset();
 
-            closeFormModal();
+            closeModal();
 
 
             showToast(
@@ -400,136 +463,44 @@ export default function App() {
 
                 <div className="side-nav-main">
 
+                    {navItems.map((item) => {
 
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'home'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={scrollHome}
-                        aria-label="Home"
-                    >
+                        const Icon =
+                            item.icon;
 
-                        <span className="side-nav-icon">
-                            <Home size={24} />
-                        </span>
+                        return (
 
-                        <span className="side-nav-label">
-                            Home
-                        </span>
+                            <button
+                                key={item.id}
+                                type="button"
+                                className={`side-nav-item ${activeNav === item.id
+                                        ? 'active'
+                                        : ''
+                                    }`}
+                                onClick={item.action}
+                                aria-label={
+                                    item.ariaLabel ??
+                                    item.label
+                                }
+                            >
 
-                    </button>
+                                <span className="side-nav-icon">
 
+                                    <Icon size={24} />
 
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'experience'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={() =>
-                            openExperienceModal(
-                                'expertise'
-                            )
-                        }
-                        aria-label="Experience"
-                    >
-
-                        <span className="side-nav-icon">
-                            <Briefcase size={24} />
-                        </span>
-
-                        <span className="side-nav-label">
-                            Experience
-                        </span>
-
-                    </button>
+                                </span>
 
 
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'projects'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={openPortfolioModal}
-                        aria-label="Projects"
-                    >
+                                <span className="side-nav-label">
 
-                        <span className="side-nav-icon">
-                            <Folder size={24} />
-                        </span>
+                                    {item.label}
 
-                        <span className="side-nav-label">
-                            Projects
-                        </span>
+                                </span>
 
-                    </button>
+                            </button>
 
-
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'certs'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={openCertsModal}
-                        aria-label="Certifications"
-                    >
-
-                        <span className="side-nav-icon">
-                            <Award size={24} />
-                        </span>
-
-                        <span className="side-nav-label">
-                            Certs
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'resume'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={openResumeModal}
-                        aria-label="Resume"
-                    >
-
-                        <span className="side-nav-icon">
-                            <FileText size={24} />
-                        </span>
-
-                        <span className="side-nav-label">
-                            Resume
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        className={`side-nav-item ${activeNav === 'contact'
-                                ? 'active'
-                                : ''
-                            }`}
-                        onClick={openFormModal}
-                        aria-label="Contact"
-                    >
-
-                        <span className="side-nav-icon">
-                            <Mail size={24} />
-                        </span>
-
-                        <span className="side-nav-label">
-                            Contact
-                        </span>
-
-                    </button>
-
+                        );
+                    })}
 
                 </div>
 
@@ -636,70 +607,28 @@ export default function App() {
 
                     <nav className="mobile-nav">
 
+                        {navItems.map((item) => {
 
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={scrollHome}
-                            aria-label="Home"
-                        >
-                            <Home size={18} />
-                        </button>
+                            const Icon =
+                                item.icon;
 
+                            return (
 
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={() =>
-                                openExperienceModal(
-                                    'expertise'
-                                )
-                            }
-                            aria-label="Experience"
-                        >
-                            <Briefcase size={18} />
-                        </button>
+                                <button
+                                    key={item.id}
+                                    type="button"
+                                    className="mobile-nav-link"
+                                    onClick={item.action}
+                                    aria-label={
+                                        item.ariaLabel ??
+                                        item.label
+                                    }
+                                >
+                                    <Icon size={18} />
+                                </button>
 
-
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={openPortfolioModal}
-                            aria-label="Projects"
-                        >
-                            <Folder size={18} />
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={openCertsModal}
-                            aria-label="Certifications"
-                        >
-                            <Award size={18} />
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={openResumeModal}
-                            aria-label="Resume"
-                        >
-                            <FileText size={18} />
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className="mobile-nav-link"
-                            onClick={openFormModal}
-                            aria-label="Contact"
-                        >
-                            <Mail size={18} />
-                        </button>
-
+                            );
+                        })}
 
                     </nav>
 
@@ -814,9 +743,11 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon icon-product-owner">
+
                                                 <CheckCircle
                                                     size={18}
                                                 />
+
                                             </span>
 
                                             Product Owner
@@ -827,7 +758,9 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon brand-icon icon-azure-devops">
+
                                                 <VscAzureDevops />
+
                                             </span>
 
                                             Azure DevOps
@@ -838,9 +771,11 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon icon-sql">
+
                                                 <Database
                                                     size={18}
                                                 />
+
                                             </span>
 
                                             SQL
@@ -851,9 +786,11 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon icon-powerapps">
+
                                                 <LayoutDashboard
                                                     size={18}
                                                 />
+
                                             </span>
 
                                             Power Apps
@@ -864,9 +801,11 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon icon-sharepoint">
+
                                                 <Share2
                                                     size={18}
                                                 />
+
                                             </span>
 
                                             SharePoint
@@ -877,7 +816,9 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon brand-icon icon-javascript">
+
                                                 <SiJavascript />
+
                                             </span>
 
                                             JavaScript
@@ -888,7 +829,9 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon brand-icon icon-react">
+
                                                 <SiReact />
+
                                             </span>
 
                                             React
@@ -899,7 +842,9 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon brand-icon icon-node">
+
                                                 <SiNodedotjs />
+
                                             </span>
 
                                             Node.js
@@ -910,9 +855,11 @@ export default function App() {
                                         <span className="capability-pill">
 
                                             <span className="cap-icon icon-api">
+
                                                 <LinkIcon
                                                     size={18}
                                                 />
+
                                             </span>
 
                                             API Integration
@@ -1049,9 +996,11 @@ export default function App() {
                                         >
 
                                             <span className="hero-action-icon">
+
                                                 <Send
                                                     size={20}
                                                 />
+
                                             </span>
 
                                             <span>
@@ -1075,9 +1024,11 @@ export default function App() {
                                         >
 
                                             <span className="hero-action-icon">
+
                                                 <FileText
                                                     size={20}
                                                 />
+
                                             </span>
 
                                             <span>
@@ -1101,9 +1052,11 @@ export default function App() {
                                         >
 
                                             <span className="hero-action-icon">
+
                                                 <Folder
                                                     size={20}
                                                 />
+
                                             </span>
 
                                             <span>
@@ -1252,8 +1205,11 @@ export default function App() {
                 ===================================================== */}
 
             <ExperienceModal
-                isOpen={experienceOpen}
-                onClose={closeExperienceModal}
+                isOpen={
+                    activeModal ===
+                    'experience'
+                }
+                onClose={closeModal}
                 activeTab={experienceTab}
                 onTabChange={setExperienceTab}
             />
@@ -1264,8 +1220,11 @@ export default function App() {
                 ===================================================== */}
 
             <Modal
-                isOpen={portfolioOpen}
-                onClose={closePortfolioModal}
+                isOpen={
+                    activeModal ===
+                    'projects'
+                }
+                onClose={closeModal}
                 title="Technical Portfolio"
             >
 
@@ -1299,7 +1258,6 @@ export default function App() {
                         role="list"
                     >
 
-
                         {projects.map((project) => (
 
                             <ProjectCard
@@ -1313,7 +1271,6 @@ export default function App() {
                             />
 
                         ))}
-
 
                     </div>
 
@@ -1352,8 +1309,11 @@ export default function App() {
                 ===================================================== */}
 
             <Modal
-                isOpen={isFormOpen}
-                onClose={closeFormModal}
+                isOpen={
+                    activeModal ===
+                    'contact'
+                }
+                onClose={closeModal}
                 title="Get in touch"
             >
 
@@ -1426,21 +1386,21 @@ export default function App() {
                                 'sending'
                             }
                         >
+
                             {
                                 formStatus.state ===
                                     'sending'
                                     ? 'Sending…'
                                     : 'Send Message'
                             }
+
                         </button>
 
 
                         <button
                             type="button"
                             className="modal-secondary"
-                            onClick={
-                                closeFormModal
-                            }
+                            onClick={closeModal}
                         >
                             Cancel
                         </button>
@@ -1454,9 +1414,11 @@ export default function App() {
                         'idle' && (
 
                             <p className="muted form-status">
+
                                 {
                                     formStatus.msg
                                 }
+
                             </p>
 
                         )
@@ -1474,8 +1436,11 @@ export default function App() {
                 ===================================================== */}
 
             <Modal
-                isOpen={isResumeOpen}
-                onClose={closeResumeModal}
+                isOpen={
+                    activeModal ===
+                    'resume'
+                }
+                onClose={closeModal}
                 title="Resume"
             >
 
@@ -1495,8 +1460,11 @@ export default function App() {
                 ===================================================== */}
 
             <CertsModal
-                isOpen={certsOpen}
-                onClose={closeCertsModal}
+                isOpen={
+                    activeModal ===
+                    'certs'
+                }
+                onClose={closeModal}
             />
 
 
@@ -1512,7 +1480,9 @@ export default function App() {
                 role="status"
                 aria-live="polite"
             >
+
                 {toast.msg}
+
             </div>
 
 
