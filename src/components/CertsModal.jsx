@@ -1,239 +1,229 @@
-// src/components/CertsModal.jsx
+import React, { useMemo, useState } from 'react';
+import Modal from './Modal';
+import { certs } from '../data/certs';
+import '../styles/certs.css';
 
-import React, { useMemo, useState } from "react";
-import Modal from "./Modal";
-import { certs } from "../data/certs";
-import "../styles/certs.css";
+const PROFESSIONAL = 'professional';
 
 export default function CertsModal({ isOpen, onClose }) {
     const [selected, setSelected] = useState(null);
-    const [filter, setFilter] = useState("all");
+    const [filter, setFilter] = useState('all');
+
+    const professionalCount = useMemo(
+        () => certs.filter((cert) => cert.category === PROFESSIONAL).length,
+        []
+    );
+
+    const filteredCerts = useMemo(
+        () =>
+            filter === PROFESSIONAL
+                ? certs.filter((cert) => cert.category === PROFESSIONAL)
+                : certs,
+        [filter]
+    );
 
     const handleClose = () => {
         setSelected(null);
-        setFilter("all");
+        setFilter('all');
         onClose?.();
     };
 
-    const filteredCerts = useMemo(() => {
-        if (filter === "professional") {
-            return certs.filter((cert) => cert.category === "professional");
-        }
-
-        return certs;
-    }, [filter]);
-
-    const professionalCount = certs.filter(
-        (cert) => cert.category === "professional"
-    ).length;
-
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={handleClose}
-            title="Certificates"
-        >
+        <Modal isOpen={isOpen} onClose={handleClose} title="Certificates">
             <div className="certs-wrap">
-                {!selected ? (
-                    <>
-                        {/* Intro */}
-                        <div className="certs-intro">
-                            <p>
-                                Professional credentials and continuous learning achievements.
-                            </p>
-                        </div>
-
-                        {/* Filters */}
-                        <div
-                            className="certs-filters"
-                            role="group"
-                            aria-label="Filter certificates"
-                        >
-                            <button
-                                type="button"
-                                className={`certs-filter-btn ${filter === "all" ? "active" : ""
-                                    }`}
-                                onClick={() => setFilter("all")}
-                            >
-                                All Certificates
-                                <span className="certs-count">{certs.length}</span>
-                            </button>
-
-                            <button
-                                type="button"
-                                className={`certs-filter-btn ${filter === "professional" ? "active" : ""
-                                    }`}
-                                onClick={() => setFilter("professional")}
-                            >
-                                Professional Certifications
-                                <span className="certs-count">{professionalCount}</span>
-                            </button>
-                        </div>
-
-                        {/* Certificate cards */}
-                        <section
-                            className="certs-grid"
-                            aria-label="Certificates"
-                        >
-                            {filteredCerts.map((cert) => (
-                                <article
-                                    key={cert.id}
-                                    className={`certs-card ${cert.category === "professional"
-                                            ? "certs-card-professional"
-                                            : ""
-                                        }`}
-                                >
-                                    <button
-                                        type="button"
-                                        className="certs-card-btn"
-                                        onClick={() => setSelected(cert)}
-                                        aria-label={`Open ${cert.title}`}
-                                    >
-                                        <div className="certs-image-wrap">
-                                            <img
-                                                src={cert.thumbnail}
-                                                alt={cert.alt || `${cert.title} thumbnail`}
-                                                className={`certs-thumb ${cert.id === "cspo"
-                                                        ? "certs-thumb-badge"
-                                                        : ""
-                                                    }`}
-                                                loading="lazy"
-                                            />
-                                        </div>
-
-                                        <div className="certs-card-body">
-                                            <span className="certs-issuer">
-                                                {cert.issuer}
-                                            </span>
-
-                                            <h3 className="certs-card-title">
-                                                {cert.title}
-                                            </h3>
-
-                                            {cert.date && (
-                                                <p className="certs-card-meta">
-                                                    {cert.date}
-                                                </p>
-                                            )}
-
-                                            <div className="certs-card-divider" />
-
-                                            <p className="certs-card-desc">
-                                                {cert.description}
-                                            </p>
-
-                                            <span className="certs-view-link">
-                                                {cert.category === "professional"
-                                                    ? "View Credential"
-                                                    : "View Certificate"}
-                                                <span aria-hidden="true"> →</span>
-                                            </span>
-                                        </div>
-                                    </button>
-                                </article>
-                            ))}
-                        </section>
-
-                        <div className="certs-footer-message">
-                            <span className="certs-footer-mark">
-                                ◆
-                            </span>
-
-                            <span>
-                                Always learning. Always building. Always delivering value.
-                            </span>
-                        </div>
-                    </>
+                {selected ? (
+                    <CertificateDetail
+                        certificate={selected}
+                        onBack={() => setSelected(null)}
+                    />
                 ) : (
-                    <>
-                        {/* Detail toolbar */}
-                        <div className="certs-toolbar">
-                            <button
-                                type="button"
-                                className="certs-btn"
-                                onClick={() => setSelected(null)}
-                                aria-label="Back to all certificates"
-                            >
-                                ← Back to certificates
-                            </button>
-                        </div>
-
-                        {/* Detail view */}
-                        <section
-                            className="certs-view"
-                            aria-live="polite"
-                        >
-                            <div className="certs-detail-heading">
-                                <span className="certs-issuer">
-                                    {selected.issuer}
-                                </span>
-
-                                <h3>
-                                    {selected.title}
-                                </h3>
-
-                                {selected.date && (
-                                    <p className="certs-card-meta">
-                                        {selected.date}
-                                    </p>
-                                )}
-
-                                <p>
-                                    {selected.description}
-                                </p>
-                            </div>
-
-                            <div
-                                className={`certs-view-image-wrap ${selected.id === "cspo"
-                                        ? "certs-badge-detail"
-                                        : ""
-                                    }`}
-                            >
-                                <img
-                                    src={selected.image}
-                                    alt={selected.alt || selected.title}
-                                    className="certs-view-image"
-                                />
-                            </div>
-
-                            <div className="certs-actions">
-                                {selected.verifyUrl && (
-                                    <a
-                                        href={selected.verifyUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="certs-btn solid"
-                                    >
-                                        Verify Credential
-                                    </a>
-                                )}
-
-                                {selected.allowDownload && (
-                                    <a
-                                        href={
-                                            selected.downloadUrl ||
-                                            selected.image
-                                        }
-                                        download
-                                        className="certs-btn solid"
-                                    >
-                                        Download PDF
-                                    </a>
-                                )}
-
-                                <a
-                                    href={selected.image}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="certs-btn"
-                                >
-                                    View Full Size
-                                </a>
-                            </div>
-                        </section>
-                    </>
+                    <CertificateGallery
+                        certificates={filteredCerts}
+                        filter={filter}
+                        professionalCount={professionalCount}
+                        onFilterChange={setFilter}
+                        onSelect={setSelected}
+                    />
                 )}
             </div>
         </Modal>
+    );
+}
+
+function CertificateGallery({
+    certificates,
+    filter,
+    professionalCount,
+    onFilterChange,
+    onSelect,
+}) {
+    return (
+        <>
+            <div className="certs-intro">
+                <p>Professional credentials and continuous learning achievements.</p>
+            </div>
+
+            <div className="certs-filters" role="group" aria-label="Filter certificates">
+                <FilterButton
+                    active={filter === 'all'}
+                    label="All Certificates"
+                    count={certs.length}
+                    onClick={() => onFilterChange('all')}
+                />
+
+                <FilterButton
+                    active={filter === PROFESSIONAL}
+                    label="Professional Certifications"
+                    count={professionalCount}
+                    onClick={() => onFilterChange(PROFESSIONAL)}
+                />
+            </div>
+
+            <section className="certs-grid" aria-label="Certificates">
+                {certificates.map((cert) => (
+                    <CertificateCard
+                        key={cert.id}
+                        certificate={cert}
+                        onSelect={onSelect}
+                    />
+                ))}
+            </section>
+
+            <div className="certs-footer-message">
+                <span className="certs-footer-mark">◆</span>
+                <span>Always learning. Always building. Always delivering value.</span>
+            </div>
+        </>
+    );
+}
+
+function FilterButton({ active, label, count, onClick }) {
+    return (
+        <button
+            type="button"
+            className={`certs-filter-btn ${active ? 'active' : ''}`}
+            onClick={onClick}
+        >
+            {label}
+            <span className="certs-count">{count}</span>
+        </button>
+    );
+}
+
+function CertificateCard({ certificate, onSelect }) {
+    const isProfessional = certificate.category === PROFESSIONAL;
+    const isBadge = certificate.id === 'cspo';
+
+    return (
+        <article
+            className={`certs-card ${isProfessional ? 'certs-card-professional' : ''}`}
+        >
+            <button
+                type="button"
+                className="certs-card-btn"
+                onClick={() => onSelect(certificate)}
+                aria-label={`Open ${certificate.title}`}
+            >
+                <div className="certs-image-wrap">
+                    <img
+                        src={certificate.thumbnail}
+                        alt={certificate.alt || `${certificate.title} thumbnail`}
+                        className={`certs-thumb ${isBadge ? 'certs-thumb-badge' : ''}`}
+                        loading="lazy"
+                    />
+                </div>
+
+                <div className="certs-card-body">
+                    <span className="certs-issuer">{certificate.issuer}</span>
+                    <h3 className="certs-card-title">{certificate.title}</h3>
+
+                    {certificate.date && (
+                        <p className="certs-card-meta">{certificate.date}</p>
+                    )}
+
+                    <div className="certs-card-divider" />
+                    <p className="certs-card-desc">{certificate.description}</p>
+
+                    <span className="certs-view-link">
+                        {isProfessional ? 'View Credential' : 'View Certificate'}
+                        <span aria-hidden="true"> →</span>
+                    </span>
+                </div>
+            </button>
+        </article>
+    );
+}
+
+function CertificateDetail({ certificate, onBack }) {
+    const isBadge = certificate.id === 'cspo';
+
+    return (
+        <>
+            <div className="certs-toolbar">
+                <button
+                    type="button"
+                    className="certs-btn"
+                    onClick={onBack}
+                    aria-label="Back to all certificates"
+                >
+                    ← Back to certificates
+                </button>
+            </div>
+
+            <section className="certs-view" aria-live="polite">
+                <div className="certs-detail-heading">
+                    <span className="certs-issuer">{certificate.issuer}</span>
+                    <h3>{certificate.title}</h3>
+
+                    {certificate.date && (
+                        <p className="certs-card-meta">{certificate.date}</p>
+                    )}
+
+                    <p>{certificate.description}</p>
+                </div>
+
+                <div
+                    className={`certs-view-image-wrap ${isBadge ? 'certs-badge-detail' : ''}`}
+                >
+                    <img
+                        src={certificate.image}
+                        alt={certificate.alt || certificate.title}
+                        className="certs-view-image"
+                    />
+                </div>
+
+                <div className="certs-actions">
+                    {certificate.verifyUrl && (
+                        <a
+                            href={certificate.verifyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="certs-btn solid"
+                        >
+                            Verify Credential
+                        </a>
+                    )}
+
+                    {certificate.allowDownload && (
+                        <a
+                            href={certificate.downloadUrl || certificate.image}
+                            download
+                            className="certs-btn solid"
+                        >
+                            Download PDF
+                        </a>
+                    )}
+
+                    <a
+                        href={certificate.image}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="certs-btn"
+                    >
+                        View Full Size
+                    </a>
+                </div>
+            </section>
+        </>
     );
 }
