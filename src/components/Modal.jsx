@@ -1,78 +1,113 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react';
+
+const FOCUSABLE_SELECTOR =
+    'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export default function Modal({ isOpen, onClose, title, children }) {
-  const backdropRef = useRef(null)
-  const panelRef = useRef(null)
+    const backdropRef = useRef(null);
+    const panelRef = useRef(null);
 
-  useEffect(() => {
-    function onKeyDown(e) {
-      if (e.key === 'Escape') onClose?.()
-      if (e.key === 'Tab' && panelRef.current) {
-        const focusables = panelRef.current.querySelectorAll(
-          'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        )
-        const list = Array.from(focusables)
-        if (list.length === 0) return
-        const first = list[0]
-        const last = list[list.length - 1]
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault(); last.focus()
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault(); first.focus()
+    useEffect(() => {
+        if (!isOpen) return undefined;
+
+        const previousOverflow = document.body.style.overflow;
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose?.();
+                return;
+            }
+
+            if (event.key !== 'Tab' || !panelRef.current) return;
+
+            const focusableElements = Array.from(
+                panelRef.current.querySelectorAll(FOCUSABLE_SELECTOR)
+            );
+
+            if (focusableElements.length === 0) return;
+
+            const first = focusableElements[0];
+            const last = focusableElements[focusableElements.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = 'hidden';
+
+        const focusTimer = window.setTimeout(() => {
+            const firstFocusable = panelRef.current?.querySelector(FOCUSABLE_SELECTOR);
+            (firstFocusable || panelRef.current)?.focus();
+        }, 0);
+
+        return () => {
+            window.clearTimeout(focusTimer);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isOpen, onClose]);
+
+    if (!isOpen) return null;
+
+    const handleBackdropMouseDown = (event) => {
+        if (event.target === backdropRef.current) {
+            onClose?.();
         }
-      }
-    }
+    };
 
-    if (isOpen) {
-      document.addEventListener('keydown', onKeyDown)
-      document.body.style.overflow = 'hidden'
-      // initial focus
-      setTimeout(() => {
-        const first = panelRef.current?.querySelector(
-          'input, textarea, button, a, [tabindex]:not([tabindex="-1"])'
-        )
-        ;(first || panelRef.current)?.focus()
-      }, 0)
-    }
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = ''
-    }
-  }, [isOpen, onClose])
+    const titleId = 'modal-title';
+    const bodyId = 'modal-body';
 
-  if (!isOpen) return null
+    return (
+        <div
+            ref={backdropRef}
+            className="modal-backdrop"
+            onMouseDown={handleBackdropMouseDown}
+        >
+            <div
+                ref={panelRef}
+                className="modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={title ? titleId : undefined}
+                aria-describedby={bodyId}
+                tabIndex={-1}
+            >
+                <div className="modal-header">
+                    {title && (
+                        <h3 id={titleId} className="modal-title">
+                            {title}
+                        </h3>
+                    )}
 
-  const handleBackdropMouseDown = (e) => {
-    if (e.target === backdropRef.current) onClose?.()
-  }
+                    <button
+                        type="button"
+                        className="modal-close"
+                        aria-label="Close dialog"
+                        onClick={onClose}
+                    >
+                        ✕
+                    </button>
+                </div>
 
-  const titleId = 'modal-title'
-  const bodyId = 'modal-body'
+                <div id={bodyId} className="modal-body">
+                    {children}
+                </div>
+            </div>
 
-  return (
-    <div
-      ref={backdropRef}
-      className="modal-backdrop"
-      onMouseDown={handleBackdropMouseDown}
-    >
-      <div
-        ref={panelRef}
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={title ? titleId : undefined}
-        aria-describedby={bodyId}
-        tabIndex={-1}
-      >
-        <div className="modal-header">
-          {title && <h3 id={titleId} className="modal-title">{title}</h3>}
-          <button className="modal-close" aria-label="Close dialog" onClick={onClose}>✕</button>
+            <button
+                type="button"
+                className="modal-sr-exit"
+                aria-hidden="true"
+                tabIndex={-1}
+                onClick={onClose}
+            />
         </div>
-        <div id={bodyId} className="modal-body">
-          {children}
-        </div>
-      </div>
-      <button className="modal-sr-exit" aria-hidden="true" onClick={onClose} />
-    </div>
-  )
+    );
 }
