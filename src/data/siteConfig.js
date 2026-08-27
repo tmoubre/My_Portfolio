@@ -30,8 +30,4 @@ export const PROJECT_HIGHLIGHTS = {
     ],
 };
 
-const IS_PROD = typeof import.meta !== 'undefined' && import.meta.env?.PROD === true;
-
-export const CONTACT_URL = IS_PROD
-    ? '/.netlify/functions/contact'
-    : 'https://formspree.io/f/xblkvnzg';
+export const CONTACT_URL = 'https://formspree.io/f/xblkvnzg';
