@@ -1,0 +1,25 @@
+/* Resume logo contrast enhancement */
+
+.resume-sheet > .resume-header::before {
+    width: 74px;
+    height: 64px;
+    margin: 0 auto 10px;
+    background:
+        url('/TO-logo.svg') center / 54px 48px no-repeat,
+        linear-gradient(145deg, #061322, #0b2238);
+    border: 1px solid rgba(0, 174, 240, .35);
+    border-radius: 18px;
+    box-shadow:
+        0 5px 14px rgba(15, 23, 42, .16),
+        0 0 0 3px rgba(0, 174, 240, .04);
+    filter: none;
+}
+
+@media (max-width: 620px) {
+    .resume-sheet > .resume-header::before {
+        width: 64px;
+        height: 56px;
+        background-size: 47px 42px, auto;
+        border-radius: 16px;
+    }
+}
